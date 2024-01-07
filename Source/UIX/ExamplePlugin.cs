@@ -15,14 +15,14 @@ namespace UIX
             _description = new PluginDescription
             {
                 Name = "UIX",
-                Category = "Other",
+                Category = "UI",
                 Author = "nothingTV",
                 AuthorUrl = null,
                 HomepageUrl = null,
                 RepositoryUrl = "https://github.com/FlaxEngine/UIX",
-                Description = "This is an example plugin project.",
+                Description = "Flax UI extension plugin.",
                 Version = new Version(0, 1),
-                IsAlpha = false,
+                IsAlpha = true,
                 IsBeta = false,
             };
         }
@@ -32,7 +32,7 @@ namespace UIX
         {
             base.Initialize();
 
-            Debug.Log("Hello from plugin code!");
+            Debug.Log("UIX initialized.");
         }
 
         /// <inheritdoc />
