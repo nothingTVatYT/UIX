@@ -3,6 +3,9 @@ using FlaxEngine.GUI;
 
 namespace UIX;
 
+/// <summary>
+/// A container control with a title, a close button and a resize handle
+/// </summary>
 public class UIXTitledPanel : UIXPanel
 {
     private MouseTrackingControl _title;
@@ -10,11 +13,31 @@ public class UIXTitledPanel : UIXPanel
     private Button _closeButton;
     private ResizeHandle _resizeHandle;
 
+    /// <summary>
+    /// The text for the title label
+    /// </summary>
+    [Tooltip("Text for the title")]
     public string Title;
+
+    /// <summary>
+    /// Set this to true if the panel can be resized by the user
+    /// </summary>
+    [Tooltip("Set this to true if the panel can be resized by the user")]
     public bool Resizable = true;
+    /// <summary>
+    /// Set this to true if the panel can be closed by the user
+    /// </summary>
+    [Tooltip("Set this to true if the panel can be closed by the user")]
     public bool Closeable = true;
+    /// <summary>
+    /// Set this to true if the panel can be dragged by the user
+    /// </summary>
+    [Tooltip("Set this to true if the panel can be dragged by the user")]
     public bool Movable = true;
 
+    /// <summary>
+    /// Creates a new titled panel, closable and movable by default
+    /// </summary>
     public UIXTitledPanel()
     {
         CreateUI();
