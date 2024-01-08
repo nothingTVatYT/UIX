@@ -5,10 +5,12 @@ namespace UIX;
 
 public class UIXPanel : ContainerControl
 {
+    [Serialize]
     private ILayout _layout;
     /// <summary>
     /// The layout class, it defaults to a simple vertical box layout
     /// </summary>
+    [NoSerialize]
     public ILayout Layout
     {
         get
@@ -33,5 +35,11 @@ public class UIXPanel : ContainerControl
     public override void PerformLayout(bool force = false)
     {
         Layout.PerformLayout(this, force);
+    }
+
+    /// <inheritdoc />
+    public override void DrawSelf()
+    {
+        Render2D.FillRectangle(new Rectangle(Float2.Zero, Size), UIXStyle.Style.BackgroundNormal);
     }
 }

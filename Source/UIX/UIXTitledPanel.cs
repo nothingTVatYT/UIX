@@ -12,6 +12,7 @@ public class UIXTitledPanel : UIXPanel
     private Label _titleLabel;
     private Button _closeButton;
     private ResizeHandle _resizeHandle;
+    private Rectangle _clientArea;
 
     /// <summary>
     /// The text for the title label
@@ -34,14 +35,6 @@ public class UIXTitledPanel : UIXPanel
     /// </summary>
     [Tooltip("Set this to true if the panel can be dragged by the user")]
     public bool Movable = true;
-
-    /// <summary>
-    /// Creates a new titled panel, closable and movable by default
-    /// </summary>
-    public UIXTitledPanel()
-    {
-        CreateUI();
-    }
 
     private void CreateUI()
     {
@@ -84,6 +77,8 @@ public class UIXTitledPanel : UIXPanel
     /// <inheritdoc />
     public override void PerformLayout(bool force = false)
     {
+        if (_titleLabel == null)
+            CreateUI();
         _titleLabel.Text = Title;
         var shortenTitleWidth = 0f;
         var titleHeight = 16f;
@@ -95,17 +90,25 @@ public class UIXTitledPanel : UIXPanel
             titleHeight = _closeButton.Height;
         }
 
-        _title.Width = Width - shortenTitleWidth;
-        _title.Height = titleHeight;
-        _title.X = 0;
-        _title.Y = 0;
+        Control titleControl = Movable ? _title : _titleLabel;
+        titleControl.Width = Width - shortenTitleWidth;
+        titleControl.Height = titleHeight;
+        titleControl.X = 0;
+        titleControl.Y = 0;
         if (_resizeHandle != null)
         {
             _resizeHandle.X = Width - _resizeHandle.Width;
             _resizeHandle.Y = Height - _resizeHandle.Height;
         }
 
+        _clientArea = new Rectangle(0, titleHeight, Width, Height - titleHeight);
         base.PerformLayout(force);
+    }
+
+    /// <inheritdoc />
+    public override void GetDesireClientArea(out Rectangle rect)
+    {
+        rect = _clientArea;
     }
 
     private void MoveDialog(Float2 delta)
