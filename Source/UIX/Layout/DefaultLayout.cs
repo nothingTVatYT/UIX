@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using FlaxEngine;
 using FlaxEngine.GUI;
 
-namespace UIX;
+namespace UIX.Layout;
 
 /// <summary>
 /// A default layout in a vertical box
