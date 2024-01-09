@@ -104,7 +104,6 @@ public class UIExplorerWindow : CustomEditorWindow
                 Parent = panel.Panel
             };
             tree.AddChild(BuildTree(_control));
-            //_selectedControl = _control;
             tree.SelectedChanged += OnTreeSelected;
 
             if (_selectedControl != null)
@@ -112,10 +111,11 @@ public class UIExplorerWindow : CustomEditorWindow
                 var scriptType = new ScriptType(_selectedControl.GetType());
                 var cvc = new CustomValueContainer(scriptType, _selectedControl,
                     (_, _) => _selectedControl);
+                panel.Object(cvc);
             }
         }
 
-        var pickButton = layout.Button("Pick UI container");
+        var pickButton = layout.Button("Show selected UI container");
         pickButton.Button.Clicked += OnPickContainer;
     }
 
@@ -163,6 +163,23 @@ public class UIExplorerWindow : CustomEditorWindow
 
     public void OnPickContainer()
     {
-        
+        var selected = Editor.Instance.Windows.SceneWin.Editor.SceneEditing.Selection;
+        if (selected.Count > 0)
+        {
+            var selectedNode = selected[0];
+            if (selectedNode.EditableObject is UIControl uiControl)
+            {
+                _control = uiControl.Control;
+                RebuildLayout();
+            }
+            else
+            {
+                Debug.Log("Selected: " + selectedNode.EditableObject);
+            }
+        }
+        else
+        {
+            Debug.Log("nothing selected");
+        }
     }
 }
