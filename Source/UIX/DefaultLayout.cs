@@ -18,11 +18,16 @@ public class DefaultLayout : ILayout
     /// <inheritdoc />
     public Float2 MaximumSize { get; set; }
 
+    /// <summary>
+    /// Creates a new default layout, a vertical layout that will expand the parent if necessary.
+    /// </summary>
+    /// <param name="container"></param>
     public DefaultLayout(ContainerControl container)
     {
         _container = container;
     }
 
+    /// <inheritdoc />
     public void AddChild(Control child)
     {
         _controls.Add(child);

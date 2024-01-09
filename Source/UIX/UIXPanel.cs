@@ -5,6 +5,7 @@ namespace UIX;
 
 public class UIXPanel : ContainerControl
 {
+    public IBrush Background;
     [Serialize]
     private ILayout _layout;
     /// <summary>
@@ -40,6 +41,10 @@ public class UIXPanel : ContainerControl
     /// <inheritdoc />
     public override void DrawSelf()
     {
-        Render2D.FillRectangle(new Rectangle(Float2.Zero, Size), UIXStyle.Style.BackgroundNormal);
+        var bounds = new Rectangle(Float2.Zero, Size);
+        if (Background != null)
+            Background.Draw(bounds, Color.Transparent);
+        else
+            Render2D.FillRectangle(bounds, UIXStyle.Style.BackgroundNormal);
     }
 }
