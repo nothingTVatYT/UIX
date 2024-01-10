@@ -1,3 +1,4 @@
+using FlaxEngine;
 using FlaxEngine.GUI;
 using UIX;
 using UIX.Layout;
@@ -10,6 +11,8 @@ public class TestDialog1 : UIXTitledPanel
     private CheckBox _checkBox;
     private Label _loginLabel;
     private TextBox _loginTextBox;
+    private Label _passwordLabel;
+    private UIXPasswordBox _passwordTextBox;
 
     /// <inheritdoc />
     public override void PerformLayout(bool force = false)
@@ -35,6 +38,14 @@ public class TestDialog1 : UIXTitledPanel
             Layout.AddChild(_loginLabel);
             _loginTextBox = new TextBox();
             Layout.AddChild(_loginTextBox);
+            _passwordLabel = new Label
+            {
+                Text = "Password",
+                Font = new FontReference(UIXStyle.Style.FontMedium)
+            };
+            Layout.AddChild(_passwordLabel);
+            _passwordTextBox = new UIXPasswordBox();
+            Layout.AddChild(_passwordTextBox);
         }
         base.PerformLayout(force);
     }
