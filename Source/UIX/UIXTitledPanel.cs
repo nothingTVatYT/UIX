@@ -38,10 +38,13 @@ public class UIXTitledPanel : UIXPanel
 
     private void CreateUI()
     {
+        ClipChildren = false;
+        CullChildren = false;
         Layout.MinimumSize = new Float2(60, 60);
         _titleLabel = new Label
         {
             Text = Title,
+            TextColor = UIXStyle.Style.Foreground,
             BackgroundColor = UIXStyle.Style.Background,
             Font = new FontReference(UIXStyle.Style.FontMedium)
         };
