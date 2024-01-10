@@ -37,6 +37,7 @@ public class DefaultLayout : BaseLayout
             container.Width = maxWidth;
         if (container.Height < pos.Y)
             container.Height = pos.Y;
+        IsLayoutDone = true;
     }
 
 }
