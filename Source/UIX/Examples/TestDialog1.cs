@@ -8,6 +8,8 @@ public class TestDialog1 : UIXTitledPanel
 {
     private Label _label;
     private CheckBox _checkBox;
+    private Label _loginLabel;
+    private TextBox _loginTextBox;
 
     /// <inheritdoc />
     public override void PerformLayout(bool force = false)
@@ -26,6 +28,13 @@ public class TestDialog1 : UIXTitledPanel
                 TooltipText = "A checkbox for testing"
             };
             Layout.AddChild(_checkBox);
+            _loginLabel = new Label
+            {
+                Text = "Login"
+            };
+            Layout.AddChild(_loginLabel);
+            _loginTextBox = new TextBox();
+            Layout.AddChild(_loginTextBox);
         }
         base.PerformLayout(force);
     }

@@ -103,13 +103,15 @@ public class UIXTitledPanel : UIXPanel
         titleControl.Height = titleHeight;
         titleControl.X = 0;
         titleControl.Y = 0;
+        var bottomSpace = 0f;
         if (_resizeHandle != null)
         {
             _resizeHandle.X = Width - _resizeHandle.Width;
             _resizeHandle.Y = Height - _resizeHandle.Height;
+            bottomSpace = _resizeHandle.Height;
         }
 
-        _clientArea = new Rectangle(0, titleHeight, Width, Height - titleHeight);
+        _clientArea = new Rectangle(0, titleHeight, Width, Height - titleHeight - bottomSpace);
         base.PerformLayout(force);
     }
 
