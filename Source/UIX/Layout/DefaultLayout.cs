@@ -9,6 +9,8 @@ namespace UIX.Layout;
 /// </summary>
 public class DefaultLayout : BaseLayout
 {
+    [Tooltip("Set to true to stretch child width to fill all the space.")]
+    public bool FillX;
     /// <inheritdoc />
     public DefaultLayout(ContainerControl container) : base(container)
     {
@@ -37,6 +39,15 @@ public class DefaultLayout : BaseLayout
             container.Width = maxWidth;
         if (container.Height < pos.Y)
             container.Height = pos.Y;
+
+        if (FillX)
+        {
+            foreach (var child in Controls)
+            {
+                child.Width = clientArea.Width;
+            }
+        }
+
         IsLayoutDone = true;
     }
 

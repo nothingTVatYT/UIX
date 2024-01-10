@@ -1,5 +1,6 @@
 using FlaxEngine.GUI;
 using UIX;
+using UIX.Layout;
 
 namespace Game;
 
@@ -11,6 +12,7 @@ public class TestDialog1 : UIXTitledPanel
     /// <inheritdoc />
     public override void PerformLayout(bool force = false)
     {
+        (Layout as DefaultLayout).FillX = true;
         if (_label == null)
         {
             _label = new Label
