@@ -11,7 +11,9 @@ namespace UIX;
 /// </summary>
 public class AddButtons : Script
 {
+    [Tooltip("The background painter for the panel.")]
     public IBrush Background;
+    [Tooltip("The background painter for the buttons.")]
     public IBrush ButtonBackground;
     private UIXPanel _panel;
 

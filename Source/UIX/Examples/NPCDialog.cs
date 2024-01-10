@@ -6,8 +6,11 @@ namespace Game;
 
 public class NPCDialog : UIXPanel
 {
+    [Tooltip("The name of the NPC who is talking to you. This will be the title of the panel.")]
     public string NpcName;
+    [Tooltip("Some text to go into the panel, e.g. a part of an NPC monologue.")]
     public string InitialText;
+    [Tooltip("The border thickness around the panel.")]
     public float BorderThickness = 4;
 
     private Float2 _minimumSize;
@@ -18,6 +21,7 @@ public class NPCDialog : UIXPanel
     private Label _status;
     private ResizeHandle _resizeHandle;
 
+    /// <inheritdoc />
     public override void PerformLayout(bool force = false)
     {
         if (_title == null)
@@ -40,6 +44,9 @@ public class NPCDialog : UIXPanel
         _resizeHandle.Y = Height - _resizeHandle.Height;
     }
 
+    /// <summary>
+    /// Update the UI, namely the panel title, the NPC text and the statusbar.
+    /// </summary>
     public void UpdateUI()
     {
         CullChildren = false;
@@ -49,6 +56,9 @@ public class NPCDialog : UIXPanel
         _status.Text = "Talking";
     }
 
+    /// <summary>
+    /// Creates the UI in code. This is called by PerformLayout. 
+    /// </summary>
     public void CreateUI()
     {
         _titleLabel = new Label
@@ -94,6 +104,7 @@ public class NPCDialog : UIXPanel
         _minimumSize = new Float2(60, 60);
     }
 
+    /// <inheritdoc />
     public override void DrawSelf()
     {
         base.DrawSelf();
