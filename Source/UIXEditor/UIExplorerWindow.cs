@@ -75,7 +75,7 @@ internal class TrackingControl : Control
     public override void Draw()
     {
         Render2D.FillRectangle(new Rectangle(Float2.Zero, Size), Style.Current.Background);
-        Render2D.DrawText(Style.Current.FontMedium, "?", Style.Current.Foreground, Float2.Zero);
+        Render2D.DrawText(Style.Current.FontMedium, "Drag me to a UI", Style.Current.Foreground, Float2.Zero);
     }
 }
 

@@ -192,8 +192,8 @@
 			"Name": "TestDialog1",
 			"Transform": {
 				"Translation": {
-					"X": 442.0,
-					"Y": 50.0,
+					"X": 396.0,
+					"Y": 29.0,
 					"Z": 0.0
 				}
 			},
@@ -215,9 +215,9 @@
 		"Y": 0.0
 	},
 	"Offsets": {
-		"Left": 442.0,
+		"Left": 396.0,
 		"Right": 100.0,
-		"Top": 50.0,
+		"Top": 29.0,
 		"Bottom": 68.0
 	},
 	"Scale": {
@@ -251,8 +251,8 @@
 			"Name": "NPCDialog",
 			"Transform": {
 				"Translation": {
-					"X": 572.0,
-					"Y": 55.0,
+					"X": 702.0,
+					"Y": 18.0,
 					"Z": 0.0
 				}
 			},
@@ -273,9 +273,9 @@
 		"Y": 0.0
 	},
 	"Offsets": {
-		"Left": 572.0,
+		"Left": 702.0,
 		"Right": 113.0,
-		"Top": 55.0,
+		"Top": 18.0,
 		"Bottom": 71.0
 	},
 	"Scale": {
@@ -310,7 +310,7 @@
 			"Control": "UIX.UIXButton",
 			"Data": {
 	"Text": "Click Me",
-	"Font": "08dc1198017d3796e98d171137875fdb",
+	"Font": null,
 	"Icon": null,
 	"BackgroundBrush": null,
 	"ChangeBackgroundOnHover": true,
