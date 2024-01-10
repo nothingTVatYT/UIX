@@ -7,16 +7,25 @@ namespace UIX;
 
 public class UIXButton : Control
 {
+    [Tooltip("The optional text on the button")]
     public string Text;
-    public Font Font = UIXStyle.Style.FontMedium;
+    [Tooltip("Font to be used for the button text.")]
+    public FontReference Font = new FontReference(UIXStyle.Style.FontMedium);
+    [Tooltip("The optional icon on the button")]
     public IBrush Icon;
+    [Tooltip("The background painter")]
     public IBrush BackgroundBrush;
+    [Tooltip("Set this to true if the background should change when the mouse pointer hovers over this button.")]
     public bool ChangeBackgroundOnHover;
     [VisibleIf("ChangeBackgroundOnHover")]
+    [Tooltip("The background painter if the mouse pointer hovers over this button.")]
     public IBrush BackgroundMouseOverBrush;
+    [Tooltip("Set this to true if the background should change while the button is pressed.")]
     public bool ChangeBackgroundOnPress;
     [VisibleIf("ChangeBackgroundOnPress")]
+    [Tooltip("The background painter for a pressed button")]
     public IBrush BackgroundMousePressBrush;
+    [Tooltip("The text layout options used if a button text is set.")]
     public TextLayoutOptions TextLayout = TextLayoutOptions.Default;
     [HideInEditor]
     public Action<ButtonEvent> Clicked;
@@ -46,7 +55,7 @@ public class UIXButton : Control
             TextLayout.Bounds = bounds;
             TextLayout.HorizontalAlignment = TextAlignment.Center;
             TextLayout.VerticalAlignment = TextAlignment.Center;
-            Render2D.DrawText(Font, Text, UIXStyle.Style.Foreground, ref TextLayout);
+            Render2D.DrawText(Font.GetFont(), Text, UIXStyle.Style.Foreground, ref TextLayout);
         }
     }
 
