@@ -217,7 +217,7 @@
 		"Left": 442.0,
 		"Right": 100.0,
 		"Top": 50.0,
-		"Bottom": 62.0
+		"Bottom": 68.0
 	},
 	"Scale": {
 		"X": 1.0,
@@ -258,7 +258,7 @@
 			"Control": "Game.NPCDialog",
 			"Data": {
 	"NpcName": "Bob the builder",
-	"InitialText": "I can build things.",
+	"InitialText": "I can build things. And this dialog is an early version before UIXTitledPanel even existed.",
 	"BorderThickness": 4.0,
 	"Background": null,
 	"ClipChildren": false,
