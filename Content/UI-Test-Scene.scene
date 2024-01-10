@@ -119,6 +119,7 @@
 	"Background": null,
 	"_layout": {
 		"$type": "UIX.Layout.DefaultLayout, UIX.CSharp",
+		"FillX": false,
 		"MinimumSize": {
 			"X": 60.0,
 			"Y": 60.0
@@ -284,6 +285,97 @@
 	"Pivot": {
 		"X": 0.0,
 		"Y": 0.0
+	},
+	"Shear": {
+		"X": 0.0,
+		"Y": 0.0
+	},
+	"Rotation": 0.0,
+	"BackgroundColor": {
+		"R": 0.0,
+		"G": 0.0,
+		"B": 0.0,
+		"A": 0.0
+	},
+	"Enabled": true,
+	"Visible": true,
+	"AutoFocus": true
+}
+		},
+		{
+			"ID": "08dc11ab70041b98cea909d62aa2e22a",
+			"TypeName": "FlaxEngine.UIControl",
+			"ParentID": "08dc119b49045b9d49740adaf68d56a3",
+			"Name": "UIXButton",
+			"Control": "UIX.UIXButton",
+			"Data": {
+	"Text": "Click Me",
+	"Font": "08dc1198017d3796e98d171137875fdb",
+	"Icon": null,
+	"BackgroundBrush": null,
+	"ChangeBackgroundOnHover": true,
+	"BackgroundMouseOverBrush": {
+		"$type": "FlaxEngine.GUI.SolidColorBrush, FlaxEngine.CSharp",
+		"Color": {
+			"R": 0.28333336,
+			"G": 0.28333336,
+			"B": 0.28333336,
+			"A": 1.0
+		}
+	},
+	"ChangeBackgroundOnPress": true,
+	"BackgroundMousePressBrush": {
+		"$type": "FlaxEngine.GUI.SolidColorBrush, FlaxEngine.CSharp",
+		"Color": {
+			"R": 0.55,
+			"G": 0.55,
+			"B": 0.55,
+			"A": 1.0
+		}
+	},
+	"TextLayout": {
+		"Bounds": {
+			"Location": {
+				"X": 0.0,
+				"Y": 0.0
+			},
+			"Size": {
+				"X": 100.0,
+				"Y": 30.0
+			},
+			"X": 0.0,
+			"Y": 0.0,
+			"Width": 100.0,
+			"Height": 30.0
+		},
+		"HorizontalAlignment": 1,
+		"VerticalAlignment": 1,
+		"TextWrapping": 0,
+		"Scale": 1.0,
+		"BaseLinesGapScale": 1.0
+	},
+	"Clicked": null,
+	"AnchorMin": {
+		"X": 0.0,
+		"Y": 0.0
+	},
+	"AnchorMax": {
+		"X": 0.0,
+		"Y": 0.0
+	},
+	"Offsets": {
+		"Left": 0.0,
+		"Right": 100.0,
+		"Top": 0.0,
+		"Bottom": 30.0
+	},
+	"Scale": {
+		"X": 1.0,
+		"Y": 1.0
+	},
+	"Pivot": {
+		"X": 0.5,
+		"Y": 0.5
 	},
 	"Shear": {
 		"X": 0.0,
