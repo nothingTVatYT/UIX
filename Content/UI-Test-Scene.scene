@@ -1,0 +1,305 @@
+{
+	"ID": "08dc119b48d1abc1487d80b3ecebefec",
+	"TypeName": "FlaxEngine.SceneAsset",
+	"EngineBuild": 6407,
+	"Data": [
+		{
+			"ID": "08dc119b48d1abc1487d80b3ecebefec",
+			"TypeName": "FlaxEngine.Scene",
+			"LightmapSettings": {
+				"IndirectLightingIntensity": 1.0,
+				"GlobalObjectsScale": 1.0,
+				"ChartsPadding": 3,
+				"AtlasSize": 1024,
+				"BounceCount": 1,
+				"CompressLightmaps": true,
+				"UseGeometryWithNoMaterials": true,
+				"Quality": 10
+			}
+		},
+		{
+			"ID": "08dc119b48d29bf9487d8186ecebf837",
+			"TypeName": "FlaxEngine.DirectionalLight",
+			"ParentID": "08dc119b48d1abc1487d80b3ecebefec",
+			"Name": "Sun",
+			"Transform": {
+				"Translation": {
+					"X": 40.0,
+					"Y": 160.0,
+					"Z": 0.0
+				},
+				"Orientation": {
+					"X": 0.3826834559440613,
+					"Y": 0.0,
+					"Z": 0.0,
+					"W": 0.9238795042037964
+				}
+			}
+		},
+		{
+			"ID": "08dc119b48d36daf487d888fecec3e8a",
+			"TypeName": "FlaxEngine.Sky",
+			"ParentID": "08dc119b48d1abc1487d80b3ecebefec",
+			"Name": "Sky",
+			"Transform": {
+				"Translation": {
+					"X": 40.0,
+					"Y": 150.0,
+					"Z": 0.0
+				}
+			},
+			"Sun": "08dc119b48d29bf9487d8186ecebf837"
+		},
+		{
+			"ID": "08dc119b48d4dc09487d8902ecec430b",
+			"TypeName": "FlaxEngine.SkyLight",
+			"ParentID": "08dc119b48d1abc1487d80b3ecebefec",
+			"Name": "SkyLight",
+			"Brightness": 2.5,
+			"CustomTexture": "c54410104ff39427bc11e5bc761d66b0"
+		},
+		{
+			"ID": "08dc119b48d53ded487d89fbecec4cc9",
+			"TypeName": "FlaxEngine.StaticModel",
+			"ParentID": "08dc119b48d1abc1487d80b3ecebefec",
+			"Name": "Floor",
+			"Transform": {
+				"Scale": {
+					"X": 4.0,
+					"Y": 0.5,
+					"Z": 4.0
+				}
+			},
+			"Model": "b43f0f8f4aaba3f3156896a5a22ba493",
+			"Buffer": {
+				"Entries": [
+					{
+						"Material": "1771b53343d461faacdf2c8581b1fdbb",
+						"ShadowsMode": 3,
+						"Visible": true,
+						"ReceiveDecals": true
+					}
+				]
+			}
+		},
+		{
+			"ID": "08dc119b48d6a71c487d8bd5ecec5f47",
+			"TypeName": "FlaxEngine.Camera",
+			"ParentID": "08dc119b48d1abc1487d80b3ecebefec",
+			"Name": "Camera",
+			"Transform": {
+				"Translation": {
+					"X": 0.0,
+					"Y": 150.0,
+					"Z": -300.0
+				}
+			}
+		},
+		{
+			"ID": "08dc119b49045b9d49740adaf68d56a3",
+			"TypeName": "FlaxEngine.UICanvas",
+			"ParentID": "08dc119b48d1abc1487d80b3ecebefec",
+			"Name": "UICanvas",
+			"V": {}
+		},
+		{
+			"ID": "08dc119b491a992849b6ad4df927af7a",
+			"TypeName": "FlaxEngine.UIControl",
+			"ParentID": "08dc119b49045b9d49740adaf68d56a3",
+			"Name": "UIXPanel",
+			"Transform": {
+				"Translation": {
+					"X": 38.0,
+					"Y": 80.0,
+					"Z": 0.0
+				}
+			},
+			"Control": "UIX.UIXPanel",
+			"Data": {
+	"Background": null,
+	"_layout": {
+		"$type": "UIX.Layout.DefaultLayout, UIX.CSharp",
+		"MinimumSize": {
+			"X": 60.0,
+			"Y": 60.0
+		},
+		"MaximumSize": {
+			"X": 1091.0,
+			"Y": 595.0
+		},
+		"IsLayoutDone": true
+	},
+	"ClipChildren": true,
+	"CullChildren": true,
+	"AnchorMin": {
+		"X": 0.0,
+		"Y": 0.0
+	},
+	"AnchorMax": {
+		"X": 0.0,
+		"Y": 0.0
+	},
+	"Offsets": {
+		"Left": 38.0,
+		"Right": 300.0,
+		"Top": 80.0,
+		"Bottom": 300.0
+	},
+	"Scale": {
+		"X": 1.0,
+		"Y": 1.0
+	},
+	"Pivot": {
+		"X": 0.0,
+		"Y": 0.0
+	},
+	"Shear": {
+		"X": 0.0,
+		"Y": 0.0
+	},
+	"Rotation": 0.0,
+	"BackgroundColor": {
+		"R": 0.0,
+		"G": 0.0,
+		"B": 0.0,
+		"A": 0.0
+	},
+	"Enabled": true,
+	"Visible": true,
+	"AutoFocus": true
+}
+		},
+		{
+			"ID": "ee4add6b463e1d424d4b70af3c6dee1a",
+			"TypeName": "UIX.AddButtons",
+			"ParentID": "08dc119b491a992849b6ad4df927af7a",
+			"V": {
+	"Background": {
+		"$type": "FlaxEngine.GUI.MaterialBrush, FlaxEngine.CSharp",
+		"Material": "08dc115bd1704440d85d4edd8b9ecfca"
+	},
+	"ButtonBackground": {
+		"$type": "FlaxEngine.GUI.MaterialBrush, FlaxEngine.CSharp",
+		"Material": "08dc115cd9221495e66017e517babddc"
+	}
+}
+		},
+		{
+			"ID": "08dc119c5173ad76618337f9e7253831",
+			"TypeName": "FlaxEngine.UIControl",
+			"ParentID": "08dc119b49045b9d49740adaf68d56a3",
+			"Name": "TestDialog1",
+			"Transform": {
+				"Translation": {
+					"X": 442.0,
+					"Y": 50.0,
+					"Z": 0.0
+				}
+			},
+			"Control": "Game.TestDialog1",
+			"Data": {
+	"Title": "Test Dialog",
+	"Resizable": true,
+	"Closeable": true,
+	"Movable": true,
+	"Background": null,
+	"ClipChildren": false,
+	"CullChildren": false,
+	"AnchorMin": {
+		"X": 0.0,
+		"Y": 0.0
+	},
+	"AnchorMax": {
+		"X": 0.0,
+		"Y": 0.0
+	},
+	"Offsets": {
+		"Left": 442.0,
+		"Right": 100.0,
+		"Top": 50.0,
+		"Bottom": 62.0
+	},
+	"Scale": {
+		"X": 1.0,
+		"Y": 1.0
+	},
+	"Pivot": {
+		"X": 0.0,
+		"Y": 0.0
+	},
+	"Shear": {
+		"X": 0.0,
+		"Y": 0.0
+	},
+	"Rotation": 0.0,
+	"BackgroundColor": {
+		"R": 0.0,
+		"G": 0.0,
+		"B": 0.0,
+		"A": 0.0
+	},
+	"Enabled": true,
+	"Visible": true,
+	"AutoFocus": true
+}
+		},
+		{
+			"ID": "08dc119e5ce2d2f6875f25e361bcb349",
+			"TypeName": "FlaxEngine.UIControl",
+			"ParentID": "08dc119b49045b9d49740adaf68d56a3",
+			"Name": "NPCDialog",
+			"Transform": {
+				"Translation": {
+					"X": 572.0,
+					"Y": 55.0,
+					"Z": 0.0
+				}
+			},
+			"Control": "Game.NPCDialog",
+			"Data": {
+	"NpcName": "Bob the builder",
+	"InitialText": "I can build things.",
+	"BorderThickness": 4.0,
+	"Background": null,
+	"ClipChildren": false,
+	"CullChildren": false,
+	"AnchorMin": {
+		"X": 0.0,
+		"Y": 0.0
+	},
+	"AnchorMax": {
+		"X": 0.0,
+		"Y": 0.0
+	},
+	"Offsets": {
+		"Left": 572.0,
+		"Right": 113.0,
+		"Top": 55.0,
+		"Bottom": 71.0
+	},
+	"Scale": {
+		"X": 1.0,
+		"Y": 1.0
+	},
+	"Pivot": {
+		"X": 0.0,
+		"Y": 0.0
+	},
+	"Shear": {
+		"X": 0.0,
+		"Y": 0.0
+	},
+	"Rotation": 0.0,
+	"BackgroundColor": {
+		"R": 0.0,
+		"G": 0.0,
+		"B": 0.0,
+		"A": 0.0
+	},
+	"Enabled": true,
+	"Visible": true,
+	"AutoFocus": true
+}
+		}
+	]
+}
