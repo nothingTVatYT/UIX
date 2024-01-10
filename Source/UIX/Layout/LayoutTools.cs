@@ -16,9 +16,22 @@ public class LayoutTools
             return panel.Layout.MinimumSize;
         // built-in controls don't have a minimum size setting so we need to guess
         if (control is Label label)
-            return label.Font.GetFont().MeasureText(label.Text) + label.Margin.Size;
+        {
+            var text = label.Text;
+            if (text == null || text.Value == "")
+                text = "M";
+            return label.Font.GetFont().MeasureText(text) + label.Margin.Size;
+        }
+
         if (control is Button button)
-            return button.Font.GetFont().MeasureText(button.Text) + new Float2(button.BorderThickness * 2, button.BorderThickness * 2);
+        {
+            var text = button.Text;
+            if (text == null || text.Value == "")
+                text = "M";
+            return button.Font.GetFont().MeasureText(text) +
+                   new Float2(button.BorderThickness * 2, button.BorderThickness * 2);
+        }
+
         if (control is TextBox textBox)
         {
             var estimation = textBox.Font.GetFont().MeasureText(textBox.Text) +

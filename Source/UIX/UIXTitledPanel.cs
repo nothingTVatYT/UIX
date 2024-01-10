@@ -1,5 +1,6 @@
 using FlaxEngine;
 using FlaxEngine.GUI;
+using UIX.Layout;
 
 namespace UIX;
 
@@ -61,11 +62,13 @@ public class UIXTitledPanel : UIXPanel
 
         if (Closeable)
         {
+            var titleHeight = _titleLabel.Height;
+            // make this squared, Width = titleHeight is intentional
             _closeButton = new UIXButton
             {
                 Icon = new SpriteBrush(UIXStyle.Style.Cross),
-                Width = 12,
-                Height = 12
+                Width = titleHeight,
+                Height = titleHeight
             };
             AddChild(_closeButton);
             _closeButton.Clicked += _ =>
