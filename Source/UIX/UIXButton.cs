@@ -55,6 +55,8 @@ public class UIXButton : Control
             TextLayout.Bounds = bounds;
             TextLayout.HorizontalAlignment = TextAlignment.Center;
             TextLayout.VerticalAlignment = TextAlignment.Center;
+            if (Font == null)
+                Font = new FontReference(UIXStyle.Style.FontMedium);
             Render2D.DrawText(Font.GetFont(), Text, UIXStyle.Style.Foreground, ref TextLayout);
         }
     }
