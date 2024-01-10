@@ -3,6 +3,9 @@ using FlaxEngine.GUI;
 
 namespace UIX;
 
+/// <summary>
+/// Interface for layout classes used in UIXPanel
+/// </summary>
 public interface ILayout
 {
     /// <summary>
@@ -14,6 +17,11 @@ public interface ILayout
     /// gets and sets the maximum size this container can get
     /// </summary>
     public Float2 MaximumSize { get; set; }
+
+    /// <summary>
+    /// Returns true if the layout job is finished otherwise false for e.g. an animated layout
+    /// </summary>
+    public bool IsLayoutDone { get; set; }
 
     /// <summary>
     /// Adds a child to the layout and also to the container

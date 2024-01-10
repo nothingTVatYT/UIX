@@ -7,41 +7,21 @@ namespace UIX.Layout;
 /// <summary>
 /// A default layout in a vertical box
 /// </summary>
-public class DefaultLayout : ILayout
+public class DefaultLayout : BaseLayout
 {
-    private ContainerControl _container;
-    private List<Control> _controls = new();
-
     /// <inheritdoc />
-    public Float2 MinimumSize { get; set; }
-
-    /// <inheritdoc />
-    public Float2 MaximumSize { get; set; }
-
-    /// <summary>
-    /// Creates a new default layout, a vertical layout that will expand the parent if necessary.
-    /// </summary>
-    /// <param name="container"></param>
-    public DefaultLayout(ContainerControl container)
+    public DefaultLayout(ContainerControl container) : base(container)
     {
-        _container = container;
     }
 
     /// <inheritdoc />
-    public void AddChild(Control child)
+    public override void PerformLayout(ContainerControl container, bool force = false)
     {
-        _controls.Add(child);
-        _container.AddChild(child);
-    }
-
-    /// <inheritdoc />
-    public void PerformLayout(ContainerControl container, bool force = false)
-    {
-        _container = container;
+        Container = container;
         var clientArea = container.GetClientArea();
         var pos = clientArea.UpperLeft;
         var maxWidth = 0f;
-        foreach (var child in _controls)
+        foreach (var child in Controls)
         {
             child.Pivot = Float2.Zero;
             child.PerformLayout(force);
@@ -58,4 +38,5 @@ public class DefaultLayout : ILayout
         if (container.Height < pos.Y)
             container.Height = pos.Y;
     }
+
 }

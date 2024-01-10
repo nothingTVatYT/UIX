@@ -36,7 +36,16 @@ public class UIXPanel : ContainerControl
     /// <inheritdoc />
     public override void PerformLayout(bool force = false)
     {
-        Layout.PerformLayout(this, force);
+        if (!IsLayoutLocked)
+            Layout.PerformLayout(this, force);
+    }
+
+    /// <inheritdoc />
+    public override void Update(float deltaTime)
+    {
+        base.Update(deltaTime);
+        if (!IsLayoutLocked && !Layout.IsLayoutDone)
+            Layout.PerformLayout(this);
     }
 
     /// <inheritdoc />
