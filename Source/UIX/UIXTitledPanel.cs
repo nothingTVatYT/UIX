@@ -10,7 +10,7 @@ public class UIXTitledPanel : UIXPanel
 {
     private MouseTrackingControl _title;
     private Label _titleLabel;
-    private Button _closeButton;
+    private UIXButton _closeButton;
     private ResizeHandle _resizeHandle;
     private Rectangle _clientArea;
 
@@ -61,12 +61,17 @@ public class UIXTitledPanel : UIXPanel
 
         if (Closeable)
         {
-            _closeButton = new Button
+            _closeButton = new UIXButton
             {
-                Text = "X"
+                Icon = new SpriteBrush(UIXStyle.Style.Cross),
+                Width = 12,
+                Height = 12
             };
             AddChild(_closeButton);
-            _closeButton.Clicked += Dispose;
+            _closeButton.Clicked += _ =>
+            {
+                 Dispose();
+            };
         }
 
         if (Resizable)
@@ -90,7 +95,7 @@ public class UIXTitledPanel : UIXPanel
             _closeButton.Width = _closeButton.Height;
             _closeButton.X = Width - _closeButton.Width;
             shortenTitleWidth = _closeButton.Width;
-            titleHeight = _closeButton.Height;
+            titleHeight = Mathf.Max(titleHeight, _closeButton.Height);
         }
 
         Control titleControl = Movable ? _title : _titleLabel;
