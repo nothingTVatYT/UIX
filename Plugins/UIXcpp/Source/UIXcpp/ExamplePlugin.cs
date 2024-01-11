@@ -15,14 +15,14 @@ namespace UIXcpp
             _description = new PluginDescription
             {
                 Name = "UIXcpp",
-                Category = "Other",
+                Category = "UI",
                 Author = "",
                 AuthorUrl = null,
                 HomepageUrl = null,
                 RepositoryUrl = "https://github.com/FlaxEngine/UIXcpp",
-                Description = "This is an example plugin project.",
+                Description = "C++ conversion of the Flax UI",
                 Version = new Version(0, 0, 1),
-                IsAlpha = false,
+                IsAlpha = true,
                 IsBeta = false,
             };
         }
