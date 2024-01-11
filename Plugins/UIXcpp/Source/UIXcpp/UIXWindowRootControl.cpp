@@ -1,12 +1,12 @@
 #include "UIXWindowRootControl.h"
-
+#include "UIXStyle.h"
 
 UIXWindowRootControl::UIXWindowRootControl(Window *window) : UIXRootControl()
 {
     _window = window;
     SetClipChildren(false);
-    if (Style::GetCurrent() != nullptr)
-        SetBackgroundColor(Style::GetCurrent()->Background);
+    if (UIXStyle::GetCurrent() != nullptr)
+        SetBackgroundColor(UIXStyle::GetCurrent()->Background);
 }
 
 Window* UIXWindowRootControl::GetWindow() const
