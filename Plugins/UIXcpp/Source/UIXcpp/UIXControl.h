@@ -19,7 +19,7 @@ class UIXTooltip;
 class DragData;
 
 API_CLASS()
-class UICPP_API UIXControl : public Object
+class UIXCPP_API UIXControl : public Object
 {
 //API_AUTO_SERIALIZATION();
 //DECLARE_SCENE_OBJECT(UIXControl);

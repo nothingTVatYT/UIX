@@ -5,7 +5,7 @@
 
 class UIXCanvasContainer;
 
-API_CLASS() class UICPP_API UIXRootControl : public UIXContainerControl
+API_CLASS() class UIXCPP_API UIXRootControl : public UIXContainerControl
 {
 //API_AUTO_SERIALIZATION();
 //DECLARE_SCRIPTING_TYPE(UIXRootControl);

@@ -2,7 +2,7 @@
 
 #include "UIXControl.h"
 
-API_CLASS() class UICPP_API UIXContainerControl : public UIXControl
+API_CLASS() class UIXCPP_API UIXContainerControl : public UIXControl
 {
 //API_AUTO_SERIALIZATION();
 //DECLARE_SCRIPTING_TYPE(UIXContainerControl);

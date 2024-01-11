@@ -3,7 +3,8 @@
 #include "UIXRootControl.h"
 #include "UIXWindowRootControl.h"
 #include "Engine/Render2D/Render2D.h"
-//#include "Engine/Debug/Exceptions/InvalidOperationException.h"
+#include "Engine/Core/Log.h"
+#include "Engine/Debug/Exceptions/ArgumentNullException.h"
 
 UIXControl::UIXControl()
 {
@@ -222,7 +223,7 @@ Float2 UIXControl::GetScreenPos() const
     const UIXRootControl *parentWin = _root;
     if (parentWin == nullptr)
     {
-        Log::InvalidOperationException(TEXT("Missing parent window."));
+        Log:
         return { 0.f, 0.f };
     }
 

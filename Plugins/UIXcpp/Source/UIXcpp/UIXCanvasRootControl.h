@@ -2,7 +2,7 @@
 
 #include "Engine/Scripting/Script.h"
 
-API_CLASS() class UICPP_API UIXCanvasRootControl : public Script
+API_CLASS() class UIXCPP_API UIXCanvasRootControl : public Script
 {
 API_AUTO_SERIALIZATION();
 DECLARE_SCRIPTING_TYPE(UIXCanvasRootControl);
