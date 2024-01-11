@@ -2,6 +2,7 @@
 #include "UIXContainerControl.h"
 #include "UIXRootControl.h"
 #include "UIXWindowRootControl.h"
+#include "UIXTooltip.h"
 #include "Engine/Render2D/Render2D.h"
 //#include "Engine/Debug/Exceptions/InvalidOperationException.h"
 
@@ -436,7 +437,7 @@ void UIXControl::OnMouseMove(Float2 location)
             UpdateDelegate tooltip_delegate;
             tooltip_delegate.Bind<UIXControl, &UIXControl::OnUpdateTooltip>(this);
 
-            SetUpdate(_tooltipUpdate, &OnUpdateTooltip);
+            SetUpdate(_tooltipUpdate, tooltip_delegate);
         }
     }
     else if (_tooltipUpdate.IsBinded())
@@ -459,7 +460,7 @@ void UIXControl::OnMouseLeave()
     if (_tooltipUpdate.IsBinded())
     //{
         SetUpdate(_tooltipUpdate, UpdateDelegate());
-    Tooltip->OnMouseLeaveControl(this);
+    GetTooltip()->OnMouseLeaveControl(this);
     //}
 }
 
