@@ -1,16 +1,13 @@
 ﻿{
-	"Name": "UIX",
-	"Version": "0.1",
-	"Company": "nothingTV",
+	"Name": "UIXcpp",
+	"Version": "0.0.1",
+	"Company": "",
 	"Copyright": "",
-	"GameTarget": "UIXTarget",
-	"EditorTarget": "UIXEditorTarget",
+	"GameTarget": "UIXcppTarget",
+	"EditorTarget": "UIXcppEditorTarget",
 	"References": [
 		{
 			"Name": "$(EnginePath)/Flax.flaxproj"
-		},
-		{
-			"Name": "$(ProjectPath)/Plugins/UIXcpp/UIXcpp.flaxproj"
 		}
 	],
 	"DefaultScene": null,
