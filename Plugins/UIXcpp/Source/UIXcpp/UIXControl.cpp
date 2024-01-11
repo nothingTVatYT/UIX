@@ -5,7 +5,6 @@
 #include "UIXTooltip.h"
 #include "Engine/Render2D/Render2D.h"
 #include "Engine/Core/Log.h"
-#include "Engine/Debug/Exceptions/ArgumentNullException.h"
 
 UIXControl::UIXControl()
 {
@@ -224,8 +223,9 @@ Float2 UIXControl::GetScreenPos() const
     const UIXRootControl *parentWin = _root;
     if (parentWin == nullptr)
     {
-        Log:
-        return { 0.f, 0.f };
+        // TODO: Exception? Log may be better.
+        LOG(Error, "ArgumentNullException: Parent Window is null!");
+        return Float2::Zero;
     }
 
     auto clientPos = PointToWindow(Float2::Zero);
@@ -575,7 +575,7 @@ Float2 UIXControl::PointToParent(UIXContainerControl *parent, Float2 location) c
 {
     if (parent == nullptr)
     {
-        Log::ArgumentNullException();
+        LOG(Error, "ArgumentNullException: Parent control is null!");
         return Float2::Zero;
     }
 
@@ -618,7 +618,10 @@ Float2 UIXControl::PointFromParent(API_PARAM(Ref) Float2 &locationParent) const
 Float2 UIXControl::PointFromParent(UIXContainerControl *parent, Float2 location) const
 {
     if (parent == nullptr)
-        throw ArgumentNullException();
+    {
+        LOG(Error, "ArgumentNullException: Parent control is null!");
+        return Float2::Zero;
+    }
 
     Array<const UIXControl*> path;
 
@@ -762,7 +765,7 @@ void UIXControl::RemoveUpdateCallbacks(UIXRootControl *root)
 
 void UIXControl::SetUpdate(API_PARAM(ref) UpdateDelegate &onUpdate, const UpdateDelegate &value)
 {
-    if (onUpdate == value)
+    if (&onUpdate == &value)
         return;
     if (_root != nullptr && onUpdate.IsBinded())
         _root->UpdateCallbacksToRemove.Add(onUpdate);
@@ -1223,7 +1226,9 @@ void UIXControl::SetAnchorPreset(const UIXAnchorPresets &anchorPreset, bool pres
                             bounds.Location = Float2::Zero;
                             bounds.Size = parentBounds.Size;
                             break;
-                        default: throw ArgumentOutOfRangeException(nameof(anchorPreset), anchorPreset, nullptr);
+                        default:
+                            LOG(Error, "ArguementOutOfRangeException: anchorPreset has incorrect value {0}!", anchorPreset);
+                            return;
                     }
                     bounds.Location += parentBounds.Location;
                 }

@@ -119,7 +119,7 @@ public:
     /// <summary>
     /// Gets the control background color (transparent color (alpha=0) means no background rendering)
     /// </summary>
-    API_PROPERTY(Attributers="ExpandGroups, EditorDisplay(\"Background Style\"), EditorOrder(2000), Tooltip(\"The control background color. Use transparent color (alpha=0) to hide background.\")")
+    API_PROPERTY(Attributes="ExpandGroups, EditorDisplay(\"Background Style\"), EditorOrder(2000), Tooltip(\"The control background color. Use transparent color (alpha=0) to hide background.\")")
     FORCE_INLINE Color GetBackgroundColor() const
     {
         return _backgroundColor;
@@ -183,9 +183,6 @@ public:
     API_PROPERTY()
     void SetVisible(bool value);
 
-    /// <summary>
-    /// Gets a value indicating whether the control is visible in the hierarchy (it's visible and all it's parents are visible as well).
-    /// </summary>
     API_PROPERTY()
     bool GetVisibleInHierarchy() const;
 
@@ -208,7 +205,7 @@ public:
     /// Gets the GUI window root control which contains that control (or null if not linked to any).
     /// </summary>
     API_PROPERTY()
-    virtual UIXWindowRootControl* UIXControl::GetRootWindow() const;
+    virtual UIXWindowRootControl* GetRootWindow() const;
 
     /// <summary>
     /// Gets the control DPI scale factor (1 is default). Includes custom DPI scale.
@@ -898,7 +895,7 @@ public:
     /// Gets the normalized position in the parent control that the upper left corner is anchored to (range 0-1).
     /// </summary>
     API_PROPERTY(Attributes="Serialize, HideInEditor")
-    FORCE_INLINE Float2 UIXControl::GetAnchorMin() const
+    FORCE_INLINE Float2 GetAnchorMin() const
     {
         return _anchorMin;
     }
@@ -913,7 +910,7 @@ public:
     /// Gets the normalized position in the parent control that the bottom right corner is anchored to (range 0-1).
     /// </summary>
     API_PROPERTY(Attributes="Serialize, HideInEditor")
-    FORCE_INLINE Float2 UIXControl::GetAnchorMax() const
+    FORCE_INLINE Float2 GetAnchorMax() const
     {
         return _anchorMax;
     }
