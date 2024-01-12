@@ -1,283 +1,298 @@
 #pragma once
 
-class UIXStyle
+#include "Engine/Scripting/Script.h"
+#include "UIXFontReference.h"
+#include "Engine/Core/Math/Color.h"
+#include "Engine/Render2D/SpriteAtlas.h"
+
+class Font;
+class UIXTooltip;
+
+API_CLASS() class UIXCPP_API UIXStyle
 {
-
-};
-
-/*
-/// <summary>
-    /// Describes GUI controls style (which fonts and colors use etc.). Defines the default values used by the GUI control.s
+public:
+    /// <summary>
+    /// Style for the Statusbar
     /// </summary>
-    public class Style
+    API_FIELD(Attributes = "System.Serializable, ShowInEditor")
+    struct StatusbarStyle
     {
         /// <summary>
-        /// Global GUI style used by all the controls.
+        /// Color of the Statusbar when in Play Mode
         /// </summary>
-        public static Style Current { get; set; }
-
-        [Serialize]
-        private FontReference _fontTitle;
+        API_PROPERTY()
+        Color PlayMode;
 
         /// <summary>
-        /// The font title.
+        /// Color of the Statusbar when in loading state (e.g. when importing assets)
         /// </summary>
-        [NoSerialize]
-        [EditorOrder(10)]
-        public Font FontTitle
-        {
-            get => _fontTitle?.GetFont();
-            set => _fontTitle = new FontReference(value);
-        }
-
-        [Serialize]
-        private FontReference _fontLarge;
+        API_PROPERTY()
+        Color Loading;
 
         /// <summary>
-        /// The font large.
+        /// Color of the Statusbar in its failed state (e.g. with compilation errors)
         /// </summary>
-        [NoSerialize]
-        [EditorOrder(20)]
-        public Font FontLarge
-        {
-            get => _fontLarge?.GetFont();
-            set => _fontLarge = new FontReference(value);
-        }
+        API_PROPERTY()
+        Color Failed;
+    };
 
-        [Serialize]
-        private FontReference _fontMedium;
+    /// <summary>
+    /// Global GUI style used by all the controls.
+    /// </summary>
+    API_PROPERTY()
+    static const UIXStyle* GetCurrent() { return _current;  }
 
-        /// <summary>
-        /// The font medium.
-        /// </summary>
-        [NoSerialize]
-        [EditorOrder(30)]
-        public Font FontMedium
-        {
-            get => _fontMedium?.GetFont();
-            set => _fontMedium = new FontReference(value);
-        }
+    /// <summary>
+    /// Global GUI style used by all the controls.
+    /// </summary>
+    API_PROPERTY()
+    static void SetCurrent(const UIXStyle &value);
 
-        [Serialize]
-        private FontReference _fontSmall;
+    /// <summary>
+    /// Gets the title font.
+    /// </summary>
+    API_PROPERTY(Attributes="NoSerialize, EditorOrder(10)")
+    Font* GetFontTitle() const;
+    /// <summary>
+    /// Sets the title font.
+    /// </summary>
+    API_PROPERTY()
+    void SetFontTitle(Font *value);
 
-        /// <summary>
-        /// The font small.
-        /// </summary>
-        [NoSerialize]
-        [EditorOrder(40)]
-        public Font FontSmall
-        {
-            get => _fontSmall?.GetFont();
-            set => _fontSmall = new FontReference(value);
-        }
+    /// <summary>
+    /// Gets the large font.
+    /// </summary>
+    API_PROPERTY(Attributes = "NoSerialize, EditorOrder(20)")
+    Font* GetFontLarge() const;
+    /// <summary>
+    /// Sets the large font.
+    /// </summary>
+    API_PROPERTY()
+    void SetFontLarge(Font *value);
 
-        /// <summary>
-        /// The background color.
-        /// </summary>
-        [EditorOrder(60)]
-        public Color Background;
+    /// <summary>
+    /// Gets the medium font.
+    /// </summary>
+    API_PROPERTY(Attributes = "NoSerialize, EditorOrder(30)")
+    Font* GetFontMedium() const;
+    /// <summary>
+    /// Sets the medium font.
+    /// </summary>
+    API_PROPERTY()
+    void SetFontMedium(Font *value);
 
-        /// <summary>
-        /// The light background color.
-        /// </summary>
-        [EditorOrder(70)]
-        public Color LightBackground;
+    /// <summary>
+    /// Gets the small font.
+    /// </summary>
+    API_PROPERTY(Attributes = "NoSerialize, EditorOrder(40)")
+    Font* GetFontSmall() const;
+    /// <summary>
+    /// Sets the small font.
+    /// </summary>
+    API_PROPERTY()
+    void SetFontSmall(Font *value);
 
-        /// <summary>
-        /// The drag window color.
-        /// </summary>
-        [EditorOrder(80)]
-        public Color DragWindow;
+    /// <summary>
+    /// The background color.
+    /// </summary>
+    API_FIELD(Attributes="EditorOrder(60)")
+    Color Background;
 
-        /// <summary>
-        /// The foreground color.
-        /// </summary>
-        [EditorOrder(90)]
-        public Color Foreground;
+    /// <summary>
+    /// The light background color.
+    /// </summary>
+    API_FIELD(Attributes="EditorOrder(70)")
+    Color LightBackground;
 
-        /// <summary>
-        /// The foreground grey.
-        /// </summary>
-        [EditorOrder(100)]
-        public Color ForegroundGrey;
+    /// <summary>
+    /// The drag window color.
+    /// </summary>
+    API_FIELD(Attributes="EditorOrder(80)")
+    Color DragWindow;
 
-        /// <summary>
-        /// The foreground disabled.
-        /// </summary>
-        [EditorOrder(110)]
-        public Color ForegroundDisabled;
+    /// <summary>
+    /// The foreground color.
+    /// </summary>
+    API_FIELD(Attributes="EditorOrder(90)")
+    Color Foreground;
 
-        /// <summary>
-        /// The foreground color in viewports (usually have a dark background)
-        /// </summary>
-        [EditorOrder(115)]
-        public Color ForegroundViewport;
+    /// <summary>
+    /// The foreground grey.
+    /// </summary>
+    API_FIELD(Attributes="EditorOrder(100)")
+    Color ForegroundGrey;
 
-        /// <summary>
-        /// The background highlighted color.
-        /// </summary>
-        [EditorOrder(120)]
-        public Color BackgroundHighlighted;
+    /// <summary>
+    /// The foreground disabled.
+    /// </summary>
+    API_FIELD(Attributes="EditorOrder(110)")
+    Color ForegroundDisabled;
 
-        /// <summary>
-        /// The border highlighted color.
-        /// </summary>
-        [EditorOrder(130)]
-        public Color BorderHighlighted;
+    /// <summary>
+    /// The foreground color in viewports (usually have a dark background)
+    /// </summary>
+    API_FIELD(Attributes="EditorOrder(115)")
+    Color ForegroundViewport;
 
-        /// <summary>
-        /// The background selected color.
-        /// </summary>
-        [EditorOrder(140)]
-        public Color BackgroundSelected;
+    /// <summary>
+    /// The background highlighted color.
+    /// </summary>
+    API_FIELD(Attributes="EditorOrder(120)")
+    Color BackgroundHighlighted;
 
-        /// <summary>
-        /// The border selected color.
-        /// </summary>
-        [EditorOrder(150)]
-        public Color BorderSelected;
+    /// <summary>
+    /// The border highlighted color.
+    /// </summary>
+    API_FIELD(Attributes="EditorOrder(130)")
+    Color BorderHighlighted;
 
-        /// <summary>
-        /// The background normal color.
-        /// </summary>
-        [EditorOrder(160)]
-        public Color BackgroundNormal;
+    /// <summary>
+    /// The background selected color.
+    /// </summary>
+    API_FIELD(Attributes="EditorOrder(140)")
+    Color BackgroundSelected;
 
-        /// <summary>
-        /// The border normal color.
-        /// </summary>
-        [EditorOrder(170)]
-        public Color BorderNormal;
+    /// <summary>
+    /// The border selected color.
+    /// </summary>
+    API_FIELD(Attributes="EditorOrder(150)")
+    Color BorderSelected;
 
-        /// <summary>
-        /// The text box background color.
-        /// </summary>
-        [EditorOrder(180)]
-        public Color TextBoxBackground;
+    /// <summary>
+    /// The background normal color.
+    /// </summary>
+    API_FIELD(Attributes="EditorOrder(160)")
+    Color BackgroundNormal;
 
-        /// <summary>
-        /// The text box background selected color.
-        /// </summary>
-        [EditorOrder(190)]
-        public Color TextBoxBackgroundSelected;
+    /// <summary>
+    /// The border normal color.
+    /// </summary>
+    API_FIELD(Attributes="EditorOrder(170)")
+    Color BorderNormal;
 
-        /// <summary>
-        /// The collection background color.
-        /// </summary>
-        [EditorOrder(195)]
-        public Color CollectionBackgroundColor;
+    /// <summary>
+    /// The text box background color.
+    /// </summary>
+    API_FIELD(Attributes="EditorOrder(180)")
+    Color TextBoxBackground;
 
-        /// <summary>
-        /// The progress normal color.
-        /// </summary>
-        [EditorOrder(200)]
-        public Color ProgressNormal;
+    /// <summary>
+    /// The text box background selected color.
+    /// </summary>
+    API_FIELD(Attributes="EditorOrder(190)")
+    Color TextBoxBackgroundSelected;
 
-        /// <summary>
-        /// The status bar style
-        /// </summary>
-        [EditorOrder(210)]
-        public StatusbarStyle Statusbar;
+    /// <summary>
+    /// The collection background color.
+    /// </summary>
+    API_FIELD(Attributes="EditorOrder(195)")
+    Color CollectionBackgroundColor;
 
-        /// <summary>
-        /// The arrow right icon.
-        /// </summary>
-        [EditorOrder(220)]
-        public SpriteHandle ArrowRight;
+    /// <summary>
+    /// The progress normal color.
+    /// </summary>
+    API_FIELD(Attributes="EditorOrder(200)")
+    Color ProgressNormal;
 
-        /// <summary>
-        /// The arrow down icon.
-        /// </summary>
-        [EditorOrder(230)]
-        public SpriteHandle ArrowDown;
 
-        /// <summary>
-        /// The search icon.
-        /// </summary>
-        [EditorOrder(240)]
-        public SpriteHandle Search;
+    /// <summary>
+    /// The status bar style
+    /// </summary>
+    API_FIELD(Attributes = "EditorOrder(210)")
+    StatusbarStyle Statusbar;
 
-        /// <summary>
-        /// The settings icon.
-        /// </summary>
-        [EditorOrder(250)]
-        public SpriteHandle Settings;
+    /// <summary>
+    /// The arrow right icon.
+    /// </summary>
+    API_FIELD(Attributes = "EditorOrder(220)")
+    SpriteHandle ArrowRight;
 
-        /// <summary>
-        /// The cross icon.
-        /// </summary>
-        [EditorOrder(260)]
-        public SpriteHandle Cross;
+    /// <summary>
+    /// The arrow down icon.
+    /// </summary>
+    API_FIELD(Attributes = "EditorOrder(230)")
+    SpriteHandle ArrowDown;
 
-        /// <summary>
-        /// The CheckBox intermediate icon.
-        /// </summary>
-        [EditorOrder(270)]
-        public SpriteHandle CheckBoxIntermediate;
+    /// <summary>
+    /// The search icon.
+    /// </summary>
+    API_FIELD(Attributes = "EditorOrder(240)")
+    SpriteHandle Search;
 
-        /// <summary>
-        /// The CheckBox tick icon.
-        /// </summary>
-        [EditorOrder(280)]
-        public SpriteHandle CheckBoxTick;
+    /// <summary>
+    /// The settings icon.
+    /// </summary>
+    API_FIELD(Attributes = "EditorOrder(250)")
+    SpriteHandle Settings;
 
-        /// <summary>
-        /// The status bar size grip icon.
-        /// </summary>
-        [EditorOrder(290)]
-        public SpriteHandle StatusBarSizeGrip;
+    /// <summary>
+    /// The cross icon.
+    /// </summary>
+    API_FIELD(Attributes = "EditorOrder(260)")
+    SpriteHandle Cross;
 
-        /// <summary>
-        /// The translate icon.
-        /// </summary>
-        [EditorOrder(300)]
-        public SpriteHandle Translate;
+    /// <summary>
+    /// The CheckBox intermediate icon.
+    /// </summary>
+    API_FIELD(Attributes = "EditorOrder(270)")
+    SpriteHandle CheckBoxIntermediate;
 
-        /// <summary>
-        /// The rotate icon.
-        /// </summary>
-        [EditorOrder(310)]
-        public SpriteHandle Rotate;
+    /// <summary>
+    /// The CheckBox tick icon.
+    /// </summary>
+    API_FIELD(Attributes = "EditorOrder(280)")
+    SpriteHandle CheckBoxTick;
 
-        /// <summary>
-        /// The scale icon.
-        /// </summary>
-        [EditorOrder(320)]
-        public SpriteHandle Scale;
+    /// <summary>
+    /// The status bar size grip icon.
+    /// </summary>
+    API_FIELD(Attributes = "EditorOrder(290)")
+    SpriteHandle StatusBarSizeGrip;
 
-        /// <summary>
-        /// The scalar icon.
-        /// </summary>
-        [EditorOrder(330)]
-        public SpriteHandle Scalar;
+    /// <summary>
+    /// The translate icon.
+    /// </summary>
+    API_FIELD(Attributes = "EditorOrder(300)")
+    SpriteHandle Translate;
 
-        /// <summary>
-        /// The shared tooltip control used by the controls if no custom tooltip is provided.
-        /// </summary>
-        [EditorOrder(340)]
-        public Tooltip SharedTooltip;
+    /// <summary>
+    /// The rotate icon.
+    /// </summary>
+    API_FIELD(Attributes = "EditorOrder(310)")
+    SpriteHandle Rotate;
 
-        /// <summary>
-        /// Style for the Statusbar
-        /// </summary>
-        [System.Serializable, ShowInEditor]
-        public struct StatusbarStyle
-        {
-            /// <summary>
-            /// Color of the Statusbar when in Play Mode
-            /// </summary>
-            public Color PlayMode;
+    /// <summary>
+    /// The scale icon.
+    /// </summary>
+    API_FIELD(Attributes = "EditorOrder(320)")
+    SpriteHandle Scale;
 
-            /// <summary>
-            /// Color of the Statusbar when in loading state (e.g. when importing assets)
-            /// </summary>
-            public Color Loading;
+    /// <summary>
+    /// The scalar icon.
+    /// </summary>
+    API_FIELD(Attributes = "EditorOrder(330)")
+    SpriteHandle Scalar;
 
-            /// <summary>
-            /// Color of the Statusbar in its failed state (e.g. with compilation errors)
-            /// </summary>
-            public Color Failed;
-        }
-    } 
-*/ 
+    /// <summary>
+    /// The shared tooltip control used by the controls if no custom tooltip is provided.
+    /// </summary>
+    API_FIELD(Attributes = "EditorOrder(340)")
+    UIXTooltip* SharedTooltip;
+
+private:
+    static UIXStyle *_current;
+
+    API_FIELD(Attributes="Serialize")
+    UIXFontReference _fontTitle;
+
+    API_FIELD(Attributes = "Serialize")
+    UIXFontReference _fontLarge;
+
+    API_FIELD(Attributes = "Serialize")
+    UIXFontReference _fontMedium;
+
+    API_FIELD(Attributes = "Serialize")
+    UIXFontReference _fontSmall;
+};
+
+

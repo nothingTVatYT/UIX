@@ -1,4 +1,5 @@
 ﻿#include "UIXContainerControl.h"
+#include "UIXWindowRootControl.h"
 #include "Engine/Core/Collections/Sorting.h"
 #include "Engine/Render2D/Render2D.h"
 
@@ -911,7 +912,7 @@ void UIXContainerControl::OnKeyUp(KeyboardKeys key)
     }
 }
 
-DragDropEffect UIXContainerControl::OnDragEnter(API_PARAM(Ref) Float2 &location, DragData *data)
+DragDropEffect UIXContainerControl::OnDragEnter(API_PARAM(Ref) Float2 &location, const DragData &data)
 {
     // Base
     DragDropEffect result = UIXControl::OnDragEnter(location, data);
@@ -936,7 +937,7 @@ DragDropEffect UIXContainerControl::OnDragEnter(API_PARAM(Ref) Float2 &location,
     return result;
 }
 
-DragDropEffect UIXContainerControl::OnDragMove(API_PARAM(Ref) Float2 &location, DragData *data)
+DragDropEffect UIXContainerControl::OnDragMove(API_PARAM(Ref) Float2 &location, const DragData &data)
 {
     // Base
     DragDropEffect result = UIXControl::OnDragMove(location, data);
@@ -993,7 +994,7 @@ void UIXContainerControl::OnDragLeave()
     }
 }
 
-DragDropEffect UIXContainerControl::OnDragDrop(API_PARAM(Ref) Float2 &location, DragData *data)
+DragDropEffect UIXContainerControl::OnDragDrop(API_PARAM(Ref) Float2 &location, const DragData &data)
 {
     // Base
     DragDropEffect result = UIXControl::OnDragDrop(location, data);

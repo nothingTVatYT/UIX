@@ -4,7 +4,9 @@
 #include "UIXStyle.h"
 #include "Engine/Input/Input.h"
 #include "Engine/Render2D/Render2D.h"
+#include "Engine/Render2D/Font.h"
 #include "Engine/Render2D/TextLayoutOptions.h"
+#include <algorithm>
 
 UIXTooltip::UIXTooltip() : UIXContainerControl(0, 0, 300, 24), _timeToShow(0.3f), _maxWidth(500.0f), _timeToPopupLeft(0.0f)
 {
@@ -184,21 +186,24 @@ void UIXTooltip::Update(float deltaTime)
 
 void UIXTooltip::Draw()
 {
-    const UIXStyle &style = UIXStyle::GetCurrent();
+    const UIXStyle *style = UIXStyle::GetCurrent();
 
     // Background
-    Render2D::FillRectangle(new Rectangle(Float2::Zero, GetSize()), Color::Lerp(style.BackgroundSelected, style.Background, 0.6f));
-    Render2D::FillRectangle(new Rectangle(1.1f, 1.1f, GetWidth() - 2, GetHeight() - 2), style.Background);
+    Render2D::FillRectangle(Rectangle(Float2::Zero, GetSize()), Color::Lerp(style->BackgroundSelected, style->Background, 0.6f));
+    Render2D::FillRectangle(Rectangle(1.1f, 1.1f, GetWidth() - 2, GetHeight() - 2), style->Background);
 
     // Tooltip text
+    TextLayoutOptions layout;
+    layout.HorizontalAlignment = TextAlignment::Center;
+    layout.VerticalAlignment = TextAlignment::Center;
+    layout.TextWrapping = TextWrapping::WrapWords;
+    layout.Bounds = GetClientArea();
+
     Render2D::DrawText(
-        style.FontMedium,
+        style->GetFontMedium(),
         _currentText,
-        GetClientArea(),
-        style.Foreground,
-        TextAlignment::Center,
-        TextAlignment::Center,
-        TextWrapping::WrapWords
+        style->Foreground,
+        layout
     );
 }
 
@@ -208,27 +213,27 @@ void UIXTooltip::PerformLayoutBeforeChildren()
     UIXContainerControl::PerformLayoutBeforeChildren();
 
     Float2 prevSize = GetSize();
-    const UIXStyle &style = UIXStyle.Current;
+    const UIXStyle *style = UIXStyle::GetCurrent();
 
     // Calculate size of the tooltip
     Float2 size = Float2::Zero;
-    if (style != nullptr && style.FontMedium && !_currentText.IsEmpty())
+    if (style != nullptr && style->GetFontMedium() && !_currentText.IsEmpty())
     {
-        TextLayoutOptions layout = TextLayoutOptions::Default;
-        layout.Bounds = new Rectangle(0, 0, _maxWidth, 10000000);
+        TextLayoutOptions layout = TextLayoutOptions();
+        layout.Bounds = Rectangle(0, 0, _maxWidth, 10000000);
         layout.HorizontalAlignment = TextAlignment::Center;
         layout.VerticalAlignment = TextAlignment::Center;
         layout.TextWrapping = TextWrapping::WrapWords;
-        var items = style.FontMedium.ProcessText(_currentText, ref layout);
-        for (int i = 0; i < items.Length; i++)
+        Array<FontLineCache> items = style->GetFontMedium()->ProcessText(_currentText, layout);
+        for (int i = 0; i < items.Count(); i++)
         {
-            ref var item = ref items[i];
-            size.X = std::max(size.X, item.GetSize().X + 8.0f);
-            size.Y += item.GetSize().Y;
+            FontLineCache &item = items[i];
+            size.X = std::max(size.X, item.Size.X + 8.0f);
+            size.Y += item.Size.Y;
         }
-        //size.X += style.FontMedium.MeasureText(_currentText).X;
+        //size.X += style->FontMedium.MeasureText(_currentText).X;
     }
-    GetSize() = size + new Float2(24.0f);
+    GetSize() = size + Float2(24.0f);
 
     // Check if is visible size get changed
     if (GetVisible() && prevSize != GetSize())

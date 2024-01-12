@@ -376,11 +376,11 @@ public:
 
     /// <inheritdoc />
     API_FUNCTION()
-    DragDropEffect OnDragEnter(API_PARAM(Ref) Float2 &location, DragData *data) override;
+    DragDropEffect OnDragEnter(API_PARAM(Ref) Float2 &location, const DragData &data) override;
 
     /// <inheritdoc />
     API_FUNCTION()
-    DragDropEffect OnDragMove(API_PARAM(Ref) Float2 &location, DragData *data) override;
+    DragDropEffect OnDragMove(API_PARAM(Ref) Float2 &location, const DragData &data) override;
 
     /// <inheritdoc />
     API_FUNCTION()
@@ -388,7 +388,7 @@ public:
 
     /// <inheritdoc />
     API_FUNCTION()
-    DragDropEffect OnDragDrop(API_PARAM(Ref) Float2 &location, DragData *data) override;
+    DragDropEffect OnDragDrop(API_PARAM(Ref) Float2 &location, const DragData &data) override;
 
 
 protected:

@@ -1,6 +1,6 @@
 ﻿using FlaxEngine.GUI;
 
-namespace UICpp
+namespace UIXCpp
 {
     partial class UIXContainerControl
     {

@@ -171,7 +171,7 @@ public:
     API_FUNCTION() void Focus() override;
 
     /// <inheritdoc />
-    API_FUNCTION() void DoDragDrop(DragData *data) override;
+    API_FUNCTION() void DoDragDrop(const DragData &data) override;
 
     /// <inheritdoc />
     API_FUNCTION() bool OnMouseDown(Float2 location, MouseButton button) override;

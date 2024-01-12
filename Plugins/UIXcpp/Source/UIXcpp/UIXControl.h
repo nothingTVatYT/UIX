@@ -183,6 +183,9 @@ public:
     API_PROPERTY()
     void SetVisible(bool value);
 
+    /// <summary>
+    /// Gets a value indicating whether the control is visible in the hierarchy (it's visible and all it's parents are visible as well).
+    /// </summary>
     API_PROPERTY()
     bool GetVisibleInHierarchy() const;
 
@@ -577,7 +580,7 @@ public:
     /// <param name="data">The data. See <see cref="DragDataText"/> and <see cref="DragDataFiles"/>.</param>
     /// <returns>The drag event result effect.</returns>
     API_FUNCTION(Attributes="NoAnimate")
-    virtual DragDropEffect OnDragEnter(API_PARAM(Ref) Float2 &location, DragData *data)
+    virtual DragDropEffect OnDragEnter(API_PARAM(Ref) Float2 &location, const DragData &data)
     {
         // Set flag
         _isDragOver = true;
@@ -591,7 +594,7 @@ public:
     /// <param name="data">The data. See <see cref="DragDataText"/> and <see cref="DragDataFiles"/>.</param>
     /// <returns>The drag event result effect.</returns>
     API_FUNCTION(Attributes="NoAnimate")
-    virtual DragDropEffect OnDragMove(API_PARAM(Ref) Float2 &location, DragData *data)
+    virtual DragDropEffect OnDragMove(API_PARAM(Ref) Float2 &location, const DragData &data)
     {
         return DragDropEffect::None;
     }
@@ -603,7 +606,7 @@ public:
     /// <param name="data">The data. See <see cref="DragDataText"/> and <see cref="DragDataFiles"/>.</param>
     /// <returns>The drag event result effect.</returns>
     API_FUNCTION(Attributes="NoAnimate")
-    virtual DragDropEffect OnDragDrop(API_PARAM(Ref) Float2 &location, DragData *data)
+    virtual DragDropEffect OnDragDrop(API_PARAM(Ref) Float2 &location, const DragData &data)
     {
         // Clear flag
         _isDragOver = false;
@@ -625,7 +628,7 @@ public:
     /// </summary>
     /// <param name="data">The data.</param>
     API_FUNCTION(Attributes="NoAnimate")
-    virtual void DoDragDrop(DragData *data);
+    virtual void DoDragDrop(const DragData &data);
 
     /// <summary>
     /// Gets the tooltip text.

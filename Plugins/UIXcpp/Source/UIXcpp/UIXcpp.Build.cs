@@ -1,7 +1,7 @@
 using Flax.Build;
 using Flax.Build.NativeCpp;
 
-public class UIXcpp : GameModule
+public class UIXCpp : GameModule
 {
     /// <inheritdoc />
     public override void Setup(BuildOptions options)

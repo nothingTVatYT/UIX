@@ -6,6 +6,7 @@
 #include "Engine/Render2D/Render2D.h"
 #include "Engine/Core/Log.h"
 
+
 UIXControl::UIXControl()
 {
     _bounds = Rectangle(_offsets.Left, _offsets.Top, _offsets.Right, _offsets.Bottom);
@@ -223,8 +224,7 @@ Float2 UIXControl::GetScreenPos() const
     const UIXRootControl *parentWin = _root;
     if (parentWin == nullptr)
     {
-        // TODO: Exception? Log may be better.
-        LOG(Error, "ArgumentNullException: Parent Window is null!");
+        LOG(Error, "ArgumentNullException: Parent window is null!");
         return Float2::Zero;
     }
 
@@ -514,7 +514,7 @@ bool UIXControl::OnMouseDoubleClick(Float2 location, MouseButton button)
 }
 
 
-void UIXControl::DoDragDrop(DragData *data)
+void UIXControl::DoDragDrop(const DragData &data)
 {
     // Hide tooltip
     auto tt = GetTooltip();
@@ -765,6 +765,7 @@ void UIXControl::RemoveUpdateCallbacks(UIXRootControl *root)
 
 void UIXControl::SetUpdate(API_PARAM(ref) UpdateDelegate &onUpdate, const UpdateDelegate &value)
 {
+// TODO: if it's possible, change this to a check in contents?
     if (&onUpdate == &value)
         return;
     if (_root != nullptr && onUpdate.IsBinded())
