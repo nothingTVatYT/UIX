@@ -46,7 +46,7 @@ public:
     /// Sets the position of the mouse in the window space coordinates.
     /// </summary>
     API_PROPERTY()
-    virtual void SetMousePosition(const Float2 &value) = 0;
+    virtual void SetMousePosition(Float2 value) = 0;
 
     /// <summary>
     /// The update callbacks collection. Controls can register for this to get the update event for logic handling.

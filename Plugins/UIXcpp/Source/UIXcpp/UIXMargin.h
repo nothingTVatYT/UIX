@@ -7,8 +7,11 @@
 
 
 
-struct UIXMargin
+API_CLASS(NoSpawn) class UIXCPP_API UIXMargin : public ScriptingObject
 {
+public:
+    DECLARE_SCRIPTING_TYPE_NO_SPAWN(UIXMargin)
+
     static const int SizeInBytes;
     static const UIXMargin Zero;
     
@@ -52,16 +55,16 @@ struct UIXMargin
     /// </summary>
     API_PROPERTY() float GetHeight() const { return Top + Bottom; }
 
-    UIXMargin() : UIXMargin(0.0f) {}
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UIXMargin"/> struct.
+    /// </summary>
+    UIXMargin();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="UIXMargin"/> struct.
     /// </summary>
     /// <param name="value">The value.</param>
-    UIXMargin(float value) : Left(value), Right(value), Top(value), Bottom(value)
-    {
-    }
-
+    UIXMargin(float value);
 
     /// <summary>
     /// Initializes a new instance of the <see cref="UIXMargin"/> struct.
@@ -70,9 +73,13 @@ struct UIXMargin
     /// <param name="right">The right.</param>
     /// <param name="top">The top.</param>
     /// <param name="bottom">The bottom.</param>
-    UIXMargin(float left, float right, float top, float bottom) : Left(left), Right(right), Top(top), Bottom(bottom)
-    {
-    }
+    UIXMargin(float left, float right, float top, float bottom);
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UIXMargin"/> struct.
+    /// </summary>
+    /// <param name="other">The copied object.</param>
+    UIXMargin(const UIXMargin &other);
 
     /// <summary>
     /// Gets a value indicting whether this margin is zero.
@@ -97,7 +104,7 @@ struct UIXMargin
     /// <param name="left">The first margins to add.</param>
     /// <param name="right">The second margins to add.</param>
     /// <returns>The sum of the two margins.</returns>
-    API_FUNCTION() UIXMargin operator+(const UIXMargin &right) const
+    /*API_FUNCTION()*/ UIXMargin operator+(const UIXMargin &right) const
     {
         return UIXMargin(Left + right.Left, Right + right.Right, Top + right.Top, Bottom + right.Bottom);
     }
@@ -108,7 +115,7 @@ struct UIXMargin
     /// <param name="left">The first margins to subtract from.</param>
     /// <param name="right">The second margins to subtract.</param>
     /// <returns>The result of subtraction of the two margins.</returns>
-    API_FUNCTION() UIXMargin operator+(const UIXMargin &right) const
+    /*API_FUNCTION()*/ UIXMargin operator-(const UIXMargin &right) const
     {
         return UIXMargin(Left - right.Left, Right - right.Right, Top - right.Top, Bottom - right.Bottom);
     }
@@ -119,9 +126,9 @@ struct UIXMargin
     /// <param name="left">The first value to compare.</param>
     /// <param name="right">The second value to compare.</param>
     /// <returns><c>true</c> if <paramref name="left" /> has the same value as <paramref name="right" />; otherwise, <c>false</c>.</returns>
-    /*API_FUNCTION()*/ static FORCE_INLINE bool operator==(const UIXMargin &left, const UIXMargin &right)
+    /*API_FUNCTION()*/ FORCE_INLINE bool operator==(const UIXMargin &right)
     {
-        return left.Equals(right);
+        return Equals(right);
     }
 
     /// <summary>
@@ -130,9 +137,9 @@ struct UIXMargin
     /// <param name="left">The first value to compare.</param>
     /// <param name="right">The second value to compare.</param>
     /// <returns><c>true</c> if <paramref name="left" /> has a different value than <paramref name="right" />; otherwise, <c>false</c>.</returns>
-    /*API_FUNCTION()*/ static FORCE_INLINE  bool operator !=(const UIXMargin &left, const UIXMargin &right)
+    /*API_FUNCTION()*/ FORCE_INLINE  bool operator !=(const UIXMargin &right)
     {
-        return !left.Equals(right);
+        return !Equals(right);
     }
 
     /// <summary>
@@ -171,11 +178,11 @@ struct UIXMargin
     }
 
     /// <summary>
-            /// Determines whether the specified <see cref="UIXMargin" /> is equal to this instance.
-            /// </summary>
-            /// <param name="other">The <see cref="UIXMargin" /> to compare with this instance.</param>
-            /// <returns><c>true</c> if the specified <see cref="UIXMargin" /> is equal to this instance; otherwise, <c>false</c>.</returns>
-    API_FUNCTION() bool Equals(API_PARAM(Ref) const UIXMargin &other) const
+    /// Determines whether the specified <see cref="UIXMargin" /> is equal to this instance.
+    /// </summary>
+    /// <param name="other">The <see cref="UIXMargin" /> to compare with this instance.</param>
+    /// <returns><c>true</c> if the specified <see cref="UIXMargin" /> is equal to this instance; otherwise, <c>false</c>.</returns>
+    API_FUNCTION() bool Equals(const UIXMargin &other) const
     {
         return Math::NearEqual(other.Left, Left) &&
             Math::NearEqual(other.Right, Right) &&
@@ -186,20 +193,20 @@ struct UIXMargin
     /// <summary>
     /// Determines whether the specified <see cref="UIXMargin"/> are equal.
     /// </summary>
-    API_FUNCTION() static FORCE_INLINE bool Equals(API_PARAM(Ref) const UIXMargin &a, API_PARAM(Ref) const UIXMargin &b)
+    API_FUNCTION() static bool Equals(const UIXMargin &a, const UIXMargin &b)
     {
         return a.Equals(b);
     }
 
-    /// <summary>
-    /// Determines whether the specified <see cref="UIXMargin" /> is equal to this instance.
-    /// </summary>
-    /// <param name="other">The <see cref="UIXMargin" /> to compare with this instance.</param>
-    /// <returns><c>true</c> if the specified <see cref="UIXMargin" /> is equal to this instance; otherwise, <c>false</c>.</returns>
-    API_FUNCTION() bool FORCE_INLINE Equals(const UIXMargin&other) const
-    {
-        return Equals(other);
-    }
+    ///// <summary>
+    ///// Determines whether the specified <see cref="UIXMargin" /> is equal to this instance.
+    ///// </summary>
+    ///// <param name="other">The <see cref="UIXMargin" /> to compare with this instance.</param>
+    ///// <returns><c>true</c> if the specified <see cref="UIXMargin" /> is equal to this instance; otherwise, <c>false</c>.</returns>
+    //API_FUNCTION() bool Equals(const UIXMargin &other) const
+    //{
+    //    return Equals(other);
+    //}
 
     // TODO: Fix if this is not automatically generated and needed in C#
     ///// <summary>

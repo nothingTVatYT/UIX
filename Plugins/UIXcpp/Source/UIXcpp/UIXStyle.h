@@ -14,25 +14,24 @@ public:
     /// <summary>
     /// Style for the Statusbar
     /// </summary>
-    API_FIELD(Attributes = "System.Serializable, ShowInEditor")
-    struct StatusbarStyle
+    API_STRUCT(Attributes = "System.Serializable, ShowInEditor") struct StatusbarStyle
     {
         /// <summary>
         /// Color of the Statusbar when in Play Mode
         /// </summary>
-        API_PROPERTY()
+        API_FIELD()
         Color PlayMode;
 
         /// <summary>
         /// Color of the Statusbar when in loading state (e.g. when importing assets)
         /// </summary>
-        API_PROPERTY()
+        API_FIELD()
         Color Loading;
 
         /// <summary>
         /// Color of the Statusbar in its failed state (e.g. with compilation errors)
         /// </summary>
-        API_PROPERTY()
+        API_FIELD()
         Color Failed;
     };
 
@@ -46,7 +45,7 @@ public:
     /// Global GUI style used by all the controls.
     /// </summary>
     API_PROPERTY()
-    static void SetCurrent(const UIXStyle &value);
+    static void SetCurrent(const UIXStyle *value);
 
     /// <summary>
     /// Gets the title font.

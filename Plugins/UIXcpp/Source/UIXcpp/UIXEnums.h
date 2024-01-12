@@ -93,7 +93,7 @@ API_ENUM() enum class UIXAnchorPresets
 /// <summary>
 /// Specifies which scroll bars will be visible on a control
 /// </summary>
-API_ENUM(Flags) enum class UIXScrollBars
+API_ENUM(Attributes="Flags") enum class UIXScrollBars
 {
     /// <summary>
     /// Don't use scroll bars.

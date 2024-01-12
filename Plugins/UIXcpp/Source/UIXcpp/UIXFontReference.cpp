@@ -8,21 +8,12 @@ UIXFontReference::UIXFontReference()
     _size = 30;
 }
 
-/// <summary>
-/// Initializes a new instance of the <see cref="FontReference"/> struct.
-/// </summary>
-/// <param name="font">The font.</param>
-/// <param name="size">The font size.</param>
 UIXFontReference::UIXFontReference(AssetReference<FontAsset> font, float size)
 {
     _font = font;
     _size = size;
 }
 
-/// <summary>
-/// Initializes a new instance of the <see cref="FontReference"/> struct.
-/// </summary>
-/// <param name="other">The other font reference.</param>
 UIXFontReference::UIXFontReference(const UIXFontReference &other)
 {
     _font = other._font;
@@ -30,10 +21,6 @@ UIXFontReference::UIXFontReference(const UIXFontReference &other)
     _cachedFont = other._cachedFont;
 }
 
-/// <summary>
-/// Initializes a new instance of the <see cref="FontReference"/> struct.
-/// </summary>
-/// <param name="font">The font.</param>
 UIXFontReference::UIXFontReference(Font *font)
 {
     if (font != nullptr)
@@ -79,7 +66,7 @@ Font* UIXFontReference::GetFont() const
 
 UIXFontReference UIXFontReference::GetBold() const
 {
-    return UIXFontReference(_font != nullptr ? _font->GetBold() : nullptr, _size);
+    return UIXFontReference( _font != nullptr ? _font->GetBold() : nullptr, _size);
 }
 
 UIXFontReference UIXFontReference::GetItalic() const
@@ -92,9 +79,9 @@ bool UIXFontReference::Equals(const UIXFontReference &other) const
     return _font == other._font && _size == other._size;
 }
 
-bool UIXFontReference::operator==(const UIXFontReference &lhs, const UIXFontReference &rhs)
+bool UIXFontReference::operator==(const UIXFontReference &rhs)
 {
-    return lhs.Equals(rhs);
+    return Equals(rhs);
 }
 
 /// <summary>
@@ -104,9 +91,9 @@ bool UIXFontReference::operator==(const UIXFontReference &lhs, const UIXFontRefe
 /// <param name="rhs">The right.</param>
 /// <returns>True if font references are not equal, otherwise false.</returns>
 API_FUNCTION()
-bool UIXFontReference::operator!=(const UIXFontReference &lhs, const UIXFontReference &rhs)
+bool UIXFontReference::operator!=(const UIXFontReference &rhs)
 {
-    return !lhs.Equals(rhs);
+    return !Equals(rhs);
 }
 
 int UIXFontReference::GetHashCode()
@@ -114,4 +101,9 @@ int UIXFontReference::GetHashCode()
     int hashCode = _font != nullptr ? GetHash(_font) : 0;
     hashCode = (hashCode * 397) ^ GetHash(_size);
     return hashCode;
+}
+
+String UIXFontReference::ToString()
+{
+    return String::Format(TEXT("{0}, size {1}"), _font != nullptr ? _font->ToString() : String::Empty, _size);
 }

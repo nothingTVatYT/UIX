@@ -5,16 +5,16 @@
 #include "Engine/Render2D/FontAsset.h"
 #include "keep_alive.h"
 
-class FontAsset;
 class Font;
 
-API_CLASS() class UIXCPP_API UIXFontReference
+API_CLASS(NoSpawn) class UIXCPP_API UIXFontReference : public ScriptingObject
 {
 public:
+    DECLARE_SCRIPTING_TYPE_NO_SPAWN(UIXFontReference)
 
     /// <summary>
-/// Initializes a new instance of the <see cref="FontReference"/> struct.
-/// </summary>
+    /// Initializes a new instance of the <see cref="FontReference"/> struct.
+    /// </summary>
     UIXFontReference();
 
     /// <summary>
@@ -51,7 +51,7 @@ public:
     /// <summary>
     /// The size of the font characters.
     /// </summary>
-    API_PROPERTY(Attributes = "EditorOrder(10), Limit(1, 500, 0.1f), Tooltip(\"The size of the font characters.\")")
+    API_PROPERTY(Attributes="EditorOrder(10), Limit(1, 500, 0.1f), Tooltip(\"The size of the font characters.\")")
     FORCE_INLINE float GetSize() const { return _size; }
 
     /// <summary>
@@ -95,8 +95,7 @@ public:
     /// <param name="lhs">The left.</param>
     /// <param name="rhs">The right.</param>
     /// <returns>True if font references are equal, otherwise false.</returns>
-    API_FUNCTION()
-    static bool operator ==(const UIXFontReference & lhs, const UIXFontReference & rhs);
+    bool operator ==(const UIXFontReference &rhs);
 
     /// <summary>
     /// Compares two font references.
@@ -104,8 +103,7 @@ public:
     /// <param name="lhs">The left.</param>
     /// <param name="rhs">The right.</param>
     /// <returns>True if font references are not equal, otherwise false.</returns>
-    API_FUNCTION()
-    static bool operator !=(const UIXFontReference & lhs, const UIXFontReference & rhs);
+    bool operator !=(const UIXFontReference &rhs);
 
     // TODO: create a c# object that implements this if needed
     ///// <inheritdoc />
@@ -123,20 +121,17 @@ public:
 
     /// <inheritdoc />
     API_FUNCTION()
-    String ToString()
-    {
-        return String::Format(TEXT("{0}, size {1}"), _font != nullptr ? _font->ToString() : String::Empty, _size);
-    }
+    String ToString();
 
 private:
 
     API_FIELD(Attributes="NoSerialize")
     AssetReference<FontAsset> _font;
 
-    API_FIELD(Attributes = "NoSerialize")
+    API_FIELD(Attributes="NoSerialize")
     float _size;
 
-    API_FIELD(Attributes = "NoSerialize")
+    API_FIELD(Attributes="NoSerialize")
     mutable ShareAlive<Font> _cachedFont;
 };
 

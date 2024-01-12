@@ -134,7 +134,7 @@ public:
    
     /// <inheritdoc />
     API_PROPERTY()
-    void SetMousePosition(const Float2 &value) override;
+    void SetMousePosition(Float2 value) override;
 
 
     /// <inheritdoc />

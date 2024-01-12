@@ -147,7 +147,7 @@ public:
 		RemoveReference();
 	}
 
-	void swap(KeepAlive &other)
+	void swap(ShareAlive &other)
 	{
 		std::swap(obj, other.obj);
 	}

@@ -19,7 +19,7 @@ class UIXTooltip;
 class DragData;
 
 API_CLASS()
-class UIXCPP_API UIXControl : public Object
+class UIXCPP_API UIXControl : public ScriptingObject
 {
 //API_AUTO_SERIALIZATION();
 //DECLARE_SCENE_OBJECT(UIXControl);
@@ -488,7 +488,7 @@ public:
     /// Check if touch is over that item or its child items
     /// </summary>
     API_PROPERTY()
-    virtual bool GetIsTouchOver() const { _touchOvers.Count() != 0; }
+    virtual bool GetIsTouchOver() const { return _touchOvers.Count() != 0; }
 
     /// <summary>
     /// Determines whether the given touch pointer is over the control.

@@ -118,7 +118,7 @@ Float2 UIXWindowRootControl::GetMousePosition() const
     return _window->GetMousePosition() / _window->GetDpiScale();
 }
 
-void UIXWindowRootControl::SetMousePosition(const Float2 &value)
+void UIXWindowRootControl::SetMousePosition(Float2 value)
 {
     _window->SetMousePosition(value * _window->GetDpiScale());
 }
