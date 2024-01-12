@@ -131,7 +131,11 @@ private:
     API_FIELD(Attributes="NoSerialize")
     float _size;
 
-    API_FIELD(Attributes="NoSerialize")
-    mutable ShareAlive<Font> _cachedFont;
+    API_FIELD(Attributes = "NoSerialize")
+        mutable Font *_cachedFont;
+
+    // TODO: check if it is GCed. We can't access the asset, unless we change the engine, so
+    // if this doesn't work, we will need to make a C# side object which keeps the font alive.
+    //mutable ShareAlive<Font> _cachedFont;
 };
 

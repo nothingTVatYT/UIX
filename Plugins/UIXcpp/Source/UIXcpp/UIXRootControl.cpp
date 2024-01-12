@@ -2,7 +2,7 @@
 #include "UIXCanvasContainer.h"
 
 UIXContainerControl *UIXRootControl::_gameRoot = nullptr;
-UIXCanvasContainer *UIXRootControl::_canvasContainer = new UIXCanvasContainer();
+UIXCanvasContainer *UIXRootControl::_canvasContainer = New<UIXCanvasContainer>();
 
 UIXRootControl::UIXRootControl() : UIXContainerControl(0, 0, 100, 60), UpdateCallbacks(1024)
 {
@@ -90,3 +90,13 @@ void UIXRootControl::Update(float deltaTime)
 }
 
 
+/*static*/ void UIXRootControl::SetGameRoot(UIXContainerControl *value)
+{
+    _gameRoot = value;
+    _canvasContainer->SetParent(_gameRoot);
+}
+
+/*static*/ UIXCanvasContainer* UIXRootControl::GetCanvasRoot()
+{
+    return _canvasContainer;
+}

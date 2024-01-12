@@ -57,7 +57,7 @@ void UIXCanvasContainer::DrawChildren()
     }
 }
 
-bool UIXCanvasContainer::IntersectsChildContent(UIXControl *child, const Float2 &location, API_PARAM(Out) Float2 &childSpaceLocation) const
+bool UIXCanvasContainer::IntersectsChildContent(UIXControl *child, Float2 location, API_PARAM(Out) Float2 &childSpaceLocation) const
 {
     childSpaceLocation = Float2::Zero;
     return ((UIXCanvasRootControl*)child).Is2D && UIXContainerControl::IntersectsChildContent(child, location, childSpaceLocation);
@@ -222,7 +222,7 @@ bool UIXCanvasContainer::OnMouseUp(Float2 location, MouseButton button)
         return true;
 
     // Calculate 3D mouse ray
-    UIXCanvas::CalculateRay(ref location, out Ray ray);
+    UIXCanvas::CalculateRay(location, out Ray ray);
 
     // Test 3D
     LayersMask layerMask = MainRenderTask::Instance != nullptr ? MainRenderTask::Instance->View.RenderLayersMask /*ViewLayersMask*/ : LayersMask();

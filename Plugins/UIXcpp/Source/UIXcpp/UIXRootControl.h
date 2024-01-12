@@ -165,16 +165,12 @@ private:
     /// Gets the main GUI control (it can be window or editor overriden control). Use it to plug-in custom GUI controls.
     /// </summary>
     API_PROPERTY()
-    /*internal*/ static void SetGameRoot(UIXContainerControl *value)
-    {
-        _gameRoot = value;
-        _canvasContainer->SetParent(_gameRoot);
-    }
+    /*internal*/ static void SetGameRoot(UIXContainerControl *value);
 
     /// <summary>
     /// Gets the canvas controls root container.
     /// </summary>
-    /*internal*/ static UIXCanvasContainer* GetCanvasRoot() { return _canvasContainer; }
+    /*internal*/ static UIXCanvasContainer* GetCanvasRoot();
 
     static UIXContainerControl *_gameRoot;
     static UIXCanvasContainer *_canvasContainer;

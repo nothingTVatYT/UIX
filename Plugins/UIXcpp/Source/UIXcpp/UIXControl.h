@@ -580,7 +580,7 @@ public:
     /// <param name="data">The data. See <see cref="DragDataText"/> and <see cref="DragDataFiles"/>.</param>
     /// <returns>The drag event result effect.</returns>
     API_FUNCTION(Attributes="NoAnimate")
-    virtual DragDropEffect OnDragEnter(API_PARAM(Ref) Float2 &location, const DragData &data)
+    virtual DragDropEffect OnDragEnter(Float2 location, const DragData &data)
     {
         // Set flag
         _isDragOver = true;
@@ -594,7 +594,7 @@ public:
     /// <param name="data">The data. See <see cref="DragDataText"/> and <see cref="DragDataFiles"/>.</param>
     /// <returns>The drag event result effect.</returns>
     API_FUNCTION(Attributes="NoAnimate")
-    virtual DragDropEffect OnDragMove(API_PARAM(Ref) Float2 &location, const DragData &data)
+    virtual DragDropEffect OnDragMove(Float2 location, const DragData &data)
     {
         return DragDropEffect::None;
     }
@@ -606,7 +606,7 @@ public:
     /// <param name="data">The data. See <see cref="DragDataText"/> and <see cref="DragDataFiles"/>.</param>
     /// <returns>The drag event result effect.</returns>
     API_FUNCTION(Attributes="NoAnimate")
-    virtual DragDropEffect OnDragDrop(API_PARAM(Ref) Float2 &location, const DragData &data)
+    virtual DragDropEffect OnDragDrop(Float2 location, const DragData &data)
     {
         // Clear flag
         _isDragOver = false;
@@ -710,7 +710,7 @@ public:
     /// <param name="location">The location.</param>
     /// <returns>True if tooltip can be still visible, otherwise false.</returns>
     API_FUNCTION()
-    virtual bool OnTestTooltipOverControl(API_PARAM(Ref) Float2 &location);
+    virtual bool OnTestTooltipOverControl(Float2 location);
 
     /// <summary>
      /// Checks if given location point in Parent Space intersects with the control content and calculates local position.
@@ -718,14 +718,14 @@ public:
      /// <param name="locationParent">The location in Parent Space.</param>
      /// <param name="location">The location of intersection in UIXControl Space.</param>
      /// <returns>True if given point in Parent Space intersects with this control content, otherwise false.</returns>
-    API_FUNCTION() virtual bool IntersectsContent(API_PARAM(Ref) const Float2 &locationParent, API_PARAM(Out) Float2 &location) const;
+    API_FUNCTION() virtual bool IntersectsContent(const Float2 locationParent, API_PARAM(Out) Float2 &location) const;
         
     /// <summary>
     /// Checks if control contains given point in local UIXControl Space.
     /// </summary>
     /// <param name="location">Point location in UIXControl Space to check</param>
     /// <returns>True if point is inside control's area, otherwise false.</returns>
-    API_FUNCTION() virtual bool ContainsPoint(API_PARAM(Ref) const Float2 &location) const;
+    API_FUNCTION() virtual bool ContainsPoint(Float2 location) const;
 
     /// <summary>
     /// Converts point in local control's space into one of the parent control coordinates
@@ -740,28 +740,28 @@ public:
     /// </summary>
     /// <param name="location">The input location of the point to convert.</param>
     /// <returns>The converted point location in parent control coordinates.</returns>
-    API_FUNCTION() Float2 PointToParent(const Float2 &location) const;
+    API_FUNCTION() virtual Float2 PointToParent(Float2 location) const;
 
-    /// <summary>
-    /// Converts point in local control's space into parent control coordinates.
-    /// </summary>
-    /// <param name="location">The input location of the point to convert.</param>
-    /// <returns>The converted point location in parent control coordinates.</returns>
-    API_FUNCTION() virtual Float2 PointToParent(API_PARAM(Ref) Float2 &location) const;
-
-    /// <summary>
-    /// Converts point in parent control coordinates into local control's space.
-    /// </summary>
-    /// <param name="locationParent">The input location of the point to convert.</param>
-    /// <returns>The converted point location in control's space.</returns>
-    API_FUNCTION() Float2 PointFromParent(const Float2 &locationParent) const;
+    ///// <summary>
+    ///// Converts point in local control's space into parent control coordinates.
+    ///// </summary>
+    ///// <param name="location">The input location of the point to convert.</param>
+    ///// <returns>The converted point location in parent control coordinates.</returns>
+    //API_FUNCTION() virtual Float2 PointToParent(API_PARAM(Ref) Float2 &location) const;
 
     /// <summary>
     /// Converts point in parent control coordinates into local control's space.
     /// </summary>
     /// <param name="locationParent">The input location of the point to convert.</param>
     /// <returns>The converted point location in control's space.</returns>
-    API_FUNCTION() virtual Float2 PointFromParent(API_PARAM(Ref) Float2 &locationParent) const;
+    API_FUNCTION() virtual Float2 PointFromParent(Float2 locationParent) const;
+
+    ///// <summary>
+    ///// Converts point in parent control coordinates into local control's space.
+    ///// </summary>
+    ///// <param name="locationParent">The input location of the point to convert.</param>
+    ///// <returns>The converted point location in control's space.</returns>
+    //API_FUNCTION() virtual Float2 PointFromParent(API_PARAM(Ref) Float2 &locationParent) const;
 
     /// <summary>
     /// Converts point in one of the parent control coordinates into local control's space.

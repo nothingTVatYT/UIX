@@ -271,7 +271,7 @@ public:
     /// <param name="childSpaceLocation">The output location in child control space.</param>
     /// <returns>True if point is over the control content, otherwise false.</returns>
     API_FUNCTION()
-    virtual bool IntersectsChildContent(UIXControl *child, const Float2 &location, API_PARAM(Out) Float2 &childSpaceLocation) const;
+    virtual bool IntersectsChildContent(UIXControl *child, Float2 location, API_PARAM(Out) Float2 &childSpaceLocation) const;
 
     /// <inheritdoc />
     API_FUNCTION()
@@ -376,11 +376,11 @@ public:
 
     /// <inheritdoc />
     API_FUNCTION()
-    DragDropEffect OnDragEnter(API_PARAM(Ref) Float2 &location, const DragData &data) override;
+    DragDropEffect OnDragEnter(Float2 location, const DragData &data) override;
 
     /// <inheritdoc />
     API_FUNCTION()
-    DragDropEffect OnDragMove(API_PARAM(Ref) Float2 &location, const DragData &data) override;
+    DragDropEffect OnDragMove(Float2 location, const DragData &data) override;
 
     /// <inheritdoc />
     API_FUNCTION()
@@ -388,7 +388,7 @@ public:
 
     /// <inheritdoc />
     API_FUNCTION()
-    DragDropEffect OnDragDrop(API_PARAM(Ref) Float2 &location, const DragData &data) override;
+    DragDropEffect OnDragDrop(Float2 location, const DragData &data) override;
 
 
 protected:

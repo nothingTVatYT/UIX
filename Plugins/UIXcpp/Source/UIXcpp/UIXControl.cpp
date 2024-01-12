@@ -552,18 +552,18 @@ bool UIXControl::OnShowTooltip(API_PARAM(Out) String &text, API_PARAM(Out) Float
     return GetShowTooltip();
 }
 
-bool UIXControl::OnTestTooltipOverControl(API_PARAM(Ref) Float2 &location)
+bool UIXControl::OnTestTooltipOverControl(Float2 location)
 {
     return ContainsPoint(location) && GetShowTooltip();
 }
 
-bool UIXControl::IntersectsContent(API_PARAM(Ref) const Float2 &locationParent, API_PARAM(Out) Float2 &location) const
+bool UIXControl::IntersectsContent(Float2 locationParent, API_PARAM(Out) Float2 &location) const
 {
     location = PointFromParent(locationParent);
     return ContainsPoint(location);
 }
 
-bool UIXControl::ContainsPoint(API_PARAM(Ref) const Float2 &location) const
+bool UIXControl::ContainsPoint(Float2 location) const
 {
     return location.X >= 0 &&
         location.Y >= 0 &&
@@ -591,24 +591,39 @@ Float2 UIXControl::PointToParent(UIXContainerControl *parent, Float2 location) c
     return location;
 }
 
-Float2 UIXControl::PointToParent(const Float2 &location) const
-{
-    return PointToParent(location);
-}
+//Float2 UIXControl::PointToParent(Float2 location) const
+//{
+//    return PointToParent(location);
+//}
+//
+//Float2 UIXControl::PointToParent(API_PARAM(Ref) Float2 &location) const
+//{
+//    Float2 result;
+//    Matrix3x3::Transform2DPoint(location, _cachedTransform, result);
+//    return result;
+//}
 
-Float2 UIXControl::PointToParent(API_PARAM(Ref) Float2 &location) const
+Float2 UIXControl::PointToParent(Float2 location) const
 {
     Float2 result;
     Matrix3x3::Transform2DPoint(location, _cachedTransform, result);
     return result;
 }
 
-Float2 UIXControl::PointFromParent(const Float2 &locationParent) const
-{
-    return PointFromParent(locationParent);
-}
 
-Float2 UIXControl::PointFromParent(API_PARAM(Ref) Float2 &locationParent) const
+//Float2 UIXControl::PointFromParent(Float2 locationParent) const
+//{
+//    return PointFromParent(locationParent);
+//}
+//
+//Float2 UIXControl::PointFromParent(API_PARAM(Ref) Float2 &locationParent) const
+//{
+//    Float2 result;
+//    Matrix3x3::Transform2DPoint(locationParent, _cachedTransformInv, result);
+//    return result;
+//}
+
+Float2 UIXControl::PointFromParent(Float2 locationParent) const
 {
     Float2 result;
     Matrix3x3::Transform2DPoint(locationParent, _cachedTransformInv, result);

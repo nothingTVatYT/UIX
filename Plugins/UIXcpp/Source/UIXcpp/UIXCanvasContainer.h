@@ -9,7 +9,8 @@ class UIXCanvasRootControl;
 /// The root container control used to sort and manage child UICanvas controls. Helps with sending input events.
 /// </summary>
 /// <seealso cref="FlaxEngine.GUI.ContainerControl" />
-API_CLASS(Attributes="HideInEditor, Sealed") class UIXCPP_API UIXCanvasContainer : /*public*/ UIXContainerControl
+API_CLASS(Attributes="HideInEditor, Sealed")
+class UIXCPP_API UIXCanvasContainer : public UIXContainerControl
 {
 //API_AUTO_SERIALIZATION();
 //DECLARE_SCRIPTING_TYPE(UIXCanvasContainer);
@@ -38,7 +39,7 @@ private:
     /*protected*/ void DrawChildren() override;
 
     /// <inheritdoc />
-    /*public*/  bool IntersectsChildContent(UIXControl *child, const Float2 &location, API_PARAM(Out) Float2 &childSpaceLocation) const;
+    /*public*/  bool IntersectsChildContent(UIXControl *child, Float2 location, API_PARAM(Out) Float2 &childSpaceLocation) const;
 
     /// <inheritdoc />
     /*public*/  void OnMouseEnter(Float2 location) override;

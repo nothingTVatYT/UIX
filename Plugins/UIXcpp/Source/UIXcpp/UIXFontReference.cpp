@@ -2,26 +2,26 @@
 #include "Engine/Render2D/Font.h"
 #include "Engine/Core/Types/Variant.h"
 
-UIXFontReference::UIXFontReference()
+UIXFontReference::UIXFontReference() : ScriptingObject(SpawnParams(Guid::New(), TypeInitializer))
 {
     _font = nullptr;
     _size = 30;
 }
 
-UIXFontReference::UIXFontReference(AssetReference<FontAsset> font, float size)
+UIXFontReference::UIXFontReference(AssetReference<FontAsset> font, float size) : ScriptingObject(SpawnParams(Guid::New(), TypeInitializer))
 {
     _font = font;
     _size = size;
 }
 
-UIXFontReference::UIXFontReference(const UIXFontReference &other)
+UIXFontReference::UIXFontReference(const UIXFontReference &other) : ScriptingObject(SpawnParams(Guid::New(), TypeInitializer))
 {
     _font = other._font;
     _size = other._size;
     _cachedFont = other._cachedFont;
 }
 
-UIXFontReference::UIXFontReference(Font *font)
+UIXFontReference::UIXFontReference(Font *font) : ScriptingObject(SpawnParams(Guid::New(), TypeInitializer))
 {
     if (font != nullptr)
     {
@@ -41,7 +41,7 @@ void UIXFontReference::SetFontAsset(AssetReference<FontAsset> value)
     if (_font != value)
     {
         _font = value;
-        _cachedFont = ShareAlive<Font>();
+        _cachedFont = nullptr;
     }
 }
   

@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "UIXRootControl.h"
+#include "UIXEnums.h"
 
 
 class UIXCanvas;
@@ -24,13 +25,13 @@ public:
     /// Gets a value indicating whether canvas is 2D (screen-space).
     /// </summary>
     API_PROPERTY()
-    FORCE_INLINE bool Is2D() { _canvas->RenderMode == CanvasRenderMode::ScreenSpace; }
+    bool Is2D() const;
 
     /// <summary>
     /// Gets a value indicating whether canvas is 3D (world-space or camera-space).
     /// </summary>
     API_PROPERTY()
-    FORCE_INLINE bool Is3D() { _canvas->RenderMode != CanvasRenderMode::ScreenSpace; }
+    bool Is3D() const;
 
     /// <summary>
     /// Checks if the 3D canvas intersects with a given 3D mouse ray.
@@ -73,47 +74,100 @@ public:
     API_FUNCTION() void StartTrackingMouse(UIXControl *control, bool useMouseScreenOffset) override;
 
     /// <inheritdoc />
-    API_FUNCTION() void EndTrackingMouse() override
-    {
-        var parent = Parent ? .Root;
-        parent ? .EndTrackingMouse();
-    }
+    API_FUNCTION() void EndTrackingMouse() override;
 
     /// <inheritdoc />
-    API_FUNCTION() bool GetKey(KeyboardKeys key) override
-    {
-        return Input.GetKey(key);
-    }
+    API_FUNCTION() bool GetKey(KeyboardKeys key) override;
 
     /// <inheritdoc />
-    API_FUNCTION() bool GetKeyDown(KeyboardKeys key) override
-    {
-        return Input.GetKeyDown(key);
-    }
+    API_FUNCTION() bool GetKeyDown(KeyboardKeys key) override;
 
     /// <inheritdoc />
-    API_FUNCTION() bool GetKeyUp(KeyboardKeys key) override
-    {
-        return Input.GetKeyUp(key);
-    }
+    API_FUNCTION() bool GetKeyUp(KeyboardKeys key) override;
 
     /// <inheritdoc />
-    API_FUNCTION() bool GetMouseButton(MouseButton button) override
-    {
-        return Input.GetMouseButton(button);
-    }
+    API_FUNCTION() bool GetMouseButton(MouseButton button) override;
 
     /// <inheritdoc />
-    API_FUNCTION() bool GetMouseButtonDown(MouseButton button) override
-    {
-        return Input.GetMouseButtonDown(button);
-    }
+    API_FUNCTION() bool GetMouseButtonDown(MouseButton button) override;
 
     /// <inheritdoc />
-    API_FUNCTION() bool GetMouseButtonUp(MouseButton button) override
-    {
-        return Input.GetMouseButtonUp(button);
-    }
+    API_FUNCTION() bool GetMouseButtonUp(MouseButton button) override;
+
+    /// <inheritdoc />
+    API_FUNCTION() Float2 PointToParent(Float2 location) const override;
+
+    /// <inheritdoc />
+    API_FUNCTION() Float2 PointFromParent(Float2 locationParent) const override;
+
+    /// <inheritdoc />
+    API_FUNCTION() bool ContainsPoint(Float2 location) const override;
+
+    /// <inheritdoc />
+    API_FUNCTION() void Update(float deltaTime) override;
+
+    /// <inheritdoc />
+    API_FUNCTION() bool OnCharInput(char c) override;
+    
+    /// <inheritdoc />
+    API_FUNCTION() DragDropEffect OnDragDrop(Float2 location, const DragData &data) override;
+
+    /// <inheritdoc />
+    API_FUNCTION() DragDropEffect OnDragEnter(Float2 location, const DragData &data) override;
+
+    /// <inheritdoc />
+    API_FUNCTION() void OnDragLeave() override;
+
+    /// <inheritdoc />
+    API_FUNCTION() DragDropEffect OnDragMove(Float2 location, const DragData &data) override;
+
+    /// <inheritdoc />
+    API_FUNCTION() bool OnKeyDown(KeyboardKeys key) override;
+
+    /// <inheritdoc />
+    API_FUNCTION() void OnKeyUp(KeyboardKeys key) override;
+
+    /// <inheritdoc />
+    API_FUNCTION() bool OnMouseDoubleClick(Float2 location, MouseButton button) override;
+
+    /// <inheritdoc />
+    API_FUNCTION() bool OnMouseDown(Float2 location, MouseButton button) override;
+
+    /// <inheritdoc />
+    API_FUNCTION() void OnMouseEnter(Float2 location) override;
+
+    /// <inheritdoc />
+    API_FUNCTION() void OnMouseLeave() override;
+
+    /// <inheritdoc />
+    API_FUNCTION() void OnMouseMove(Float2 location) override;
+
+    /// <inheritdoc />
+    API_FUNCTION() bool OnMouseUp(Float2 location, MouseButton button) override;
+
+    /// <inheritdoc />
+    API_FUNCTION() bool OnMouseWheel(Float2 location, float delta) override;
+
+    /// <inheritdoc />
+    API_FUNCTION() void OnTouchEnter(Float2 location, int pointerId) override;
+
+    /// <inheritdoc />
+    API_FUNCTION() bool OnTouchDown(Float2 location, int pointerId) override;
+
+    /// <inheritdoc />
+    API_FUNCTION() void OnTouchMove(Float2 location, int pointerId) override;
+
+    /// <inheritdoc />
+    API_FUNCTION() bool OnTouchUp(Float2 location, int pointerId) override;
+
+    /// <inheritdoc />
+    API_FUNCTION() void OnTouchLeave(int pointerId) override;
+
+    /// <inheritdoc />
+    API_FUNCTION() void Focus() override;
+
+    /// <inheritdoc />
+    API_FUNCTION() void DoDragDrop(const DragData &data) override;
 private:
     /// <summary>
     /// Initializes a new instance of the <see cref="CanvasRootControl"/> class.
@@ -121,7 +175,11 @@ private:
     /// <param name="canvas">The canvas.</param>
     /*internal*/ UIXCanvasRootControl(UIXCanvas *canvas);
 
-    bool SkipEvents() { return !_canvas->ReceivesEvents() || !_canvas->IsVisible(); }
+    bool SkipEvents() const { return !_canvas->ReceivesEvents() || !_canvas->IsVisible(); }
+
+    void UpdateNavigation(float deltaTime, String actionName, UIXNavDirection direction, API_PARAM(Ref) float &heldTime, API_PARAM(Ref) float &rateTime);
+    // Changed from C# that used a delegate as last parameter to call a function only found in this class. It now directly calls the function.
+    void UpdateNavigation(float deltaTime, String actionName, API_PARAM(Ref) float &heldTime, API_PARAM(Ref) float &rateTime);
 
     UIXCanvas* _canvas;
     Float2 _mousePosition;
@@ -140,307 +198,9 @@ private:
 };
 
 /*
-
-
-
-        
-
         
 
        
 
-        /// <inheritdoc />
-        public override Float2 PointToParent(ref Float2 location)
-        {
-            if (Is2D)
-                return base.PointToParent(ref location);
-
-            var camera = Camera.MainCamera;
-            if (!camera)
-                return location;
-
-            // Transform canvas local-space point to the game root location
-            _canvas.GetWorldMatrix(out Matrix world);
-            Vector3 locationCanvasSpace = new Vector3(location, 0.0f);
-            Vector3.Transform(ref locationCanvasSpace, ref world, out Vector3 locationWorldSpace);
-            camera.ProjectPoint(locationWorldSpace, out location);
-            return location;
-        }
-
-        /// <inheritdoc />
-        public override Float2 PointFromParent(ref Float2 locationParent)
-        {
-            if (Is2D)
-                return base.PointFromParent(ref locationParent);
-
-            var camera = Camera.MainCamera;
-            if (!camera)
-                return locationParent;
-
-            // Use world-space ray to convert it to the local-space of the canvas
-            UIXCanvas.CalculateRay(ref locationParent, out Ray ray);
-            Intersects3D(ref ray, out var location);
-            return location;
-        }
-
-        /// <inheritdoc />
-        public override bool ContainsPoint(ref Float2 location)
-        {
-            return base.ContainsPoint(ref location)
-                   && (_canvas.TestCanvasIntersection == null || _canvas.TestCanvasIntersection(ref location));
-        }
-
-        /// <inheritdoc />
-        public override void Update(float deltaTime)
-        {
-            // Update navigation
-            if (SkipEvents)
-            {
-                _navigationHeldTimeUp = _navigationHeldTimeDown = _navigationHeldTimeLeft = _navigationHeldTimeRight = 0;
-                _navigationRateTimeUp = _navigationRateTimeDown = _navigationRateTimeLeft = _navigationRateTimeRight = 0;
-            }
-            {
-                UpdateNavigation(deltaTime, _canvas.NavigateUp.Name, NavDirection.Up, ref _navigationHeldTimeUp, ref _navigationRateTimeUp);
-                UpdateNavigation(deltaTime, _canvas.NavigateDown.Name, NavDirection.Down, ref _navigationHeldTimeDown, ref _navigationRateTimeDown);
-                UpdateNavigation(deltaTime, _canvas.NavigateLeft.Name, NavDirection.Left, ref _navigationHeldTimeLeft, ref _navigationRateTimeLeft);
-                UpdateNavigation(deltaTime, _canvas.NavigateRight.Name, NavDirection.Right, ref _navigationHeldTimeRight, ref _navigationRateTimeRight);
-                UpdateNavigation(deltaTime, _canvas.NavigateSubmit.Name, ref _navigationHeldTimeSubmit, ref _navigationRateTimeSubmit, SubmitFocused);
-            }
-
-            base.Update(deltaTime);
-        }
-
-        private void UpdateNavigation(float deltaTime, string actionName, NavDirection direction, ref float heldTime, ref float rateTime)
-        {
-            if (Input.GetAction(actionName))
-            {
-                if (heldTime <= Mathf.Epsilon)
-                {
-                    Navigate(direction);
-                }
-                if (heldTime > _canvas.NavigationInputRepeatDelay)
-                {
-                    rateTime += deltaTime;
-                }
-                if (rateTime > _canvas.NavigationInputRepeatRate)
-                {
-                    Navigate(direction);
-                    rateTime = 0;
-                }
-                heldTime += deltaTime;
-            }
-            else
-            {
-                heldTime = rateTime = 0;
-            }
-        }
-
-        private void UpdateNavigation(float deltaTime, string actionName, ref float heldTime, ref float rateTime, Action action)
-        {
-            if (Input.GetAction(actionName))
-            {
-                if (heldTime <= Mathf.Epsilon)
-                {
-                    action();
-                }
-                if (heldTime > _canvas.NavigationInputRepeatDelay)
-                {
-                    rateTime += deltaTime;
-                }
-                if (rateTime > _canvas.NavigationInputRepeatRate)
-                {
-                    action();
-                    rateTime = 0;
-                }
-                heldTime += deltaTime;
-            }
-            else
-            {
-                heldTime = rateTime = 0;
-            }
-        }
-
-        /// <inheritdoc />
-        public override bool OnCharInput(char c)
-        {
-            if (SkipEvents)
-                return false;
-
-            return base.OnCharInput(c);
-        }
-
-        /// <inheritdoc />
-        public override DragDropEffect OnDragDrop(ref Float2 location, DragData data)
-        {
-            if (SkipEvents)
-                return DragDropEffect.None;
-
-            return base.OnDragDrop(ref location, data);
-        }
-
-        /// <inheritdoc />
-        public override DragDropEffect OnDragEnter(ref Float2 location, DragData data)
-        {
-            if (SkipEvents)
-                return DragDropEffect.None;
-
-            return base.OnDragEnter(ref location, data);
-        }
-
-        /// <inheritdoc />
-        public override void OnDragLeave()
-        {
-            if (SkipEvents)
-                return;
-
-            base.OnDragLeave();
-        }
-
-        /// <inheritdoc />
-        public override DragDropEffect OnDragMove(ref Float2 location, DragData data)
-        {
-            if (SkipEvents)
-                return DragDropEffect.None;
-
-            return base.OnDragMove(ref location, data);
-        }
-
-        /// <inheritdoc />
-        public override bool OnKeyDown(KeyboardKeys key)
-        {
-            if (SkipEvents)
-                return false;
-
-            return base.OnKeyDown(key);
-        }
-
-        /// <inheritdoc />
-        public override void OnKeyUp(KeyboardKeys key)
-        {
-            if (SkipEvents)
-                return;
-
-            base.OnKeyUp(key);
-        }
-
-        /// <inheritdoc />
-        public override bool OnMouseDoubleClick(Float2 location, MouseButton button)
-        {
-            if (SkipEvents)
-                return false;
-
-            return base.OnMouseDoubleClick(location, button);
-        }
-
-        /// <inheritdoc />
-        public override bool OnMouseDown(Float2 location, MouseButton button)
-        {
-            if (SkipEvents)
-                return false;
-
-            return base.OnMouseDown(location, button);
-        }
-
-        /// <inheritdoc />
-        public override void OnMouseEnter(Float2 location)
-        {
-            if (SkipEvents)
-                return;
-
-            _mousePosition = location;
-            base.OnMouseEnter(location);
-        }
-
-        /// <inheritdoc />
-        public override void OnMouseLeave()
-        {
-            _mousePosition = Float2.Zero;
-            if (SkipEvents)
-                return;
-
-            base.OnMouseLeave();
-        }
-
-        /// <inheritdoc />
-        public override void OnMouseMove(Float2 location)
-        {
-            if (SkipEvents)
-                return;
-
-            _mousePosition = location;
-            base.OnMouseMove(location);
-        }
-
-        /// <inheritdoc />
-        public override bool OnMouseUp(Float2 location, MouseButton button)
-        {
-            if (SkipEvents)
-                return false;
-
-            return base.OnMouseUp(location, button);
-        }
-
-        /// <inheritdoc />
-        public override bool OnMouseWheel(Float2 location, float delta)
-        {
-            if (SkipEvents)
-                return false;
-
-            return base.OnMouseWheel(location, delta);
-        }
-
-        /// <inheritdoc />
-        public override void OnTouchEnter(Float2 location, int pointerId)
-        {
-            if (SkipEvents)
-                return;
-
-            base.OnTouchEnter(location, pointerId);
-        }
-
-        /// <inheritdoc />
-        public override bool OnTouchDown(Float2 location, int pointerId)
-        {
-            if (SkipEvents)
-                return false;
-
-            return base.OnTouchDown(location, pointerId);
-        }
-
-        /// <inheritdoc />
-        public override void OnTouchMove(Float2 location, int pointerId)
-        {
-            if (SkipEvents)
-                return;
-
-            base.OnTouchMove(location, pointerId);
-        }
-
-        /// <inheritdoc />
-        public override bool OnTouchUp(Float2 location, int pointerId)
-        {
-            if (SkipEvents)
-                return false;
-
-            return base.OnTouchUp(location, pointerId);
-        }
-
-        /// <inheritdoc />
-        public override void OnTouchLeave(int pointerId)
-        {
-            if (SkipEvents)
-                return;
-
-            base.OnTouchLeave(pointerId);
-        }
-
-        /// <inheritdoc />
-        public override void Focus()
-        {
-        }
-
-        /// <inheritdoc />
-        public override void DoDragDrop(DragData data)
-        {
-        }
+        
     } */

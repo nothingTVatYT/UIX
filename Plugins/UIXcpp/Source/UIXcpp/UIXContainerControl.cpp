@@ -409,7 +409,7 @@ void UIXContainerControl::GetDesireClientArea(API_PARAM(Out) Rectangle &rect) co
     rect = Rectangle(Float2::Zero, GetSize());
 }
 
-bool UIXContainerControl::IntersectsChildContent(UIXControl *child, const Float2 &location, API_PARAM(Out) Float2 &childSpaceLocation) const
+bool UIXContainerControl::IntersectsChildContent(UIXControl *child, Float2 location, API_PARAM(Out) Float2 &childSpaceLocation) const
 {
     return child->IntersectsContent(location, childSpaceLocation);
 }
@@ -912,7 +912,7 @@ void UIXContainerControl::OnKeyUp(KeyboardKeys key)
     }
 }
 
-DragDropEffect UIXContainerControl::OnDragEnter(API_PARAM(Ref) Float2 &location, const DragData &data)
+DragDropEffect UIXContainerControl::OnDragEnter(Float2 location, const DragData &data)
 {
     // Base
     DragDropEffect result = UIXControl::OnDragEnter(location, data);
@@ -937,7 +937,7 @@ DragDropEffect UIXContainerControl::OnDragEnter(API_PARAM(Ref) Float2 &location,
     return result;
 }
 
-DragDropEffect UIXContainerControl::OnDragMove(API_PARAM(Ref) Float2 &location, const DragData &data)
+DragDropEffect UIXContainerControl::OnDragMove(Float2 location, const DragData &data)
 {
     // Base
     DragDropEffect result = UIXControl::OnDragMove(location, data);
@@ -994,7 +994,7 @@ void UIXContainerControl::OnDragLeave()
     }
 }
 
-DragDropEffect UIXContainerControl::OnDragDrop(API_PARAM(Ref) Float2 &location, const DragData &data)
+DragDropEffect UIXContainerControl::OnDragDrop(Float2 location, const DragData &data)
 {
     // Base
     DragDropEffect result = UIXControl::OnDragDrop(location, data);
