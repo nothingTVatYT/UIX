@@ -42,4 +42,11 @@ public class LayoutTools
 
         return control.Size;
     }
+
+    public static Rectangle GetClientArea(ContainerControl containerControl)
+    {
+        if (containerControl is UIXPanel uixPanel)
+            return uixPanel.GetUsableClientArea();
+        return containerControl.GetClientArea();
+    }
 }

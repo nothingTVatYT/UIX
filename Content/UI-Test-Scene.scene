@@ -117,6 +117,12 @@
 			"Control": "UIX.UIXPanel",
 			"Data": {
 	"Background": null,
+	"Insets": {
+		"Left": 0.0,
+		"Right": 0.0,
+		"Top": 0.0,
+		"Bottom": 0.0
+	},
 	"_layout": {
 		"$type": "UIX.Layout.DefaultLayout, UIX.CSharp",
 		"FillX": false,
@@ -199,11 +205,17 @@
 			},
 			"Control": "Game.TestDialog1",
 			"Data": {
-	"Title": "Test Dialog",
+	"Title": "Testing",
 	"Resizable": true,
 	"Closeable": true,
 	"Movable": true,
 	"Background": null,
+	"Insets": {
+		"Left": 10.0,
+		"Right": 10.0,
+		"Top": 10.0,
+		"Bottom": 10.0
+	},
 	"ClipChildren": false,
 	"CullChildren": false,
 	"AnchorMin": {
@@ -216,9 +228,9 @@
 	},
 	"Offsets": {
 		"Left": 396.0,
-		"Right": 100.0,
+		"Right": 192.0,
 		"Top": 29.0,
-		"Bottom": 68.0
+		"Bottom": 122.0
 	},
 	"Scale": {
 		"X": 1.0,
@@ -262,6 +274,12 @@
 	"InitialText": "I can build things. And this dialog is an early version before UIXTitledPanel even existed.",
 	"BorderThickness": 4.0,
 	"Background": null,
+	"Insets": {
+		"Left": 0.0,
+		"Right": 0.0,
+		"Top": 0.0,
+		"Bottom": 0.0
+	},
 	"ClipChildren": false,
 	"CullChildren": false,
 	"AnchorMin": {
@@ -310,7 +328,10 @@
 			"Control": "UIX.UIXButton",
 			"Data": {
 	"Text": "Click Me",
-	"Font": null,
+	"Font": {
+		"Font": "4508d98f4aa1f0bd59362b81d47e38f4",
+		"Size": 9.0
+	},
 	"Icon": null,
 	"BackgroundBrush": null,
 	"ChangeBackgroundOnHover": true,

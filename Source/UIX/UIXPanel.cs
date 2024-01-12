@@ -4,9 +4,19 @@ using UIX.Layout;
 
 namespace UIX;
 
+/// <summary>
+/// The base for all UIX panels, like titled panel (<see cref="UIXTitledPanel" />).
+/// </summary>
 public class UIXPanel : ContainerControl
 {
+    /// <summary>
+    /// The background painter for this panel
+    /// </summary>
+    [Tooltip("The background painter for this panel")]
     public IBrush Background;
+
+    public Margin Insets;
+
     [Serialize]
     private ILayout _layout;
     /// <summary>
@@ -31,6 +41,12 @@ public class UIXPanel : ContainerControl
         Layout.MinimumSize = new Float2(60, 60);
         Layout.MaximumSize = Screen.Size;
         Pivot = Float2.Zero;
+        Insets = Margin.Zero;
+    }
+
+    public virtual Rectangle GetUsableClientArea()
+    {
+        return GetClientArea();
     }
 
     /// <inheritdoc />

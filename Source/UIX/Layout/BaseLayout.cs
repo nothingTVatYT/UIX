@@ -16,7 +16,8 @@ public abstract class BaseLayout : ILayout
 
     [NoSerialize]
     protected ContainerControl Container;
-    protected List<Control> Controls = new();
+    protected List<Control> Controls;
+    protected Dictionary<Control, ControlDetails> ControlDetails;
 
     /// <summary>
     /// Create a new layout for the container
@@ -25,12 +26,20 @@ public abstract class BaseLayout : ILayout
     public BaseLayout(ContainerControl container)
     {
         Container = container;
+        Controls = new List<Control>();
+        ControlDetails = new Dictionary<Control, ControlDetails>();
     }
 
     /// <inheritdoc />
-    public void AddChild(Control child)
+    public virtual void AddChild(Control child)
     {
         Controls.Add(child);
+        // ideally the controls would set min/preferred/max size
+        ControlDetails[child] = new ControlDetails
+        {
+            PreferredSize = child.Size,
+            MinimumSize = LayoutTools.GetMinimumSize(child)
+        };
         Container.AddChild(child);
     }
 

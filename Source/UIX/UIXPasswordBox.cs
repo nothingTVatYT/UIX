@@ -15,7 +15,7 @@ public class UIXPasswordBox : TextBox
     }
 
     /// <inheritdoc />
-    public UIXPasswordBox(bool isMultiline, float x, float y, float width = 120) : base(false, x, y, width)
+    public UIXPasswordBox(bool isMultiline, float x, float y, float width = 80) : base(false, x, y, width)
     {
         MaxLength = Asterisks.Length;
         _layout = TextLayoutOptions.Default;

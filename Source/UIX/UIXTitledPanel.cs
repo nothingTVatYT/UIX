@@ -1,6 +1,5 @@
 using FlaxEngine;
 using FlaxEngine.GUI;
-using UIX.Layout;
 
 namespace UIX;
 
@@ -36,6 +35,11 @@ public class UIXTitledPanel : UIXPanel
     /// </summary>
     [Tooltip("Set this to true if the panel can be dragged by the user")]
     public bool Movable = true;
+
+    public UIXTitledPanel()
+    {
+        Insets = new Margin(10);
+    }
 
     private void CreateUI()
     {
@@ -90,6 +94,8 @@ public class UIXTitledPanel : UIXPanel
     {
         if (_titleLabel == null)
             CreateUI();
+        if (IsLayoutLocked)
+            return;
         _titleLabel.Text = Title;
         var shortenTitleWidth = 0f;
         var titleHeight = 16f;
@@ -114,14 +120,15 @@ public class UIXTitledPanel : UIXPanel
             bottomSpace = _resizeHandle.Height;
         }
 
-        _clientArea = new Rectangle(0, titleHeight, Width, Height - titleHeight - bottomSpace);
+        _clientArea = new Rectangle(Insets.Left, titleHeight + Insets.Top,
+            Width - Insets.Left - Insets.Right, Height - titleHeight - bottomSpace - Insets.Top - Insets.Bottom);
         base.PerformLayout(force);
     }
 
     /// <inheritdoc />
-    public override void GetDesireClientArea(out Rectangle rect)
+    public override Rectangle GetUsableClientArea()
     {
-        rect = _clientArea;
+        return _clientArea;
     }
 
     private void MoveDialog(Float2 delta)
