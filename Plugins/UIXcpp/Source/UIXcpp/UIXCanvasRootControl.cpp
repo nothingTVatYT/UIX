@@ -25,11 +25,6 @@ bool UIXCanvasRootControl::Is3D() const
     return _canvas->GetRenderMode() != UIXCanvasRenderMode::ScreenSpace;
 }
 
-UIXCanvas* UIXCanvasRootControl::GetCanvas() const
-{
-    return _canvas;
-}
-
 bool UIXCanvasRootControl::Intersects3D(API_PARAM(Ref) Ray &ray, API_PARAM(Out) Float2 &canvasLocation) const
 {
     // Inline bounds calculations (it will reuse world matrix)
@@ -194,6 +189,10 @@ void UIXCanvasRootControl::Update(float deltaTime)
     UIXRootControl::Update(deltaTime);
 }
 
+bool UIXCanvasRootControl::SkipEvents() const
+{
+    return !_canvas->GetReceivesEvents() || !_canvas->IsVisible();
+}
 
 void UIXCanvasRootControl::UpdateNavigation(float deltaTime, String actionName, UIXNavDirection direction, API_PARAM(Ref) float &heldTime, API_PARAM(Ref) float &rateTime)
 {

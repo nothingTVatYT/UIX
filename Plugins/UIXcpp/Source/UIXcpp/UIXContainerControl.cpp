@@ -242,7 +242,12 @@ void UIXContainerControl::CacheRootHandle()
 
 void UIXContainerControl::AddChildInternal(UIXControl *child)
 {
-    ASSERT(child != nullptr, "Invalid control.");
+    if (child == nullptr)
+    {
+        //ASSERT(child != nullptr, "Invalid control.");
+        LOG(Error, "Assert: child is nullptr.");
+        return;
+    }
     if (GetParent() == child)
     {
         LOG(Error, "InvalidOperationException: Child to add to container is parent of container");
@@ -257,7 +262,12 @@ void UIXContainerControl::AddChildInternal(UIXControl *child)
 
 void UIXContainerControl::RemoveChildInternal(UIXControl *child)
 {
-    ASSERT(child != nullptr, "Invalid control.");
+    if (child == nullptr)
+    {
+        //ASSERT(child != nullptr, "Invalid control.");
+        LOG(Error, "Assert: child is nullptr.");
+        return;
+    }
 
     // Remove child
     _children.Remove(child);
@@ -592,39 +602,6 @@ void UIXContainerControl::OnMouseEnter(Float2 location)
     }
 
     UIXControl::OnMouseEnter(location);
-}
-
-void UIXContainerControl::OnMouseMove(Float2 location)
-{
-    // Check all children collisions with mouse and fire events for them
-    for (int i = _children.Count() - 1; i >= 0 && _children.Count() > 0; i--)
-    {
-        UIXControl *child = _children[i];
-        if (child->GetVisible() && child->GetEnabled())
-        {
-            Float2 childLocation;
-            if (IntersectsChildContent(child, location, childLocation))
-            {
-                if (child->GetIsMouseOver())
-                {
-                    // Move
-                    child->OnMouseMove(childLocation);
-                }
-                else
-                {
-                    // Enter
-                    child->OnMouseEnter(childLocation);
-                }
-            }
-            else if (child->GetIsMouseOver())
-            {
-                // Leave
-                child->OnMouseLeave();
-            }
-        }
-    }
-
-    UIXControl::OnMouseMove(location);
 }
 
 void UIXContainerControl::OnMouseMove(Float2 location)

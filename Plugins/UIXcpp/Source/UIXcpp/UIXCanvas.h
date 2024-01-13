@@ -3,13 +3,16 @@
 #include "Engine/Graphics/PostProcessEffect.h"
 #include "Engine/Core/Math/OrientedBoundingBox.h"
 #include "Engine/Level/Actor.h"
+#include "Engine/Core/Types/LayersMask.h"
+#include "Engine/Core/Types/BaseTypes.h"
+#include "Engine/Core/Math/Vector2.h"
 
 //#include "Engine/Graphics/Textures/GPUTexture.h"
 //#include "Engine/Scripting/Scripting.h"
 
 
 class UIXCanvasRootControl;
-
+class UIXCanvas;
 
 /// <summary>
 /// The canvas rendering modes.
@@ -62,7 +65,7 @@ public:
     /// <summary>
     /// The canvas to render.
     /// </summary>
-    API_FIELD() UIXCanvas* Canvas;
+    API_FIELD() UIXCanvas *Canvas;
 };
 
 API_CLASS(Sealed, NoConstructor, Attributes = "ActorContextMenu(\"New/UI/UI Canvas\"), ActorToolbox(\"GUI\")")
@@ -71,10 +74,11 @@ class UIXCPP_API UIXCanvas : public Actor
     DECLARE_SCENE_OBJECT(UIXCanvas);
 
 public:
-    /// <summary>
-    /// Initializes a new instance of the <see cref="UIXCanvas"/> class.
-    /// </summary>
-    UIXCanvas(const SpawnParams& params);
+    // This is done with the declare scene object.
+    ///// <summary>
+    ///// Initializes a new instance of the <see cref="UIXCanvas"/> class.
+    ///// </summary>
+    //UIXCanvas(const SpawnParams& params);
 
     /// <summary>
     /// Finalizes an instance of the <see cref="UICanvas"/> class.
@@ -184,10 +188,7 @@ public:
     /// Gets or sets the size of the canvas. Used only in <see cref="UIXCanvasRenderMode::WorldSpace"/> or <see cref="UIXCanvasRenderMode::WorldSpaceFaceCamera"/>.
     /// </summary>
     API_PROPERTY(Attributes = "EditorOrder(20), EditorDisplay(\"Canvas\"), VisibleIf(\"Editor_IsWorldSpace\"), Tooltip(\"Canvas size.\")")
-    FORCE_INLINE Float2 GetSize() const
-    {
-        return _guiRoot->GetSize();
-    }
+    Float2 GetSize() const;
 
     /// <summary>
     /// Gets or sets the size of the canvas. Used only in <see cref="UIXCanvasRenderMode::WorldSpace"/> or <see cref="UIXCanvasRenderMode::WorldSpaceFaceCamera"/>.

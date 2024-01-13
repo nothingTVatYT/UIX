@@ -166,7 +166,8 @@ public:
     template<typename T>
     FORCE_INLINE T* GetChild()
     {
-        var type = typeof(T);
+        // TODO: Fix with scripting object functions if needed.
+        //auto type = typeof(T);
         for (int i = 0; i < _children.Count; i++)
         {
             //var ct = _children[i].GetType();

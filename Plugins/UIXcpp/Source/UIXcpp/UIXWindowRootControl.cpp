@@ -220,7 +220,10 @@ void UIXWindowRootControl::Focus()
 /// <inheritdoc />
 void UIXWindowRootControl::DoDragDrop(const DragData &data)
 {
+    // TODO: see what we can do with dragdrop
+#if 0
     _window->DoDragDrop(data);
+#endif
 }
 
 

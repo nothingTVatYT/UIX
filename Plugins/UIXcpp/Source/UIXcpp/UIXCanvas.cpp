@@ -125,6 +125,11 @@ void UIXCanvas::SetOrder(int value)
     }
 }
 
+Float2 UIXCanvas::GetSize() const
+{
+    return _guiRoot->GetSize();
+}
+
 void UIXCanvas::SetSize(Float2 value)
 {
     if (_renderMode == UIXCanvasRenderMode::WorldSpace || _renderMode == UIXCanvasRenderMode::WorldSpaceFaceCamera || _isLoading)

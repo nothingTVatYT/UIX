@@ -75,7 +75,9 @@ void UIXTooltip::Show(UIXControl *target, const Float2 &location, const Rectangl
     // TODO: this is used with platform windows, not game window. It's hardcoded to
     // one of the original UI classes and cannot be changed, unless we rewrite the engine.
     // We will have to change this to a parent we can control that's limited to inside the game.
+#if 0
     SetParent(_window->GUI);
+#endif
 
     SetVisible(true);
     _window->Show();
