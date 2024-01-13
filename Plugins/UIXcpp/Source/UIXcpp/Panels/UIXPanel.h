@@ -18,14 +18,14 @@ public:
     /// <summary>
     /// Initializes a new instance of the <see cref="Panel"/> class.
     /// </summary>
-    UIXPanel(const SpawnParams &params);
+    UIXPanel();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Panel"/> class.
     /// </summary>
     /// <param name="scrollBars">The scroll bars.</param>
     /// <param name="autoFocus">True if control can accept user focus</param>
-    UIXPanel(const SpawnParams &params, UIXScrollBars scrollBars, bool autoFocus = false);
+    UIXPanel(UIXScrollBars scrollBars, bool autoFocus = false);
 
 
     // TODO: check everywhere where a control field is public and add ScriptingObjectReference<> to them.

@@ -9,7 +9,7 @@
 API_CLASS(Attributes="HideInEditor") class UIXScrollableControl : public UIXContainerControl
 {
 public:
-    UIXScrollableControl(const SpawnParams &params);
+    UIXScrollableControl();
 
 
     /// <summary>

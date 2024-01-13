@@ -15,6 +15,9 @@ class UIXCPP_API UIXCanvasContainer : public UIXContainerControl
 //API_AUTO_SERIALIZATION();
 //DECLARE_SCRIPTING_TYPE(UIXCanvasContainer);
 
+public:
+    // Moved here because otherwise the system can't create one.
+    /*internal*/ UIXCanvasContainer();
 
 // This was an internal class in C#, and is not listed in the documentation. Every member, including
 // originally /*public*/ ones should be private or /*protected*/.
@@ -29,8 +32,6 @@ private:
     /*public*/ void SortCanvases();
 
     /*private*/ int SortCanvas(UIXControl *a, UIXControl *b);
-
-    /*internal*/ UIXCanvasContainer(const SpawnParams& params);
 
     /// <inheritdoc />
     /*public*/  void OnChildrenChanged() override;
@@ -58,5 +59,7 @@ private:
 
     /// <inheritdoc />
     /*public*/  bool OnMouseDoubleClick(Float2 location, MouseButton button) override;
+
+    friend class UIXCanvas;
 };
 

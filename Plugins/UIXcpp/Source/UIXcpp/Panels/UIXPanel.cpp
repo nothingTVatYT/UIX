@@ -6,7 +6,7 @@
 #include "Engine/Render2D/Render2D.h"
 
 
-UIXPanel::UIXPanel(const SpawnParams &params) : UIXPanel(params, UIXScrollBars::None)
+UIXPanel::UIXPanel() : UIXPanel(UIXScrollBars::None)
 {
 }
 
@@ -15,7 +15,7 @@ UIXPanel::UIXPanel(const SpawnParams &params) : UIXPanel(params, UIXScrollBars::
 /// </summary>
 /// <param name="scrollBars">The scroll bars.</param>
 /// <param name="autoFocus">True if control can accept user focus</param>
-UIXPanel::UIXPanel(const SpawnParams &params, UIXScrollBars scrollBars, bool autoFocus) : UIXScrollableControl(params),
+UIXPanel::UIXPanel(UIXScrollBars scrollBars, bool autoFocus) : UIXScrollableControl(),
         _layoutChanged(false), _alwaysShowScrollbars(false), _layoutUpdateLock(false), _scrollBarsSize(UIXScrollBar::DefaultSize)
 {
     SetAutoFocus(autoFocus);
@@ -45,7 +45,7 @@ void UIXPanel::SetScrollBars(UIXScrollBars value)
             VScrollBar = GetChild<UIXVScrollBar>();
         if (VScrollBar == nullptr)
         {
-            VScrollBar = New<UIXVScrollBar>(this, GetWidth() - _scrollBarsSize, GetHeight());
+            VScrollBar = New<UIXVScrollBar>(this, GetWidth() - _scrollBarsSize, GetHeight(), UIXScrollBar::DefaultSize);
             VScrollBar->SetAnchorPreset(UIXAnchorPresets::TopLeft);
 
             // Was already commented out: //VScrollBar->X += VScrollBar->Width;
@@ -133,7 +133,7 @@ void UIXPanel::FastScroll()
         VScrollBar->FastScroll();
 }
 
-void UIXPanel::ScrollViewTo(UIXControl *c, bool fastScroll = false)
+void UIXPanel::ScrollViewTo(UIXControl *c, bool fastScroll)
 {
     if (c == nullptr)
     {
@@ -155,12 +155,12 @@ void UIXPanel::ScrollViewTo(UIXControl *c, bool fastScroll = false)
     }
 }
 
-void UIXPanel::ScrollViewTo(Float2 location, bool fastScroll = false)
+void UIXPanel::ScrollViewTo(Float2 location, bool fastScroll)
 {
     ScrollViewTo(Rectangle(location, Float2::Zero), fastScroll);
 }
 
-void UIXPanel::ScrollViewTo(Rectangle bounds, bool fastScroll = false)
+void UIXPanel::ScrollViewTo(Rectangle bounds, bool fastScroll)
 {
     bool wasLocked = _isLayoutLocked;
     _isLayoutLocked = true;

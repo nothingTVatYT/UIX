@@ -54,7 +54,7 @@ public:
     /// <summary>
     /// The update callbacks collection. Controls can register for this to get the update event for logic handling.
     /// </summary>
-    API_FIELD(Attributes="ReadOnly")
+    API_FIELD(ReadOnly)
     Array<UpdateDelegate> UpdateCallbacks;
 
     /// <summary>
@@ -158,10 +158,11 @@ public:
     virtual UIXRootControl* GetRoot() const override { return const_cast<UIXRootControl*>(this); }
 
 protected:
+
     /// <summary>
     /// Initializes a new instance of the <see cref="RootControl"/> class.
     /// </summary>
-    UIXRootControl(const SpawnParams &params);
+    UIXRootControl();
         
 private:
     /// <summary>
@@ -178,4 +179,6 @@ private:
     static UIXContainerControl *_gameRoot;
     static UIXCanvasContainer *_canvasContainer;
 
+    friend class UIXCanvas;
 };
+

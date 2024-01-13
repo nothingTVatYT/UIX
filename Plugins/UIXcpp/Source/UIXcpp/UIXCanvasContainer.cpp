@@ -7,8 +7,8 @@
 #include "Engine/Graphics/RenderTask.h"
 #include "Engine/Graphics/RenderView.h"
 
-UIXCanvasContainer::UIXCanvasContainer(const SpawnParams& params)
-    : UIXContainerControl(params)
+UIXCanvasContainer::UIXCanvasContainer()
+    : UIXContainerControl()
 {
     // Enable ticking OnUpdate function
     //_tickUpdate = true;

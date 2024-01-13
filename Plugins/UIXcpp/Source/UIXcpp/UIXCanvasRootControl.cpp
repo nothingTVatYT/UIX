@@ -6,12 +6,11 @@
 #include "Engine/Level/Actors/Camera.h"
 
 
-UIXCanvasRootControl::UIXCanvasRootControl(const SpawnParams &params, UIXCanvas *canvas) : UIXRootControl(params)
-{
-    _canvas = canvas;
-}
+//UIXCanvasRootControl::UIXCanvasRootControl(const SpawnParams &params, UIXCanvas *canvas) : UIXRootControl(params)
+//{
+//}
 
-UIXCanvasRootControl::UIXCanvasRootControl(UIXCanvas* canvas) : UIXCanvasRootControl(SpawnParams(Guid::New(), TypeInitializer), canvas)
+UIXCanvasRootControl::UIXCanvasRootControl(UIXCanvas* canvas) : UIXRootControl(/*SpawnParams(Guid::New(), TypeInitializer),*/), _canvas(canvas)
 {
 }
 
@@ -158,33 +157,36 @@ Float2 UIXCanvasRootControl::PointFromParent(Float2 locationParent) const
     if (camera == nullptr)
         return locationParent;
 
-    // Use world-space ray to convert it to the local-space of the canvas
-    Ray ray;
-    UIXCanvas::CalculateRay(locationParent, ray);
-    Float2 location;
-    Intersects3D(ray, location);
-    return location;
+    // TODO: no way to use delegates with marshalling. Find a workaround.
+    //// Use world-space ray to convert it to the local-space of the canvas
+    //Ray ray;
+    //UIXCanvas::CalculateRay(locationParent, ray);
+    //Float2 location;
+    //Intersects3D(ray, location);
+    //return location;
+    return Float2::Zero;
 }
 
 bool UIXCanvasRootControl::ContainsPoint(Float2 location) const
 {
-    return UIXRootControl::ContainsPoint(location) && (_canvas->TestCanvasIntersection == nullptr || _canvas->TestCanvasIntersection(location));
+    // TODO: make a workaround for this because delegates are not great when marshalling
+    return UIXRootControl::ContainsPoint(location); //&& (!_canvas->TestCanvasIntersection.IsBinded() || _canvas->TestCanvasIntersection.operator()(location));
 }
 
 void UIXCanvasRootControl::Update(float deltaTime)
 {
     // Update navigation
-    if (SkipEvents)
+    if (SkipEvents())
     {
         _navigationHeldTimeUp = _navigationHeldTimeDown = _navigationHeldTimeLeft = _navigationHeldTimeRight = 0;
         _navigationRateTimeUp = _navigationRateTimeDown = _navigationRateTimeLeft = _navigationRateTimeRight = 0;
     }
 
-    UpdateNavigation(deltaTime, _canvas->NavigateUp.Name, UIXNavDirection::Up, _navigationHeldTimeUp, _navigationRateTimeUp);
-    UpdateNavigation(deltaTime, _canvas->NavigateDown.Name, UIXNavDirection::Down, _navigationHeldTimeDown, _navigationRateTimeDown);
-    UpdateNavigation(deltaTime, _canvas->NavigateLeft.Name, UIXNavDirection::Left, _navigationHeldTimeLeft, _navigationRateTimeLeft);
-    UpdateNavigation(deltaTime, _canvas->NavigateRight.Name, UIXNavDirection::Right, _navigationHeldTimeRight, _navigationRateTimeRight);
-    UpdateNavigation(deltaTime, _canvas->NavigateSubmit.Name, _navigationHeldTimeSubmit, _navigationRateTimeSubmit);
+    UpdateNavigation(deltaTime, _canvas->NavigateUp->Name, UIXNavDirection::Up, _navigationHeldTimeUp, _navigationRateTimeUp);
+    UpdateNavigation(deltaTime, _canvas->NavigateDown->Name, UIXNavDirection::Down, _navigationHeldTimeDown, _navigationRateTimeDown);
+    UpdateNavigation(deltaTime, _canvas->NavigateLeft->Name, UIXNavDirection::Left, _navigationHeldTimeLeft, _navigationRateTimeLeft);
+    UpdateNavigation(deltaTime, _canvas->NavigateRight->Name, UIXNavDirection::Right, _navigationHeldTimeRight, _navigationRateTimeRight);
+    UpdateNavigation(deltaTime, _canvas->NavigateSubmit->Name, _navigationHeldTimeSubmit, _navigationRateTimeSubmit);
 
     UIXRootControl::Update(deltaTime);
 }
@@ -248,7 +250,7 @@ void UIXCanvasRootControl::UpdateNavigation(float deltaTime, String actionName, 
 
 bool UIXCanvasRootControl::OnCharInput(char c)
 {
-    if (SkipEvents)
+    if (SkipEvents())
         return false;
 
     return UIXRootControl::OnCharInput(c);
@@ -257,7 +259,7 @@ bool UIXCanvasRootControl::OnCharInput(char c)
 
 DragDropEffect UIXCanvasRootControl::OnDragDrop(Float2 location, const DragData &data)
 {
-    if (SkipEvents)
+    if (SkipEvents())
         return DragDropEffect::None;
 
     return UIXRootControl::OnDragDrop(location, data);
@@ -266,7 +268,7 @@ DragDropEffect UIXCanvasRootControl::OnDragDrop(Float2 location, const DragData 
 
 DragDropEffect UIXCanvasRootControl::OnDragEnter(Float2 location, const DragData &data)
 {
-    if (SkipEvents)
+    if (SkipEvents())
         return DragDropEffect::None;
 
     return UIXRootControl::OnDragEnter(location, data);
@@ -275,7 +277,7 @@ DragDropEffect UIXCanvasRootControl::OnDragEnter(Float2 location, const DragData
 
 void UIXCanvasRootControl::OnDragLeave()
 {
-    if (SkipEvents)
+    if (SkipEvents())
         return;
 
     UIXRootControl::OnDragLeave();
@@ -284,7 +286,7 @@ void UIXCanvasRootControl::OnDragLeave()
 
 DragDropEffect UIXCanvasRootControl::OnDragMove(Float2 location, const DragData &data)
 {
-    if (SkipEvents)
+    if (SkipEvents())
         return DragDropEffect::None;
 
     return UIXRootControl::OnDragMove(location, data);
@@ -293,7 +295,7 @@ DragDropEffect UIXCanvasRootControl::OnDragMove(Float2 location, const DragData 
 
 bool UIXCanvasRootControl::OnKeyDown(KeyboardKeys key)
 {
-    if (SkipEvents)
+    if (SkipEvents())
         return false;
 
     return UIXRootControl::OnKeyDown(key);
@@ -302,7 +304,7 @@ bool UIXCanvasRootControl::OnKeyDown(KeyboardKeys key)
 
 void UIXCanvasRootControl::OnKeyUp(KeyboardKeys key)
 {
-    if (SkipEvents)
+    if (SkipEvents())
         return;
 
     UIXRootControl::OnKeyUp(key);
@@ -311,7 +313,7 @@ void UIXCanvasRootControl::OnKeyUp(KeyboardKeys key)
 
 bool UIXCanvasRootControl::OnMouseDoubleClick(Float2 location, MouseButton button)
 {
-    if (SkipEvents)
+    if (SkipEvents())
         return false;
 
     return UIXRootControl::OnMouseDoubleClick(location, button);
@@ -320,7 +322,7 @@ bool UIXCanvasRootControl::OnMouseDoubleClick(Float2 location, MouseButton butto
 
 bool UIXCanvasRootControl::OnMouseDown(Float2 location, MouseButton button)
 {
-    if (SkipEvents)
+    if (SkipEvents())
         return false;
 
     return UIXRootControl::OnMouseDown(location, button);
@@ -329,7 +331,7 @@ bool UIXCanvasRootControl::OnMouseDown(Float2 location, MouseButton button)
 
 void UIXCanvasRootControl::OnMouseEnter(Float2 location)
 {
-    if (SkipEvents)
+    if (SkipEvents())
         return;
 
     _mousePosition = location;
@@ -340,7 +342,7 @@ void UIXCanvasRootControl::OnMouseEnter(Float2 location)
 void UIXCanvasRootControl::OnMouseLeave()
 {
     _mousePosition = Float2::Zero;
-    if (SkipEvents)
+    if (SkipEvents())
         return;
 
     UIXRootControl::OnMouseLeave();
@@ -349,7 +351,7 @@ void UIXCanvasRootControl::OnMouseLeave()
 
 void UIXCanvasRootControl::OnMouseMove(Float2 location)
 {
-    if (SkipEvents)
+    if (SkipEvents())
         return;
 
     _mousePosition = location;
@@ -359,7 +361,7 @@ void UIXCanvasRootControl::OnMouseMove(Float2 location)
 
 bool UIXCanvasRootControl::OnMouseUp(Float2 location, MouseButton button)
 {
-    if (SkipEvents)
+    if (SkipEvents())
         return false;
 
     return UIXRootControl::OnMouseUp(location, button);
@@ -368,7 +370,7 @@ bool UIXCanvasRootControl::OnMouseUp(Float2 location, MouseButton button)
 
 bool UIXCanvasRootControl::OnMouseWheel(Float2 location, float delta)
 {
-    if (SkipEvents)
+    if (SkipEvents())
         return false;
 
     return UIXRootControl::OnMouseWheel(location, delta);
@@ -377,7 +379,7 @@ bool UIXCanvasRootControl::OnMouseWheel(Float2 location, float delta)
 
 void UIXCanvasRootControl::OnTouchEnter(Float2 location, int pointerId)
 {
-    if (SkipEvents)
+    if (SkipEvents())
         return;
 
     UIXRootControl::OnTouchEnter(location, pointerId);
@@ -386,7 +388,7 @@ void UIXCanvasRootControl::OnTouchEnter(Float2 location, int pointerId)
 
 bool UIXCanvasRootControl::OnTouchDown(Float2 location, int pointerId)
 {
-    if (SkipEvents)
+    if (SkipEvents())
         return false;
 
     return UIXRootControl::OnTouchDown(location, pointerId);
@@ -395,7 +397,7 @@ bool UIXCanvasRootControl::OnTouchDown(Float2 location, int pointerId)
 
 void UIXCanvasRootControl::OnTouchMove(Float2 location, int pointerId)
 {
-    if (SkipEvents)
+    if (SkipEvents())
         return;
 
     UIXRootControl::OnTouchMove(location, pointerId);
@@ -404,7 +406,7 @@ void UIXCanvasRootControl::OnTouchMove(Float2 location, int pointerId)
 
 bool UIXCanvasRootControl::OnTouchUp(Float2 location, int pointerId)
 {
-    if (SkipEvents)
+    if (SkipEvents())
         return false;
 
     return UIXRootControl::OnTouchUp(location, pointerId);
@@ -413,7 +415,7 @@ bool UIXCanvasRootControl::OnTouchUp(Float2 location, int pointerId)
 
 void UIXCanvasRootControl::OnTouchLeave(int pointerId)
 {
-    if (SkipEvents)
+    if (SkipEvents())
         return;
 
     UIXRootControl::OnTouchLeave(pointerId);

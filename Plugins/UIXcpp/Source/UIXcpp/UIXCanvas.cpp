@@ -1,5 +1,6 @@
 ﻿#include "UIXCanvas.h"
 #include "UIXCanvasRootControl.h"
+#include "UIXCanvasContainer.h"
 
 #include "Engine/Level/Scene/Scene.h"
 #include "Engine/Profiler/Profiler.h"
@@ -11,23 +12,30 @@
 #include "Engine/Core/Log.h"
 #include "Engine/Profiler/ProfilerGPU.h"
 #include "Engine/Profiler/ProfilerCPU.h"
-
+#include "Engine/Engine/Time.h"
 
 
 
 
 bool UIXCanvasRenderer::CanRender() const
 {
-    // Sync with canvas options
-    SetLocation(Canvas->GetRenderLocation());
-    SetOrder(Canvas->GetOrder());
+    // This is a const in the base class, but C# files can somehow declare it non-const.
+    // We can cheat with const_cast<> which will either blow up or it will just not work.
+
+    //// Sync with canvas options
+    //Location = Canvas->GetRenderLocation();
+    //Order = Canvas->GetOrder();
+
+    UIXCanvasRenderer *obj = const_cast<UIXCanvasRenderer*>(this);
+    obj->Location = Canvas->GetRenderLocation();
+    obj->Order = Canvas->GetOrder();
 
     return PostProcessEffect::CanRender();
 }
 
 void UIXCanvasRenderer::Render(GPUContext* context, API_PARAM(Ref) RenderContext& renderContext, GPUTexture* input, GPUTexture* output)
 {
-    if (!Canvas->GetIsVisible(renderContext.View.RenderLayersMask))
+    if (!Canvas->IsVisible(renderContext.View.RenderLayersMask))
         return;
     auto bounds = Canvas->GetBounds();
     bounds.Transformation.Translation -= renderContext.View.Origin;
@@ -84,10 +92,21 @@ void UIXCanvasRenderer::Render(GPUContext* context, API_PARAM(Ref) RenderContext
 UIXCanvas::UIXCanvas(const SpawnParams& params) : Actor(params), _guiRoot(New<UIXCanvasRootControl>(this))
 {
     _guiRoot->SetIsLayoutLocked(false);
+    NavigateUp = New<UIXInputEvent>("NavigateUp");
+    NavigateDown = New<UIXInputEvent>("NavigateDown");
+    NavigateLeft = New<UIXInputEvent>("NavigateLeft");
+    NavigateRight = New<UIXInputEvent>("NavigateRight");
+    NavigateSubmit = New<UIXInputEvent>("NavigateSubmit");
 }
 
 UIXCanvas::~UIXCanvas()
 {
+    NavigateUp->DeleteObjectNow();
+    NavigateDown->DeleteObjectNow();
+    NavigateLeft->DeleteObjectNow();
+    NavigateRight->DeleteObjectNow();
+    NavigateSubmit->DeleteObjectNow();
+
     if (_isRegisteredForTick)
     {
         // TODO: Figure out how to register to Scripting Events.
@@ -121,7 +140,7 @@ void UIXCanvas::SetOrder(int value)
     if (_order != value)
     {
         _order = value;
-        RootControl.CanvasRoot.SortCanvases();
+        UIXRootControl::GetCanvasRoot()->SortCanvases();
     }
 }
 
@@ -138,7 +157,7 @@ void UIXCanvas::SetSize(Float2 value)
     }
 }
 
-OrientedBoundingBox UIXCanvas::GetBounds()
+OrientedBoundingBox UIXCanvas::GetBounds() const
 {
     OrientedBoundingBox bounds = OrientedBoundingBox();
     bounds.Extents = Float3(_guiRoot->GetSize() * 0.5f, 0.1e-7);
@@ -346,7 +365,7 @@ void UIXCanvas::Setup()
             {
                 _renderer = New<UIXCanvasRenderer>();
                 _renderer->Canvas = this;
-                if (IsActiveInHierarchy && GetScene() != nullptr)
+                if (IsActiveInHierarchy() && GetScene() != nullptr)
                 {
                     //#if FLAX_EDITOR
 #if 0
@@ -371,7 +390,7 @@ void UIXCanvas::Setup()
             {
                 _isRegisteredForTick = true;
 
-                GetScene()->Ticking.Update.Addcript<UIXCanvas, &UIXCanvas::OnUpdate>(this);
+                GetScene()->Ticking.Update.AddTick<UIXCanvas, &UIXCanvas::OnUpdate>(this);
                 //Scripting.Update += OnUpdate;
             }
             break;
@@ -381,12 +400,12 @@ void UIXCanvas::Setup()
 
 void UIXCanvas::OnUpdate()
 {
-    if (this && IsActiveInHierarchy && _renderMode != UIXCanvasRenderMode::ScreenSpace)
+    if (this && IsActiveInHierarchy() && _renderMode != UIXCanvasRenderMode::ScreenSpace)
     {
         try
         {
-            ProfilerCPU::BeginEvent(Name);
-            _guiRoot->Update(Time.UnscaledDeltaTime);
+            ProfilerCPU::BeginEvent(*GetName());
+            _guiRoot->Update(Time::GetUnscaledDeltaTime());
         }
         catch (...)
         {
@@ -426,7 +445,7 @@ void UIXCanvas::Enable()
         _guiRoot->Parent = RootControl.CanvasRoot;
     }
 #else
-    _guiRoot->SetParent(RootControl.CanvasRoot);
+    _guiRoot->SetParent(UIXRootControl::GetCanvasRoot());
 #endif
 
     if (_renderer)

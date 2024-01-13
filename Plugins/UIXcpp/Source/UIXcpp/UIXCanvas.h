@@ -6,6 +6,8 @@
 #include "Engine/Core/Types/LayersMask.h"
 #include "Engine/Core/Types/BaseTypes.h"
 #include "Engine/Core/Math/Vector2.h"
+#include "Engine/Core/Delegate.h"
+#include "UIXInputEvent.h"
 
 //#include "Engine/Graphics/Textures/GPUTexture.h"
 //#include "Engine/Scripting/Scripting.h"
@@ -51,13 +53,14 @@ class UIXCanvasRenderer : public PostProcessEffect
     
 public:
     /// <inheritdoc />
-    UIXCanvasRenderer()
+    UIXCanvasRenderer() : Canvas(nullptr)
     {
         UseSingleTarget = true;
     }
 
     /// <inheritdoc />
-    API_FUNCTION() FORCE_INLINE bool CanRender() const override;
+    API_FUNCTION()
+    FORCE_INLINE bool CanRender() const override;
 
     /// <inheritdoc />
     void Render(GPUContext* context, API_PARAM(Ref) RenderContext& renderContext, GPUTexture* input, GPUTexture* output) override;
@@ -85,30 +88,33 @@ public:
     /// </summary>
     ~UIXCanvas();
 
-    /// <summary>
-    /// Delegate schema for the callback used to perform custom canvas intersection test. Can be used to implement a canvas that has a holes or non-rectangular shape.
-    /// </summary>
-    /// <param name="location">The location of the point to test in coordinates of the canvas root control (see <see cref="GUI"/>).</param>
-    /// <returns>True if canvas was hit, otherwise false.</returns>
-    typedef Function<bool(API_PARAM(Ref) Float2& location)> TestCanvasIntersectionDelegate;
+    //// TODO: work around the shortcoming of unsupported delegate marshalling with return value or refs
+    ///// <summary>
+    ///// Delegate schema for the callback used to perform custom canvas intersection test. Can be used to implement a canvas that has a holes or non-rectangular shape.
+    ///// </summary>
+    ///// <param name="location">The location of the point to test in coordinates of the canvas root control (see <see cref="GUI"/>).</param>
+    ///// <returns>True if canvas was hit, otherwise false.</returns>
+    //typedef Delegate<bool(Float2 &)> TestCanvasIntersectionDelegate;
+
+    ///// <summary>
+    ///// The callback used to perform custom canvas intersection test. Can be used to implement a canvas that has a holes or non-rectangular shape.
+    ///// </summary>
+    //API_EVENT(Attributes="HideInEditor")
+    //TestCanvasIntersectionDelegate TestCanvasIntersection;
 
     /// <summary>
     /// Delegate schema for callback used to evaluate the world-space ray from the screen-space position (eg. project mouse position).
     /// </summary>
     /// <param name="location">The location in screen-space.</param>
     /// <param name="ray">The output ray in world-space.</param>
-    typedef Function<void(API_PARAM(Ref) Float2& location, API_PARAM(Out) Ray& ray)> CalculateRayDelegate;
-
-    /// <summary>
-    /// The callback used to perform custom canvas intersection test. Can be used to implement a canvas that has a holes or non-rectangular shape.
-    /// </summary>
-    API_FIELD(Attributes = "HideInEditor")
-    TestCanvasIntersectionDelegate TestCanvasIntersection;
+     
+    typedef Delegate<Float2&, Ray&> CalculateRayDelegate;
 
     /// <summary>
     /// The current implementation of the <see cref="CalculateRayDelegate"/> used to calculate the mouse ray in 3D from the 2D location. Cannot be nullptr.
     /// </summary>
-    static CalculateRayDelegate CalculateRay;
+    API_EVENT()
+    static Delegate<Float2&, Ray&> CalculateRay;
     // TODO: Assign a default value to CalculateRay in the constructor of UIXCanvas.
 
     /// <summary>
@@ -282,14 +288,26 @@ public:
     void SetNavigationInputRepeatRate(float value) { _NavigationInputRepeatRate = value; }
 
 
+
+    API_FIELD(Attributes = "EditorOrder(510), EditorDisplay(\"Navigation\", \"Navigate Up\"), Tooltip(\"The input action for performing UI navigation Up (from Input Settings).\")")
+    UIXInputEvent *NavigateUp;
+    API_FIELD(Attributes = "EditorOrder(520), EditorDisplay(\"Navigation\", \"Navigate Down\"), Tooltip(\"The input action for performing UI navigation Down (from Input Settings).\")")
+    UIXInputEvent *NavigateDown;
+    API_FIELD(Attributes = "EditorOrder(530), EditorDisplay(\"Navigation\", \"Navigate Left\"), Tooltip(\"The input action for performing UI navigation Left (from Input Settings).\")")
+    UIXInputEvent *NavigateLeft;
+    API_FIELD(Attributes = "EditorOrder(540), EditorDisplay(\"Navigation\", \"Navigate Right\"), Tooltip(\"The input action for performing UI navigation Right (from Input Settings).\")")
+    UIXInputEvent *NavigateRight;
+    API_FIELD(Attributes = "EditorOrder(550), EditorDisplay(\"Navigation\", \"Navigate Submit\"), Tooltip(\"The input action for performing UI navigation Submit (from Input Settings).\")")
+    UIXInputEvent *NavigateSubmit;
+
     // TODO: Navigation.
     /*
 
     /// <summary>
     /// The input action for performing UI navigation Up (from Input Settings).
     /// </summary>
-    [EditorOrder(510), EditorDisplay("Navigation", "Navigate Up")]
-    [Tooltip("The input action for performing UI navigation Up (from Input Settings).")]
+    []
+    []
     public InputEvent NavigateUp { get; set; } = new InputEvent("NavigateUp");
 
     /// <summary>
@@ -458,6 +476,7 @@ private:
 
 
     friend class UIXCanvasRootControl;
+    friend class UIXCanvasRenderer;
 
     /*
 

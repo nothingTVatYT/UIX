@@ -3,6 +3,7 @@
 #include "Engine/Scripting/Script.h"
 #include "Engine/Core/Math/Math.h"
 #include "Engine/Localization/CultureInfo.h"
+#include "Engine/Core/Math/Vector2.h"
 //#include "Engine/Localization/Localization.h"
 
 /// <summary>

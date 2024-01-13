@@ -5,23 +5,23 @@
 #include "Engine/Core/Log.h"
 
 
-UIXContainerControl::UIXContainerControl(const SpawnParams &params) : UIXControl(params)
+UIXContainerControl::UIXContainerControl() : UIXControl()
 {
     _isLayoutLocked = true;
 }
 
-UIXContainerControl::UIXContainerControl(const SpawnParams &params, float x, float y, float width, float height)
-    : UIXControl(params, x, y, width, height), _isLayoutLocked(true)
+UIXContainerControl::UIXContainerControl(float x, float y, float width, float height)
+    : UIXControl( x, y, width, height), _isLayoutLocked(true)
 {
 }
 
-UIXContainerControl::UIXContainerControl(const SpawnParams &params, const Float2 &location, const Float2 &size)
-    : UIXControl(params, location, size), _isLayoutLocked(true)
+UIXContainerControl::UIXContainerControl(const Float2 &location, const Float2 &size)
+    : UIXControl(location, size), _isLayoutLocked(true)
 {
 }
 
-UIXContainerControl::UIXContainerControl(const SpawnParams &params, const Rectangle &bounds)
-    : UIXControl(params, bounds), _isLayoutLocked(true)
+UIXContainerControl::UIXContainerControl(const Rectangle &bounds)
+    : UIXControl(bounds), _isLayoutLocked(true)
 {
 }
 
@@ -142,7 +142,7 @@ UIXControl* UIXContainerControl::GetChildAt(const Float2 &point)
 
 UIXControl* UIXContainerControl::GetChildAt(Float2 point, Function<bool(UIXControl*)> isValid)
 {
-    if (isValid == nullptr)
+    if (!isValid.IsBinded())
     {
         LOG(Error, "ArgumentNullException: Null delegate for getting child validity.");
         return nullptr;
@@ -280,7 +280,7 @@ bool UIXContainerControl::CanNavigateChild(UIXControl *child) const
     return !child->GetIsFocused() && child->GetEnabled() && child->GetVisible() && CanGetAutoFocus(child);
 }
 
-UIXControl* UIXContainerControl::NavigationWrap(UIXNavDirection direction, const Float2 &location, Array<UIXControl*> &visited, API_PARAM(Out) Float2 &rightMostLocation)
+UIXControl* UIXContainerControl::NavigationWrap(UIXNavDirection direction, const Float2 &location, API_PARAM(Ref) Array<UIXControl*> &visited, API_PARAM(Out) Float2 &rightMostLocation)
 {
     auto rw = GetRootWindow();
     // This searches form a child that calls this navigation event (see Control.OnNavigate) to determinate the layout wrapping size based on that child size
@@ -432,7 +432,7 @@ bool UIXContainerControl::IntersectsChildContent(UIXControl *child, Float2 locat
     return child->IntersectsContent(location, childSpaceLocation);
 }
 
-UIXControl* UIXContainerControl::OnNavigate(UIXNavDirection direction, Float2 location, UIXControl* caller, Array<UIXControl*> &visited)
+UIXControl* UIXContainerControl::OnNavigate(UIXNavDirection direction, Float2 location, UIXControl* caller, API_PARAM(Ref) Array<UIXControl*> &visited)
 {
     // Try to focus itself first (only if navigation focus can enter this container)
     if (GetAutoFocus() && !GetContainsFocus())

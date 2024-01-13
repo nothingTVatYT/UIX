@@ -9,7 +9,7 @@
 #include "Engine/Core/Log.h"
 
 
-UIXControl::UIXControl(const SpawnParams &params) : ScriptingObject(params)
+UIXControl::UIXControl(/*const SpawnParams &params*/) : ScriptingObject(SpawnParams(Guid::New(), TypeInitializer))
 {
     _bounds = Rectangle(_offsets.Left, _offsets.Top, _offsets.Right, _offsets.Bottom);
     UpdateTransform();
@@ -24,7 +24,7 @@ UIXControl::UIXControl(const SpawnParams &params) : ScriptingObject(params)
 /// <param name="y">Y coordinate</param>
 /// <param name="width">Width</param>
 /// <param name="height">Height</param>
-UIXControl::UIXControl(const SpawnParams &params, float x, float y, float width, float height) : UIXControl(params, Rectangle(x, y, width, height))
+UIXControl::UIXControl(/*const SpawnParams &params,*/ float x, float y, float width, float height) : UIXControl(Rectangle(x, y, width, height))
 {
 }
 
@@ -33,11 +33,11 @@ UIXControl::UIXControl(const SpawnParams &params, float x, float y, float width,
 /// </summary>
 /// <param name="location">Upper left corner location.</param>
 /// <param name="size">Bounds size.</param>
-UIXControl::UIXControl(const SpawnParams &params, Float2 location, Float2 size) : UIXControl(params, Rectangle(location, size))
+UIXControl::UIXControl(/*const SpawnParams &params,*/ Float2 location, Float2 size) : UIXControl(Rectangle(location, size))
 {
 }
 
-UIXControl::UIXControl(const SpawnParams &params, Rectangle bounds) : ScriptingObject(params)
+UIXControl::UIXControl(/*const SpawnParams &params, */Rectangle bounds) : ScriptingObject(SpawnParams(Guid::New(), TypeInitializer))
 {
     _bounds = bounds;
     _offsets = UIXMargin(bounds.GetX(), bounds.GetWidth(), bounds.GetY(), bounds.GetHeight());
@@ -376,7 +376,7 @@ Float2 UIXControl::GetNavOrigin(UIXNavDirection direction)
     }
 }
 
-UIXControl* UIXControl::OnNavigate(UIXNavDirection direction, Float2 location, UIXControl* caller, Array<UIXControl*> &visited)
+UIXControl* UIXControl::OnNavigate(UIXNavDirection direction, Float2 location, UIXControl* caller, API_PARAM(Ref) Array<UIXControl*> &visited)
 {
     if (caller == _parent && GetAutoFocus() && GetVisible())
         return this;
@@ -783,7 +783,7 @@ void UIXControl::RemoveUpdateCallbacks(UIXRootControl *root)
 void UIXControl::SetUpdate(API_PARAM(ref) UpdateDelegate &onUpdate, const UpdateDelegate &value)
 {
 // TODO: if it's possible, change this to a check in contents?
-    if (&onUpdate == &value)
+    if (onUpdate == value)
         return;
     if (_root != nullptr && onUpdate.IsBinded())
         _root->UpdateCallbacksToRemove.Add(onUpdate);
@@ -1262,3 +1262,35 @@ void UIXControl::SetAnchorPreset(const UIXAnchorPresets &anchorPreset, bool pres
         }
     }
 }
+
+// Hack to check equality between bindings.
+bool operator==(const UIXControl::UpdateDelegate &a, const UIXControl::UpdateDelegate &b)
+{
+    if (a.Count() != b.Count())
+        return false;
+
+    Array<UIXControl::UpdateDelegate::FunctionType> abindings;
+    abindings.Resize(a.Count());
+    int tmp = a.GetBindings(abindings.Get(), abindings.Count());
+    Array<UIXControl::UpdateDelegate::FunctionType> bbindings;
+    bbindings.Resize(b.Count());
+    int tmp2 = b.GetBindings(bbindings.Get(), bbindings.Count());
+
+    if (tmp != tmp2)
+        return false;
+
+    for (int ax = 0, asiz = abindings.Count(); ax < asiz; ++ax)
+    {
+        bool found = false;
+        for (int bx = 0, bsiz = bbindings.Count(); bx < bsiz && !found; ++bx)
+        {
+            if (abindings[ax] == bbindings[bx])
+                found = true;
+        }
+        if (!found)
+            return false;
+    }
+
+    return true;
+}
+

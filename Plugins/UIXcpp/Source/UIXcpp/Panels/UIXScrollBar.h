@@ -215,7 +215,7 @@ public:
     /// <summary>
     /// The default size.
     /// </summary>
-    static int DefaultSize;
+    static float DefaultSize;
 
     /// <summary>
     /// The default minimum opacity.
@@ -238,7 +238,7 @@ protected:
     /// Initializes a new instance of the <see cref="ScrollBar"/> class.
     /// </summary>
     /// <param name="orientation">The UIXOrientation::</param>
-    UIXScrollBar(const SpawnParams &params, UIXOrientation orientation);
+    UIXScrollBar(/*const SpawnParams &params,*/ UIXOrientation orientation);
 
     /// <summary>
     /// Gets the size of the track.

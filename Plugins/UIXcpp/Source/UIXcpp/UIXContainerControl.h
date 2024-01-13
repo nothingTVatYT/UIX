@@ -14,20 +14,20 @@ public:
     /// <summary>
     /// Initializes a new instance of the <see cref="UIXContainerControl"/> class.
     /// </summary>
-    UIXContainerControl(const SpawnParams &params);
+    UIXContainerControl();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="UIXContainerControl"/> class.
     /// </summary>
-    UIXContainerControl(const SpawnParams &params, float x, float y, float width, float height);
+    UIXContainerControl(float x, float y, float width, float height);
 
     /// <summary>
     /// Initializes a new instance of the <see cref="UIXContainerControl"/> class.
     /// </summary>
-    UIXContainerControl(const SpawnParams &params, const Float2 &location, const Float2 &size);
+    UIXContainerControl(const Float2 &location, const Float2 &size);
 
     /// <inheritdoc />
-    UIXContainerControl(const SpawnParams &params, const Rectangle &bounds);
+    UIXContainerControl(const Rectangle &bounds);
 
     /// <summary>
     /// Gets child controls list
@@ -168,7 +168,7 @@ public:
     {
         // TODO: Fix with scripting object functions if needed.
         //auto type = typeof(T);
-        for (int i = 0; i < _children.Count; i++)
+        for (int i = 0; i < _children.Count(); i++)
         {
             //var ct = _children[i].GetType();
             //if (type.IsAssignableFrom(ct))
@@ -275,7 +275,7 @@ public:
 
     /// <inheritdoc />
     API_FUNCTION()
-    UIXControl* OnNavigate(UIXNavDirection direction, Float2 location, UIXControl* caller, Array<UIXControl*> &visited) override;
+    UIXControl* OnNavigate(UIXNavDirection direction, Float2 location, UIXControl* caller, API_PARAM(Ref) Array<UIXControl*> &visited) override;
 
     /// <inheritdoc />
     API_FUNCTION()
@@ -426,7 +426,7 @@ protected:
     /// <param name="rightMostLocation">Returns the rightmost location of the parent container for the raycast used by the child container</param>
     /// <returns>The target navigation control or null if didn't performed any navigation.</returns>
     API_FUNCTION()
-    virtual UIXControl* NavigationWrap(UIXNavDirection direction, const Float2 &location, Array<UIXControl*> &visited, API_PARAM(Out) Float2 &rightMostLocation);
+    virtual UIXControl* NavigationWrap(UIXNavDirection direction, const Float2 &location, API_PARAM(Ref) Array<UIXControl*> &visited, API_PARAM(Out) Float2 &rightMostLocation);
    
 
     /// <summary>
@@ -464,20 +464,17 @@ protected:
     /// <summary>
     /// The children collection.
     /// </summary>
-    API_FIELD(Attributes="NoSerialize,Readonly")
-    Array<UIXControl*> _children;
+    Array<UIXControl*> _children;  // API_FIELD(Attributes="NoSerialize,Readonly")
 
     /// <summary>
     /// The contains focus cached flag.
     /// </summary>
-    API_FIELD(Attributes="NoSerialize")
-    bool _containsFocus;
+    bool _containsFocus; // API_FIELD(Attributes="NoSerialize")
 
     /// <summary>
     /// The layout locking flag.
     /// </summary>
-    API_FIELD(Attributes="NoSerialize")
-    bool _isLayoutLocked;
+    bool _isLayoutLocked; //API_FIELD(Attributes="NoSerialize")
 
 private:
 

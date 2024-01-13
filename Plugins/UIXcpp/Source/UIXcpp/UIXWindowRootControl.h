@@ -195,7 +195,7 @@ protected:
 
 private:
 
-    /*internal*/ UIXWindowRootControl(const SpawnParams &params, Window *window);
+    /*internal*/ UIXWindowRootControl(Window *window);
 
     Window *_window;
     UIXControl *_focusedControl;

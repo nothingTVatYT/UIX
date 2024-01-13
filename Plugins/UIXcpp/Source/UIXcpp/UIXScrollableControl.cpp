@@ -2,7 +2,7 @@
 #include "Engine/Render2D/Render2D.h"
 
 
-UIXScrollableControl::UIXScrollableControl(const SpawnParams &params) : UIXContainerControl(params)
+UIXScrollableControl::UIXScrollableControl() : UIXContainerControl()
 {}
 
 void UIXScrollableControl::SetViewOffset(Float2 value)

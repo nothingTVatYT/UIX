@@ -9,7 +9,7 @@
 #include "Engine/Core/Log.h"
 
 
-UIXTooltip::UIXTooltip(const SpawnParams &params) : UIXContainerControl(params, 0, 0, 300, 24), _timeToShow(0.3f), _maxWidth(500.0f), _timeToPopupLeft(0.0f)
+UIXTooltip::UIXTooltip() : UIXContainerControl(0, 0, 300, 24), _timeToShow(0.3f), _maxWidth(500.0f), _timeToPopupLeft(0.0f)
 {
     SetVisible(false);
     SetAutoFocus(false);

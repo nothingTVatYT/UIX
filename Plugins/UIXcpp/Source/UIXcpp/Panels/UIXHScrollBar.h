@@ -22,7 +22,7 @@ public:
     /// <param name="y">The y position.</param>
     /// <param name="width">The width.</param>
     /// <param name="height">The height.</param>
-    UIXHScrollBar(const SpawnParams &params, UIXContainerControl *parent, float y, float width, float height = UIXScrollBar::DefaultSize);
+    UIXHScrollBar(/*const SpawnParams &params,*/ UIXContainerControl *parent, float y, float width, float height = UIXScrollBar::DefaultSize);
 
 protected:
     /// <inheritdoc />

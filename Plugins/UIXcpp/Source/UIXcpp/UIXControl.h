@@ -42,7 +42,7 @@ public:
     /// <summary>
     /// Initializes a new instance of the <see cref="Control"/> class.
     /// </summary>
-    UIXControl(const SpawnParams &params);
+    UIXControl();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Control"/> class.
@@ -51,20 +51,20 @@ public:
     /// <param name="y">Y coordinate</param>
     /// <param name="width">Width</param>
     /// <param name="height">Height</param>
-    UIXControl(const SpawnParams &params, float x, float y, float width, float height);
+    UIXControl(float x, float y, float width, float height);
         
     /// <summary>
     /// Initializes a new instance of the <see cref="Control"/> class.
     /// </summary>
     /// <param name="location">Upper left corner location.</param>
     /// <param name="size">Bounds size.</param>
-    UIXControl(const SpawnParams &params, Float2 location, Float2 size);
+    UIXControl(Float2 location, Float2 size);
 
     /// <summary>
     /// Init
     /// </summary>
     /// <param name="bounds">Window bounds</param>
-    UIXControl(const SpawnParams &params, Rectangle bounds);
+    UIXControl(Rectangle bounds);
 
     /// <summary>
     /// Action is invoked, when location is changed
@@ -381,7 +381,7 @@ public:
     /// <param name="visited">The list with visited controls. Used to skip recursive navigation calls when doing traversal across the UI hierarchy.</param>
     /// <returns>The target navigation control or nullptr if didn't performed any navigation.</returns>
     API_FUNCTION()
-    virtual UIXControl* OnNavigate(UIXNavDirection direction, Float2 location, UIXControl* caller, Array<UIXControl*> &visited);
+    virtual UIXControl* OnNavigate(UIXNavDirection direction, Float2 location, UIXControl* caller, API_PARAM(Ref)  Array<UIXControl*> &visited);
 
     /// <summary>
     /// Focuses the control by the UI navigation system. Called during navigating around UI with gamepad/keyboard navigation. Focuses the control and sets the <see cref="IsNavFocused"/> flag.
@@ -1394,3 +1394,5 @@ private:
     friend class UIXScrollableControl;
     friend class UIXPanel;
 };
+
+bool operator==(const UIXControl::UpdateDelegate &a, const UIXControl::UpdateDelegate &b);

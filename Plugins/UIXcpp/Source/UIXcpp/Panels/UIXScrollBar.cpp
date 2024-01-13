@@ -9,10 +9,10 @@
 
 
 
-int UIXScrollBar::DefaultSize = 14;
+float UIXScrollBar::DefaultSize = 14;
 float UIXScrollBar::DefaultMinimumOpacity = 0.75f;
 
-UIXScrollBar::UIXScrollBar(const SpawnParams &params, UIXOrientation orientation) : UIXControl(params), _orientation(orientation)
+UIXScrollBar::UIXScrollBar(/*const SpawnParams &params,*/ UIXOrientation orientation) : UIXControl(), _orientation(orientation)
 {
     SetAutoFocus(false);   
 }
