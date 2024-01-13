@@ -3,7 +3,7 @@
 #include "Engine/Core/Log.h"
 
 
-UIXWindowRootControl::UIXWindowRootControl(Window *window) : UIXRootControl()
+UIXWindowRootControl::UIXWindowRootControl(const SpawnParams &params, Window *window) : UIXRootControl(params)
 {
     _window = window;
     SetClipChildren(false);

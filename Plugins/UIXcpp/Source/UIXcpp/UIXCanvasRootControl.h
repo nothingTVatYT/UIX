@@ -173,7 +173,7 @@ private:
     /// Initializes a new instance of the <see cref="CanvasRootControl"/> class.
     /// </summary>
     /// <param name="canvas">The canvas.</param>
-    /*internal*/ UIXCanvasRootControl(UIXCanvas *canvas);
+    /*internal*/ UIXCanvasRootControl(const SpawnParams &params, UIXCanvas *canvas);
 
     bool SkipEvents() const { return !_canvas->ReceivesEvents() || !_canvas->IsVisible(); }
 

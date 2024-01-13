@@ -5,7 +5,7 @@
 #include "Engine/Level/Actors/Camera.h"
 
 
-UIXCanvasRootControl::UIXCanvasRootControl(UIXCanvas *canvas)
+UIXCanvasRootControl::UIXCanvasRootControl(const SpawnParams &params, UIXCanvas *canvas) : UIXRootControl(params)
 {
     _canvas = canvas;
 }

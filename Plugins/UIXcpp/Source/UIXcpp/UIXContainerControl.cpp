@@ -5,23 +5,23 @@
 #include "Engine/Core/Log.h"
 
 
-UIXContainerControl::UIXContainerControl() : UIXControl()
+UIXContainerControl::UIXContainerControl(const SpawnParams &params) : UIXControl(params)
 {
     _isLayoutLocked = true;
 }
 
-UIXContainerControl::UIXContainerControl(float x, float y, float width, float height)
-    : UIXControl(x, y, width, height), _isLayoutLocked(true)
+UIXContainerControl::UIXContainerControl(const SpawnParams &params, float x, float y, float width, float height)
+    : UIXControl(params, x, y, width, height), _isLayoutLocked(true)
 {
 }
 
-UIXContainerControl::UIXContainerControl(const Float2 &location, const Float2 &size)
-    : UIXControl(location, size), _isLayoutLocked(true)
+UIXContainerControl::UIXContainerControl(const SpawnParams &params, const Float2 &location, const Float2 &size)
+    : UIXControl(params, location, size), _isLayoutLocked(true)
 {
 }
 
-UIXContainerControl::UIXContainerControl(const Rectangle &bounds)
-    : UIXControl(bounds), _isLayoutLocked(true)
+UIXContainerControl::UIXContainerControl(const SpawnParams &params, const Rectangle &bounds)
+    : UIXControl(params, bounds), _isLayoutLocked(true)
 {
 }
 
