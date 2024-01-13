@@ -14,7 +14,7 @@ UIXCanvasContainer::UIXCanvasContainer()
     //_tickUpdate = true;
 
     SetAnchorPreset(UIXAnchorPresets::StretchAll);
-    SetOffsets(UIXMargin::Zero);
+    SetOffsets(New<UIXMargin>(0)); // TODO: Not having UIXMargin::Zero is very very annoying.
     SetAutoFocus(false);
 }
 

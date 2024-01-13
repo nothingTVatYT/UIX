@@ -2,6 +2,7 @@
 
 #include "Engine/Platform/Base/WindowBase.h"
 #include "Engine/Scripting/Script.h"
+#include "Engine/Core/Config.h"
 #include "Engine/Core/Math/Vector2.h"
 #include "Engine/Core/Math/Matrix3x3.h"
 #include "Engine/Core/Math/Rectangle.h"
@@ -931,13 +932,13 @@ public:
     /// Gets the offsets of the corners of the control relative to its anchors.
     /// </summary>
     API_PROPERTY(Attributes="Serialize, HideInEditor")
-    UIXMargin GetOffsets() const { return _offsets; }
+    UIXMargin* GetOffsets() { return &_offsets; }
 
     /// <summary>
     /// Sets the offsets of the corners of the control relative to its anchors.
     /// </summary>
     API_PROPERTY()
-    void SetOffsets(const UIXMargin &value);
+    void SetOffsets(const UIXMargin* value);
 
 #if FLAX_EDITOR
     /// <summary>

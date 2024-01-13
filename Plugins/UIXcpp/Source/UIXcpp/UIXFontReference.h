@@ -71,14 +71,14 @@ public:
     /// </summary>
     /// <returns>The bold font asset.</returns>
     API_FUNCTION()
-    UIXFontReference GetBold() const;
+    UIXFontReference* GetBold() const;
 
     /// <summary>
     /// Gets the italic font object described by the structure.
     /// </summary>
     /// <returns>The bold font asset.</returns>
     API_FUNCTION()
-    UIXFontReference GetItalic() const;
+    UIXFontReference* GetItalic() const;
 
     /// <summary>
     /// Determines whether the specified <see cref="FontReference" /> is equal to this instance.

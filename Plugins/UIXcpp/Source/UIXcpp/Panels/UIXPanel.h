@@ -6,13 +6,14 @@
 #include "UIXVScrollBar.h"
 #include "UIXHScrollBar.h"
 #include "Engine/Scripting/ScriptingObjectReference.h"
+#include "Engine/Core/Config.h"
 
 /// <summary>
 /// Panel UI control.
 /// </summary>
 /// <seealso cref="FlaxEngine.GUI.ScrollableControl" />
 API_CLASS()
-class UIXPanel : public UIXScrollableControl
+class UIXCPP_API UIXPanel : public UIXScrollableControl
 {
 public:
     /// <summary>
@@ -94,13 +95,13 @@ public:
     /// Gets or sets the scroll margin applies to the child controls area. Can be used to expand the scroll area bounds by adding a margin.
     /// </summary>
     API_PROPERTY(Attributes="EditorOrder(20), Tooltip(\"Scroll margin applies to the child controls area. Can be used to expand the scroll area bounds by adding a margin.\")")
-    UIXMargin GetScrollMargin() const { return _scrollMargin; }
+    UIXMargin* GetScrollMargin() { return &_scrollMargin; }
 
     /// <summary>
     /// Sets the scroll margin applies to the child controls area. Can be used to expand the scroll area bounds by adding a margin.
     /// </summary>
     API_PROPERTY()
-    void SetScrollMargin(UIXMargin value);
+    void SetScrollMargin(UIXMargin* value);
 
     /// <summary>
     /// Cuts the scroll bars value smoothing and imminently goes to the target scroll value.

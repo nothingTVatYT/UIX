@@ -322,7 +322,7 @@ void UIXCanvas::Setup()
         {
             // Fill the screen area
             _guiRoot->SetAnchorPreset(UIXAnchorPresets::StretchAll);
-            _guiRoot->SetOffsets(UIXMargin::Zero);
+            _guiRoot->SetOffsets(New<UIXMargin>(0));
             if (_renderer)
             {
                 //#if FLAX_EDITOR

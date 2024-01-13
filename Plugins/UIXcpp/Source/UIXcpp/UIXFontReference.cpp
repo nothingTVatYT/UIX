@@ -64,14 +64,14 @@ Font* UIXFontReference::GetFont() const
 }
 
 
-UIXFontReference UIXFontReference::GetBold() const
+UIXFontReference* UIXFontReference::GetBold() const
 {
-    return UIXFontReference( _font != nullptr ? _font->GetBold() : nullptr, _size);
+    return New<UIXFontReference>( _font != nullptr ? _font->GetBold() : nullptr, _size);
 }
 
-UIXFontReference UIXFontReference::GetItalic() const
+UIXFontReference* UIXFontReference::GetItalic() const
 {
-    return UIXFontReference(_font != nullptr ? _font->GetItalic() : nullptr, _size);
+    return New<UIXFontReference>(_font != nullptr ? _font->GetItalic() : nullptr, _size);
 }
 
 bool UIXFontReference::Equals(const UIXFontReference &other) const

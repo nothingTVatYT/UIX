@@ -102,11 +102,11 @@ void UIXPanel::SetAlwaysShowScrollbars(bool value)
         }
 }
 
-void UIXPanel::SetScrollMargin(UIXMargin value)
+void UIXPanel::SetScrollMargin(UIXMargin* value)
 {
-    if (_scrollMargin != value)
+    if (_scrollMargin != *value)
     {
-        _scrollMargin = value;
+        _scrollMargin = *value;
         PerformLayout();
     }
 }
