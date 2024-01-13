@@ -3,7 +3,6 @@
 #include "UIXRootControl.h"
 #include "UIXEnums.h"
 
-
 class UIXCanvas;
 
 /// <summary>
@@ -12,6 +11,7 @@ class UIXCanvas;
 /// <seealso cref="FlaxEngine.GUI.RootControl" />
 API_CLASS(Sealed, Attributes="HideInEditor") class UIXCPP_API UIXCanvasRootControl : public UIXRootControl
 {
+    friend UIXCanvas;
 //API_AUTO_SERIALIZATION();
 //DECLARE_SCRIPTING_TYPE(UIXCanvasRootControl);
 public:
@@ -174,6 +174,12 @@ private:
     /// </summary>
     /// <param name="canvas">The canvas.</param>
     /*internal*/ UIXCanvasRootControl(const SpawnParams &params, UIXCanvas *canvas);
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CanvasRootControl"/> class.
+    /// </summary>
+    /// <param name="canvas">The canvas.</param>
+    /*internal*/ UIXCanvasRootControl(UIXCanvas* canvas);
 
     bool SkipEvents() const { return !_canvas->ReceivesEvents() || !_canvas->IsVisible(); }
 

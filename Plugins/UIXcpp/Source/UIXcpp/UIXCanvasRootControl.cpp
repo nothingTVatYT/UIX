@@ -1,4 +1,5 @@
 ﻿#include "UIXCanvasRootControl.h"
+#include "UIXCanvas.h"
 #include "Engine/Core/Math/OrientedBoundingBox.h"
 #include "Engine/Core/Math/Matrix.h"
 #include "Engine/Input/Input.h"
@@ -8,6 +9,10 @@
 UIXCanvasRootControl::UIXCanvasRootControl(const SpawnParams &params, UIXCanvas *canvas) : UIXRootControl(params)
 {
     _canvas = canvas;
+}
+
+UIXCanvasRootControl::UIXCanvasRootControl(UIXCanvas* canvas) : UIXCanvasRootControl(SpawnParams(Guid::New(), TypeInitializer), canvas)
+{
 }
 
 bool UIXCanvasRootControl::Is2D() const
