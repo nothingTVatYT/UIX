@@ -1,23 +1,17 @@
 ﻿#include "UIXCanvas.h"
 
-UIXCanvas::UIXCanvas(const SpawnParams& params)
-    : Script(params)
+void UIXCanvas::SetRenderMode(UIXCanvasRenderMode value)
 {
-    // Enable ticking OnUpdate function
-    _tickUpdate = true;
-}
+    if (_renderMode != value)
+    {
+        auto previous = _renderMode;
 
-void UIXCanvas::OnEnable()
-{
-    // Here you can add code that needs to be called when script is enabled (eg. register for events)
-}
+        _renderMode = value;
 
-void UIXCanvas::OnDisable()
-{
-    // Here you can add code that needs to be called when script is disabled (eg. unregister from events)
-}
+        Setup();
 
-void UIXCanvas::OnUpdate()
-{
-    // Here you can add code that needs to be called every frame
+        // Reset size
+        if (previous == UIXCanvasRenderMode::ScreenSpace || (_renderMode == UIXCanvasRenderMode::WorldSpace || _renderMode == UIXCanvasRenderMode::WorldSpaceFaceCamera))
+            Size = new Float2(500, 500);
+    }
 }
