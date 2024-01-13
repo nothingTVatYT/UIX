@@ -3,6 +3,7 @@
 #include "UIXRootControl.h"
 #include "UIXWindowRootControl.h"
 #include "UIXTooltip.h"
+#include "Panels/UIXPanel.h"
 #include "Engine/Render2D/Render2D.h"
 #include "Engine/Core/Log.h"
 
@@ -394,8 +395,8 @@ void UIXControl::NavigationFocus()
         auto parent = GetParent();
         while (parent != nullptr)
         {
-            auto panel = dynamic_cast<Panel*>(parent);
-            if (panel != nullptr && ((panel->GetVScrollBar() != nullptr && panel->GetVScrollBar().GetEnabled()) || (panel->GetHScrollBar() != nullptr && panel->GetHScrollBar().GetEnabled())))
+            auto panel = dynamic_cast<UIXPanel*>(parent);
+            if (panel != nullptr && ((panel->VScrollBar != nullptr && panel->VScrollBar->GetEnabled()) || (panel->HScrollBar != nullptr && panel->HScrollBar->GetEnabled())))
             {
                 panel->ScrollViewTo(this);
                 break;

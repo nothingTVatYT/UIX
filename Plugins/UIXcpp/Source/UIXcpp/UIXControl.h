@@ -1388,4 +1388,6 @@ private:
 
     // To access internal functions
     friend class UIXContainerControl;
+    friend class UIXScrollableControl;
+    friend class UIXPanel;
 };
