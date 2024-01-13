@@ -191,13 +191,16 @@ void UIXCanvas::GetWorldMatrix(Vector3 viewOrigin, API_PARAM(Out) Matrix& world)
         else if (_renderMode == UIXCanvasRenderMode::WorldSpaceFaceCamera)
         {
             auto view = _editorTask.View;
-            Matrix::Translation(_guiRoot->GetWidth() * -0.5f, _guiRoot->GetHeight() * -0.5f, 0, out var m1);
-            Matrix::Scaling(transform.Scale, out var m2);
-            Matrix::Multiply(m1, m2, out var m3);
-            Quaternion::Euler(180, 180, 0, out var quat);
-            Matrix::RotationQuaternion(ref quat, m2);
+            Matrix m1;
+            Matrix::Translation(_guiRoot->GetWidth() * -0.5f, _guiRoot->GetHeight() * -0.5f, 0, m1);
+            Matrix m2;
+            Matrix::Scaling(transform.Scale, m2);
+            Matrix m3;
+            Matrix::Multiply(m1, m2, m3);
+            Quaternion quat = Quaternion::Euler(180, 180, 0);
+            Matrix::RotationQuaternion(quat, m2);
             Matrix::Multiply(m3, m2, m1);
-            m2 = Matrix::Transformation(Float3::One, Quaternion::FromDirection(-view.Direction), translation);
+            Matrix::Transformation(Float3::One, Quaternion::FromDirection(-view.Direction), translation, m2);
             Matrix::Multiply(m1, m2, world);
         }
         else if (_renderMode == UIXCanvasRenderMode::CameraSpace)
@@ -209,8 +212,10 @@ void UIXCanvas::GetWorldMatrix(Vector3 viewOrigin, API_PARAM(Out) Matrix& world)
             else
                 _guiRoot->SetSize(_editorTask.Viewport.Size);
             Matrix::Translation(_guiRoot->GetWidth() / -2.0f, _guiRoot->GetHeight() / -2.0f, 0, world);
-            Matrix::RotationYawPitchRoll(Math::Pi, Math::Pi, 0, out var tmp2);
-            Matrix::Multiply(world, tmp2, out var tmp1);
+            Matrix tmp1;
+            Matrix tmp2;
+            Matrix::RotationYawPitchRoll(PI, PI, 0, tmp2);
+            Matrix::Multiply(world, tmp2, tmp1);
             Float3 viewPos = view.Position - viewOrigin;
             auto viewRot = view.Direction != Float3::Up ? Quaternion::LookRotation(view.Direction, Float3::Up) : Quaternion::LookRotation(view.Direction, Float3::Right);
             auto viewUp = Float3::Up * viewRot;

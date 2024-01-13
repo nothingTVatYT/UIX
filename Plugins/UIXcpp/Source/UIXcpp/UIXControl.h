@@ -16,7 +16,7 @@ class UIXContainerControl;
 class UIXRootControl;
 class UIXWindowRootControl;
 class UIXTooltip;
-class DragData;
+//class DragData;
 
 /// <summary>
 /// Base class for all GUI controls
@@ -570,13 +570,13 @@ public:
     }
 
 
-    /// <summary>
+    /*/// <summary>
     /// Check if mouse dragging is over that item or its child items.
     /// </summary>
     API_PROPERTY()
-    virtual bool GetIsDragOver() { return _isDragOver; }
+    virtual bool GetIsDragOver() { return _isDragOver; }*/
 
-    /// <summary>
+    /*/// <summary>
     /// When mouse dragging enters control's area
     /// </summary>
     /// <param name="location">Mouse location in UIXControl Space</param>
@@ -588,9 +588,9 @@ public:
         // Set flag
         _isDragOver = true;
         return DragDropEffect::None;
-    }
+    }*/
 
-    /// <summary>
+    /*/// <summary>
     /// When mouse dragging moves over control's area
     /// </summary>
     /// <param name="location">Mouse location in UIXControl Space</param>
@@ -600,9 +600,9 @@ public:
     virtual DragDropEffect OnDragMove(Float2 location, const DragData &data)
     {
         return DragDropEffect::None;
-    }
+    }*/
 
-    /// <summary>
+    /*/// <summary>
     /// When mouse dragging drops on control's area
     /// </summary>
     /// <param name="location">Mouse location in UIXControl Space</param>
@@ -614,9 +614,9 @@ public:
         // Clear flag
         _isDragOver = false;
         return DragDropEffect::None;
-    }
+    }*/
 
-    /// <summary>
+    /*/// <summary>
     /// When mouse dragging leaves control's area
     /// </summary>
     API_FUNCTION(Attributes="NoAnimate")
@@ -624,14 +624,14 @@ public:
     {
         // Clear flag
         _isDragOver = false;
-    }
+    }*/
 
-    /// <summary>
+    /*/// <summary>
     /// Starts the drag and drop operation.
     /// </summary>
     /// <param name="data">The data.</param>
     API_FUNCTION(Attributes="NoAnimate")
-    virtual void DoDragDrop(const DragData &data);
+    virtual void DoDragDrop(const DragData &data);*/
 
     /// <summary>
     /// Gets the tooltip text.
@@ -1355,7 +1355,7 @@ private:
 
     // TODO: convert to flags
 
-    bool _isMouseOver, _isDragOver;
+    bool _isMouseOver;//, _isDragOver;
     bool _isVisible = true;
     bool _isEnabled = true;
     bool _autoFocus = true;

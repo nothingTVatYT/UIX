@@ -110,16 +110,16 @@ public:
     API_FUNCTION() bool OnCharInput(char c) override;
     
     /// <inheritdoc />
-    API_FUNCTION() DragDropEffect OnDragDrop(Float2 location, const DragData &data) override;
+    //API_FUNCTION() DragDropEffect OnDragDrop(Float2 location, const DragData &data) override;
 
     /// <inheritdoc />
-    API_FUNCTION() DragDropEffect OnDragEnter(Float2 location, const DragData &data) override;
+    //API_FUNCTION() DragDropEffect OnDragEnter(Float2 location, const DragData &data) override;
 
     /// <inheritdoc />
-    API_FUNCTION() void OnDragLeave() override;
+    //API_FUNCTION() void OnDragLeave() override;
 
     /// <inheritdoc />
-    API_FUNCTION() DragDropEffect OnDragMove(Float2 location, const DragData &data) override;
+    //API_FUNCTION() DragDropEffect OnDragMove(Float2 location, const DragData &data) override;
 
     /// <inheritdoc />
     API_FUNCTION() bool OnKeyDown(KeyboardKeys key) override;
@@ -167,7 +167,7 @@ public:
     API_FUNCTION() void Focus() override;
 
     /// <inheritdoc />
-    API_FUNCTION() void DoDragDrop(const DragData &data) override;
+    //API_FUNCTION() void DoDragDrop(const DragData &data) override;
 private:
     ///// <summary>
     ///// Initializes a new instance of the <see cref="CanvasRootControl"/> class.

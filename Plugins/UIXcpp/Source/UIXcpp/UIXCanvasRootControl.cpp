@@ -257,40 +257,40 @@ bool UIXCanvasRootControl::OnCharInput(char c)
 }
 
 
-DragDropEffect UIXCanvasRootControl::OnDragDrop(Float2 location, const DragData &data)
+/*DragDropEffect UIXCanvasRootControl::OnDragDrop(Float2 location, const DragData& data)
 {
     if (SkipEvents())
         return DragDropEffect::None;
 
     return UIXRootControl::OnDragDrop(location, data);
-}
+}*/
 
 
-DragDropEffect UIXCanvasRootControl::OnDragEnter(Float2 location, const DragData &data)
+/*DragDropEffect UIXCanvasRootControl::OnDragEnter(Float2 location, const DragData& data)
 {
     if (SkipEvents())
         return DragDropEffect::None;
 
     return UIXRootControl::OnDragEnter(location, data);
-}
+}*/
 
 
-void UIXCanvasRootControl::OnDragLeave()
+/*void UIXCanvasRootControl::OnDragLeave()
 {
     if (SkipEvents())
         return;
 
     UIXRootControl::OnDragLeave();
 }
+*/
 
-
-DragDropEffect UIXCanvasRootControl::OnDragMove(Float2 location, const DragData &data)
+/* DragDropEffect UIXCanvasRootControl::OnDragMove(Float2 location, const DragData& data)
 {
     if (SkipEvents())
         return DragDropEffect::None;
 
     return UIXRootControl::OnDragMove(location, data);
-}
+}*/
 
 
 bool UIXCanvasRootControl::OnKeyDown(KeyboardKeys key)
@@ -427,7 +427,7 @@ void UIXCanvasRootControl::Focus()
 }
 
 
-void UIXCanvasRootControl::DoDragDrop(const DragData &data)
+/*void UIXCanvasRootControl::DoDragDrop(const DragData& data)
 {
 }
-
+*/

@@ -279,8 +279,8 @@ void UIXControl::ClearState()
     Defocus();
     if (_isMouseOver)
         OnMouseLeave();
-    if (_isDragOver)
-        OnDragLeave();
+    /*if (_isDragOver)
+        OnDragLeave();*/
     while (/*_touchOvers != nullptr && */_touchOvers.Count() != 0)
         OnTouchLeave(_touchOvers[0]);
 }
@@ -516,7 +516,7 @@ bool UIXControl::OnMouseDoubleClick(Float2 location, MouseButton button)
 }
 
 
-void UIXControl::DoDragDrop(const DragData &data)
+/*void UIXControl::DoDragDrop(const DragData& data)
 {
     // Hide tooltip
     auto tt = GetTooltip();
@@ -525,7 +525,7 @@ void UIXControl::DoDragDrop(const DragData &data)
     auto r = GetRoot();
     if (r != nullptr)
         r->DoDragDrop(data);
-}
+}*/
 
 UIXTooltip* UIXControl::GetTooltip() const
 {

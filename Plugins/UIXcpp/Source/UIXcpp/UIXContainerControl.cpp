@@ -897,7 +897,7 @@ void UIXContainerControl::OnKeyUp(KeyboardKeys key)
     }
 }
 
-DragDropEffect UIXContainerControl::OnDragEnter(Float2 location, const DragData &data)
+/*DragDropEffect UIXContainerControl::OnDragEnter(Float2 location, const DragData& data)
 {
     // Base
     DragDropEffect result = UIXControl::OnDragEnter(location, data);
@@ -920,9 +920,9 @@ DragDropEffect UIXContainerControl::OnDragEnter(Float2 location, const DragData 
     }
 
     return result;
-}
+}*/
 
-DragDropEffect UIXContainerControl::OnDragMove(Float2 location, const DragData &data)
+/*DragDropEffect UIXContainerControl::OnDragMove(Float2 location, const DragData& data)
 {
     // Base
     DragDropEffect result = UIXControl::OnDragMove(location, data);
@@ -960,9 +960,9 @@ DragDropEffect UIXContainerControl::OnDragMove(Float2 location, const DragData &
     }
 
     return result;
-}
+}*/
 
-void UIXContainerControl::OnDragLeave()
+/*void UIXContainerControl::OnDragLeave()
 {
     // Base
     UIXControl::OnDragLeave();
@@ -977,9 +977,9 @@ void UIXContainerControl::OnDragLeave()
             child->OnDragLeave();
         }
     }
-}
+}*/
 
-DragDropEffect UIXContainerControl::OnDragDrop(Float2 location, const DragData &data)
+/*DragDropEffect UIXContainerControl::OnDragDrop(Float2 location, const DragData& data)
 {
     // Base
     DragDropEffect result = UIXControl::OnDragDrop(location, data);
@@ -1002,7 +1002,7 @@ DragDropEffect UIXContainerControl::OnDragDrop(Float2 location, const DragData &
     }
 
     return result;
-}
+}*/
 
 void UIXContainerControl::ChangeChildIndex(UIXControl *child, int newIndex)
 {

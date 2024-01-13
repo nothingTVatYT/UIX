@@ -120,7 +120,7 @@ API_ENUM(Attributes="Flags") enum class UIXScrollBars
     Both = Horizontal | Vertical
 };
 
-/// <summary>
+/*/// <summary>
 /// The drag item positioning modes.
 /// </summary>
 API_ENUM() enum class UIXDragItemPositioning
@@ -144,7 +144,7 @@ API_ENUM() enum class UIXDragItemPositioning
     /// Below the item (near the bottom/right edge)
     /// </summary>
     Below
-};
+};*/
 
 /// <summary>
 /// Specifies the orientation of controls or elements of controls

@@ -374,21 +374,21 @@ public:
     API_FUNCTION()
     void OnKeyUp(KeyboardKeys key) override;
 
-    /// <inheritdoc />
+    /*/// <inheritdoc />
     API_FUNCTION()
-    DragDropEffect OnDragEnter(Float2 location, const DragData &data) override;
+    DragDropEffect OnDragEnter(Float2 location, const DragData &data) override;*/
 
-    /// <inheritdoc />
+    /*/// <inheritdoc />
     API_FUNCTION()
-    DragDropEffect OnDragMove(Float2 location, const DragData &data) override;
+    DragDropEffect OnDragMove(Float2 location, const DragData &data) override;*/
 
-    /// <inheritdoc />
+    /*/// <inheritdoc />
     API_FUNCTION()
-    void OnDragLeave() override;
+    void OnDragLeave() override;*/
 
-    /// <inheritdoc />
+    /*/// <inheritdoc />
     API_FUNCTION()
-    DragDropEffect OnDragDrop(Float2 location, const DragData &data) override;
+    DragDropEffect OnDragDrop(Float2 location, const DragData &data) override;*/
 
 
 protected:

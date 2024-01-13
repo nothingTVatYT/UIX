@@ -453,6 +453,7 @@ void UIXPanel::GetDesireClientArea(API_PARAM(Out) Rectangle &rect) const
     }
 }
 
+/*
 DragDropEffect UIXPanel::OnDragMove(Float2 location, const DragData &data)
 {
     DragDropEffect result = UIXScrollableControl::OnDragMove(location, data);
@@ -505,3 +506,4 @@ DragDropEffect UIXPanel::OnDragMove(Float2 location, const DragData &data)
 
     return result;
 }
+*/

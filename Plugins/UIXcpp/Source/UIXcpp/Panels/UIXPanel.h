@@ -179,7 +179,7 @@ protected:
     API_FUNCTION() void GetDesireClientArea(API_PARAM(Out) Rectangle &rect) const override;
 
     /// <inheritdoc />
-    API_FUNCTION() DragDropEffect OnDragMove(Float2 location, const DragData &data) override;
+    // API_FUNCTION() DragDropEffect OnDragMove(Float2 location, const DragData &data) override;
 private:
     /*internal*/ void SetViewOffset(UIXOrientation orientation, float value);
 

@@ -2,7 +2,7 @@
 
 #include "Engine/Scripting/Script.h"
 
-API_CLASS() class DragData : public Object
+/*API_CLASS() class DragData : public Object
 {
 
-};
+};*/
