@@ -2,24 +2,26 @@
 #include "UIXWindowRootControl.h"
 #include "Engine/Core/Collections/Sorting.h"
 #include "Engine/Render2D/Render2D.h"
+#include "Engine/Core/Log.h"
 
-UIXContainerControl::UIXContainerControl() : UIXControl()
+
+UIXContainerControl::UIXContainerControl(const SpawnParams &params) : UIXControl(params)
 {
     _isLayoutLocked = true;
 }
 
-UIXContainerControl::UIXContainerControl(float x, float y, float width, float height)
-    : UIXControl(x, y, width, height), _isLayoutLocked(true)
+UIXContainerControl::UIXContainerControl(const SpawnParams &params, float x, float y, float width, float height)
+    : UIXControl(params, x, y, width, height), _isLayoutLocked(true)
 {
 }
 
-UIXContainerControl::UIXContainerControl(const Float2 &location, const Float2 &size)
-    : UIXControl(location, size), _isLayoutLocked(true)
+UIXContainerControl::UIXContainerControl(const SpawnParams &params, const Float2 &location, const Float2 &size)
+    : UIXControl(params, location, size), _isLayoutLocked(true)
 {
 }
 
-UIXContainerControl::UIXContainerControl(const Rectangle &bounds)
-    : UIXControl(bounds), _isLayoutLocked(true)
+UIXContainerControl::UIXContainerControl(const SpawnParams &params, const Rectangle &bounds)
+    : UIXControl(params, bounds), _isLayoutLocked(true)
 {
 }
 
@@ -79,9 +81,15 @@ void UIXContainerControl::DisposeChildren()
 void UIXContainerControl::RemoveChild(UIXControl *child)
 {
     if (child == nullptr)
-        throw new ArgumentNullException();
+    {
+        LOG(Error, "ArgumentNullException: Child to remove from container is null.");
+        return;
+    }
     if (child->GetParent() != this)
-        throw new InvalidOperationException("Argument child cannot be removed, if current container is not its parent.");
+    {
+        LOG(Error, "ArgumentNullException: Argument child cannot be removed, if current container is not its parent.");
+        return;
+    }
 
     // Unlink
     child->SetParent(nullptr);
@@ -136,7 +144,7 @@ UIXControl* UIXContainerControl::GetChildAt(Float2 point, Function<bool(UIXContr
 {
     if (isValid == nullptr)
     {
-        Log::ArgumentNullException(nameof(isValid));
+        LOG(Error, "ArgumentNullException: Null delegate for getting child validity.");
         return nullptr;
     }
     UIXControl *result = nullptr;
@@ -237,7 +245,7 @@ void UIXContainerControl::AddChildInternal(UIXControl *child)
     ASSERT(child != nullptr, "Invalid control.");
     if (GetParent() == child)
     {
-        Log::InvalidOperationException();
+        LOG(Error, "InvalidOperationException: Child to add to container is parent of container");
         return;
     }
 

@@ -39,7 +39,7 @@ public:
     /// <summary>
     /// Initializes a new instance of the <see cref="Control"/> class.
     /// </summary>
-    UIXControl();
+    UIXControl(const SpawnParams &params);
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Control"/> class.
@@ -48,20 +48,20 @@ public:
     /// <param name="y">Y coordinate</param>
     /// <param name="width">Width</param>
     /// <param name="height">Height</param>
-    UIXControl(float x, float y, float width, float height);
+    UIXControl(const SpawnParams &params, float x, float y, float width, float height);
         
     /// <summary>
     /// Initializes a new instance of the <see cref="Control"/> class.
     /// </summary>
     /// <param name="location">Upper left corner location.</param>
     /// <param name="size">Bounds size.</param>
-    UIXControl(Float2 location, Float2 size);
+    UIXControl(const SpawnParams &params, Float2 location, Float2 size);
 
     /// <summary>
     /// Init
     /// </summary>
     /// <param name="bounds">Window bounds</param>
-    UIXControl(Rectangle bounds);
+    UIXControl(const SpawnParams &params, Rectangle bounds);
 
     /// <summary>
     /// Action is invoked, when location is changed
@@ -1388,4 +1388,6 @@ private:
 
     // To access internal functions
     friend class UIXContainerControl;
+    friend class UIXScrollableControl;
+    friend class UIXPanel;
 };

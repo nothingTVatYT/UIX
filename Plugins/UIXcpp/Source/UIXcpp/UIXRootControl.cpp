@@ -4,7 +4,7 @@
 UIXContainerControl *UIXRootControl::_gameRoot = nullptr;
 UIXCanvasContainer *UIXRootControl::_canvasContainer = New<UIXCanvasContainer>();
 
-UIXRootControl::UIXRootControl() : UIXContainerControl(0, 0, 100, 60), UpdateCallbacks(1024)
+UIXRootControl::UIXRootControl(const SpawnParams &params) : UIXContainerControl(params, 0, 0, 100, 60), UpdateCallbacks(1024)
 {
     SetAutoFocus(false);
 }

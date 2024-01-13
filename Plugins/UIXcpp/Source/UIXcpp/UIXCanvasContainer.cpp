@@ -4,6 +4,8 @@
 #include "Engine/Graphics/RenderTask.h"
 #include "Engine/Core/Collections/Sorting.h"
 #include "Engine/Core/Math/Ray.h"
+#include "Engine/Graphics/RenderTask.h"
+#include "Engine/Graphics/RenderView.h"
 
 UIXCanvasContainer::UIXCanvasContainer(const SpawnParams& params)
     : UIXContainerControl(params)
@@ -32,7 +34,7 @@ void UIXCanvasContainer::SortCanvases()
 
 int UIXCanvasContainer::SortCanvas(UIXControl *a, UIXControl *b)
 {
-    return ((UIXCanvasRootControl*)a)->GetCanvas().Order - ((UIXCanvasRootControl*)b)->GetCanvas().Order;
+    return ((UIXCanvasRootControl*)a)->GetCanvas()->Order - ((UIXCanvasRootControl*)b)->GetCanvas()->Order;
 }
 
 void UIXCanvasContainer::OnChildrenChanged()
@@ -44,7 +46,7 @@ void UIXCanvasContainer::OnChildrenChanged()
 void UIXCanvasContainer::DrawChildren()
 {
     // Draw all screen space canvases
-    auto layerMask = MainRenderTask::Instance != nullptr ? MainRenderTask::Instance->ViewLayersMask :: LayersMask();
+    auto layerMask = MainRenderTask::Instance != nullptr ? MainRenderTask::Instance->View.RenderLayersMask /*ViewLayersMask*/ : LayersMask();
     Array<UIXControl*> &children = GetChildren();
     for (int i = 0; i < children.Count(); i++)
     {
@@ -78,7 +80,7 @@ void UIXCanvasContainer::OnMouseEnter(Float2 location)
     for (int i = children.Count() - 1; i >= 0 && children.Count() > 0; i--)
     {
         UIXCanvasRootControl* child = (UIXCanvasRootControl*)children[i];
-        if (child->GetVisible() && child->GetEnabled() && child->Is3D && layerMask.HasLayer(child->GetCanvas()->GetLayer()))
+        if (child->GetVisible() && child->GetEnabled() && child->Is3D() && layerMask.HasLayer(child->GetCanvas()->GetLayer()))
         {
             Float2 childLocation;
             if (child->Intersects3D(ray, childLocation))
@@ -103,15 +105,15 @@ void UIXCanvasContainer::OnMouseMove(Float2 location)
     for (int i = children.Count() - 1; i >= 0 && children.Count() > 0; i--)
     {
         UIXCanvasRootControl* child = (UIXCanvasRootControl*)children[i];
-        if (child->GetVisible() && child->GetEnabled() && layerMask.HasLayer(child->Canvas.Layer))
+        if (child->GetVisible() && child->GetEnabled() && layerMask.HasLayer(child->GetCanvas()->Layer))
         {
             // Fire events
-            if (child->Is2D)
+            if (child->Is2D())
             {
                 Float2 childLocation;
                 if (IntersectsChildContent(child, location, childLocation))
                 {
-                    if (child->IsMouseOver)
+                    if (child->GetIsMouseOver())
                     {
                         // Move
                         child->OnMouseMove(childLocation);
@@ -122,7 +124,7 @@ void UIXCanvasContainer::OnMouseMove(Float2 location)
                         child->OnMouseEnter(childLocation);
                     }
                 }
-                else if (child->IsMouseOver)
+                else if (child->GetIsMouseOver())
                 {
                     // Leave
                     child->OnMouseLeave();
@@ -146,7 +148,7 @@ void UIXCanvasContainer::OnMouseMove(Float2 location)
                         child->OnMouseEnter(childLocation);
                     }
                 }
-                else if (child->IsMouseOver)
+                else if (child->GetIsMouseOver())
                 {
                     // Leave
                     child->OnMouseLeave();
@@ -168,10 +170,11 @@ bool UIXCanvasContainer::OnMouseWheel(Float2 location, float delta)
 
     // Test 3D
     LayersMask layerMask = MainRenderTask::Instance != nullptr ? MainRenderTask::Instance->View.RenderLayersMask /*ViewLayersMask*/ : LayersMask();
+    Array<UIXControl*> &children = GetChildren();
     for (int i = children.Count()- 1; i >= 0 && children.Count()> 0; i--)
     {
         UIXCanvasRootControl* child = (UIXCanvasRootControl*)children[i];
-        if (child->GetVisible() && child->GetEnabled() && child->Is3D && layerMask.HasLayer(child->Canvas.Layer))
+        if (child->GetVisible() && child->GetEnabled() && child->Is3D() && layerMask.HasLayer(child->GetCanvas()->Layer))
         {
             Float2 childLocation;
             if (child->Intersects3D(ray, childLocation))
@@ -201,7 +204,7 @@ bool UIXCanvasContainer::OnMouseDown(Float2 location, MouseButton button)
     for (int i = children.Count() - 1; i >= 0 && children.Count() > 0; i--)
     {
         UIXCanvasRootControl* child = (UIXCanvasRootControl*)children[i];
-        if (child->GetVisible() && child->GetEnabled() && child->Is3D && layerMask.HasLayer(child->Canvas.Layer))
+        if (child->GetVisible() && child->GetEnabled() && child->Is3D() && layerMask.HasLayer(child->GetCanvas()->Layer))
         {
             Float2 childLocation;
             if (child->Intersects3D(ray, childLocation))
@@ -222,14 +225,16 @@ bool UIXCanvasContainer::OnMouseUp(Float2 location, MouseButton button)
         return true;
 
     // Calculate 3D mouse ray
-    UIXCanvas::CalculateRay(location, out Ray ray);
+    Ray ray;
+    UIXCanvas::CalculateRay(location, ray);
 
     // Test 3D
     LayersMask layerMask = MainRenderTask::Instance != nullptr ? MainRenderTask::Instance->View.RenderLayersMask /*ViewLayersMask*/ : LayersMask();
+    Array<UIXControl*> &children = GetChildren();
     for (int i = children.Count() - 1; i >= 0 && children.Count() > 0; i--)
     {
         UIXCanvasRootControl* child = (UIXCanvasRootControl*)children[i];
-        if (child->GetVisible() && child->GetEnabled() && child->Is3D && layerMask.HasLayer(child->Canvas.Layer))
+        if (child->GetVisible() && child->GetEnabled() && child->Is3D() && layerMask.HasLayer(child->GetCanvas()->Layer))
         {
             Float2 childLocation;
             if (child->Intersects3D(ray, childLocation))
@@ -259,7 +264,7 @@ bool UIXCanvasContainer::OnMouseDoubleClick(Float2 location, MouseButton button)
     for (int i = children.Count() - 1; i >= 0 && children.Count() > 0; i--)
     {
         UIXCanvasRootControl* child = (UIXCanvasRootControl*)children[i];
-        if (child->GetVisible() && child->GetEnabled() && child->Is3D && layerMask.HasLayer(child->Canvas.Layer))
+        if (child->GetVisible() && child->GetEnabled() && child->Is3D() && layerMask.HasLayer(child->GetCanvas()->Layer))
         {
             Float2 childLocation;
             if (child->Intersects3D(ray, childLocation))

@@ -3,11 +3,12 @@
 #include "UIXRootControl.h"
 #include "UIXWindowRootControl.h"
 #include "UIXTooltip.h"
+#include "Panels/UIXPanel.h"
 #include "Engine/Render2D/Render2D.h"
 #include "Engine/Core/Log.h"
 
 
-UIXControl::UIXControl()
+UIXControl::UIXControl(const SpawnParams &params) : ScriptingObject(params)
 {
     _bounds = Rectangle(_offsets.Left, _offsets.Top, _offsets.Right, _offsets.Bottom);
     UpdateTransform();
@@ -22,7 +23,7 @@ UIXControl::UIXControl()
 /// <param name="y">Y coordinate</param>
 /// <param name="width">Width</param>
 /// <param name="height">Height</param>
-UIXControl::UIXControl(float x, float y, float width, float height) : UIXControl(Rectangle(x, y, width, height))
+UIXControl::UIXControl(const SpawnParams &params, float x, float y, float width, float height) : UIXControl(params, Rectangle(x, y, width, height))
 {
 }
 
@@ -31,11 +32,11 @@ UIXControl::UIXControl(float x, float y, float width, float height) : UIXControl
 /// </summary>
 /// <param name="location">Upper left corner location.</param>
 /// <param name="size">Bounds size.</param>
-UIXControl::UIXControl(Float2 location, Float2 size) : UIXControl(Rectangle(location, size))
+UIXControl::UIXControl(const SpawnParams &params, Float2 location, Float2 size) : UIXControl(params, Rectangle(location, size))
 {
 }
 
-UIXControl::UIXControl(Rectangle bounds)
+UIXControl::UIXControl(const SpawnParams &params, Rectangle bounds) : ScriptingObject(params)
 {
     _bounds = bounds;
     _offsets = UIXMargin(bounds.GetX(), bounds.GetWidth(), bounds.GetY(), bounds.GetHeight());
@@ -394,8 +395,8 @@ void UIXControl::NavigationFocus()
         auto parent = GetParent();
         while (parent != nullptr)
         {
-            auto panel = dynamic_cast<Panel*>(parent);
-            if (panel != nullptr && ((panel->GetVScrollBar() != nullptr && panel->GetVScrollBar().GetEnabled()) || (panel->GetHScrollBar() != nullptr && panel->GetHScrollBar().GetEnabled())))
+            auto panel = dynamic_cast<UIXPanel*>(parent);
+            if (panel != nullptr && ((panel->VScrollBar != nullptr && panel->VScrollBar->GetEnabled()) || (panel->HScrollBar != nullptr && panel->HScrollBar->GetEnabled())))
             {
                 panel->ScrollViewTo(this);
                 break;

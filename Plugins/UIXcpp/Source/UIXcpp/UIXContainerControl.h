@@ -15,20 +15,20 @@ public:
     /// <summary>
     /// Initializes a new instance of the <see cref="UIXContainerControl"/> class.
     /// </summary>
-    UIXContainerControl();
+    UIXContainerControl(const SpawnParams &params);
 
     /// <summary>
     /// Initializes a new instance of the <see cref="UIXContainerControl"/> class.
     /// </summary>
-    UIXContainerControl(float x, float y, float width, float height);
+    UIXContainerControl(const SpawnParams &params, float x, float y, float width, float height);
 
     /// <summary>
     /// Initializes a new instance of the <see cref="UIXContainerControl"/> class.
     /// </summary>
-    UIXContainerControl(const Float2 &location, const Float2 &size);
+    UIXContainerControl(const SpawnParams &params, const Float2 &location, const Float2 &size);
 
     /// <inheritdoc />
-    UIXContainerControl(const Rectangle &bounds);
+    UIXContainerControl(const SpawnParams &params, const Rectangle &bounds);
 
     /// <summary>
     /// Gets child controls list

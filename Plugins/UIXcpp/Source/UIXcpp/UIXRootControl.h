@@ -158,7 +158,7 @@ protected:
     /// <summary>
     /// Initializes a new instance of the <see cref="RootControl"/> class.
     /// </summary>
-    UIXRootControl();
+    UIXRootControl(const SpawnParams &params);
         
 private:
     /// <summary>
