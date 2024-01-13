@@ -6,7 +6,8 @@
 #include "Engine/Render2D/Render2D.h"
 #include "Engine/Render2D/Font.h"
 #include "Engine/Render2D/TextLayoutOptions.h"
-#include <algorithm>
+#include "Engine/Core/Log.h"
+
 
 UIXTooltip::UIXTooltip() : UIXContainerControl(0, 0, 300, 24), _timeToShow(0.3f), _maxWidth(500.0f), _timeToPopupLeft(0.0f)
 {
@@ -18,7 +19,10 @@ UIXTooltip::UIXTooltip() : UIXContainerControl(0, 0, 300, 24), _timeToShow(0.3f)
 void UIXTooltip::Show(UIXControl *target, const Float2 &location, const Rectangle &targetArea)
 {
     if (target == nullptr)
-        throw new ArgumentNullException();
+    {
+        LOG(Error, "ArgumentNullException: Target for showing tooltip is null.");
+        return;
+    }
 
     // Ensure to be closed
     Hide();
@@ -62,7 +66,10 @@ void UIXTooltip::Show(UIXControl *target, const Float2 &location, const Rectangl
     desc.ShowAfterFirstPaint = true;
     _window = Platform::CreateWindow(desc);
     if (_window == nullptr)
-        throw new InvalidOperationException("Failed to create tooltip window.");
+    {
+        LOG(Error, "InvalidOperationException: Failed to create tooltip window.");
+        return;
+    }
 
     // Attach to the window and focus
     // TODO: this is used with platform windows, not game window. It's hardcoded to
@@ -228,7 +235,7 @@ void UIXTooltip::PerformLayoutBeforeChildren()
         for (int i = 0; i < items.Count(); i++)
         {
             FontLineCache &item = items[i];
-            size.X = std::max(size.X, item.Size.X + 8.0f);
+            size.X = size.X > item.Size.X + 8.0f ? size.X : item.Size.X + 8.0f;
             size.Y += item.Size.Y;
         }
         //size.X += style->FontMedium.MeasureText(_currentText).X;

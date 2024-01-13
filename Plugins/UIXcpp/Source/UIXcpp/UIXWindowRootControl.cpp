@@ -1,5 +1,7 @@
 #include "UIXWindowRootControl.h"
 #include "UIXStyle.h"
+#include "Engine/Core/Log.h"
+
 
 UIXWindowRootControl::UIXWindowRootControl(Window *window) : UIXRootControl()
 {
@@ -126,7 +128,10 @@ void UIXWindowRootControl::SetMousePosition(Float2 value)
 void UIXWindowRootControl::StartTrackingMouse(UIXControl *control, bool useMouseScreenOffset)
 {
     if (control == nullptr)
-        throw new ArgumentNullException();
+    {
+        LOG(Error, "ArgumentNullException: Control for mouse tracking is null.");
+        return;
+    }
     if (_trackingControl == control)
         return;
 
