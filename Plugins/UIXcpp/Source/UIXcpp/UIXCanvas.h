@@ -258,21 +258,31 @@ public:
         return _guiRoot;
     }
 
-    // TODO: Navigation.
-    /*
     /// <summary>
     /// The delay (in seconds) before a navigation input event starts repeating if input control is held down (Input Action mode is set to Pressing).
     /// </summary>
-    [EditorOrder(505), EditorDisplay("Navigation", "Input Repeat Delay")]
-    [Tooltip("TheThe delay (in seconds) before a navigation input event starts repeating if input control is held down (Input Action mode is set to Pressing).")]
-    public float NavigationInputRepeatDelay{ get; set; } = 0.5f;
+    API_PROPERTY(Attributes="EditorOrder(505), EditorDisplay(\"Navigation\", \"Input Repeat Delay\"),Tooltip(\"TheThe delay (in seconds) before a navigation input event starts repeating if input control is held down (Input Action mode is set to Pressing).\")")
+    FORCE_INLINE float GetNavigationInputRepeatDelay() const { return _navigationInputRepeatDelay; }
+    /// <summary>
+    /// The delay (in seconds) before a navigation input event starts repeating if input control is held down (Input Action mode is set to Pressing).
+    /// </summary>
+    API_PROPERTY()
+    void SetNavigationInputRepeatDelay(float value) { _navigationInputRepeatDelay = value; }
 
     /// <summary>
     /// The delay (in seconds) between successive repeated navigation input events after the first one.
     /// </summary>
-    [EditorOrder(506), EditorDisplay("Navigation", "Input Repeat Rate")]
-    [Tooltip("The delay (in seconds) between successive repeated navigation input events after the first one.")]
-    public float NavigationInputRepeatRate{ get; set; } = 0.05f;
+    API_PROPERTY(Attributes="EditorOrder(506), EditorDisplay(\"Navigation\", \"Input Repeat Rate\"), Tooltip(\"The delay (in seconds) between successive repeated navigation input events after the first one.\")")
+    FORCE_INLINE float GetNavigationInputRepeatRate() const { return _NavigationInputRepeatRate; }
+    /// <summary>
+    /// The delay (in seconds) between successive repeated navigation input events after the first one.
+    /// </summary>
+    API_PROPERTY()
+    void SetNavigationInputRepeatRate(float value) { _NavigationInputRepeatRate = value; }
+
+
+    // TODO: Navigation.
+    /*
 
     /// <summary>
     /// The input action for performing UI navigation Up (from Input Settings).
@@ -441,6 +451,12 @@ private:
     Camera* _renderCamera;
     float _distance;
 
+    float _navigationInputRepeatDelay = 0.5f;
+    float _NavigationInputRepeatRate = 0.5f;
+
+
+
+    friend class UIXCanvasRootControl;
 
     /*
 

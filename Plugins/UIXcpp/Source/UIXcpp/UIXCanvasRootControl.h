@@ -181,7 +181,7 @@ private:
     /// <param name="canvas">The canvas.</param>
     /*internal*/ UIXCanvasRootControl(UIXCanvas* canvas);
 
-    bool SkipEvents() const { return !_canvas->ReceivesEvents() || !_canvas->IsVisible(); }
+    bool SkipEvents() const { return !_canvas->GetReceivesEvents() || !_canvas->IsVisible(); }
 
     void UpdateNavigation(float deltaTime, String actionName, UIXNavDirection direction, API_PARAM(Ref) float &heldTime, API_PARAM(Ref) float &rateTime);
     // Changed from C# that used a delegate as last parameter to call a function only found in this class. It now directly calls the function.

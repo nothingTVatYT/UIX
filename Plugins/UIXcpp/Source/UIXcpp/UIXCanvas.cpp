@@ -96,7 +96,6 @@ UIXCanvas::~UIXCanvas()
         //Scripting::Update -= OnUpdate;
 
         // C# and C++ ticking at different places. This should work (until proven wrong)
-        GetScene()->Ticking.Update.AddScript<UIXCanvas, &UIXCanvas::OnUpdate>(this);
         GetScene()->Ticking.Update.RemoveTick(this);
     }
 }
@@ -321,7 +320,9 @@ void UIXCanvas::Setup()
             if (_isRegisteredForTick)
             {
                 _isRegisteredForTick = false;
-                Scripting.Update -= OnUpdate;
+
+                //Scripting.Update -= OnUpdate;
+                GetScene()->Ticking.Update.RemoveTick(this);
             }
             break;
         }
@@ -364,7 +365,9 @@ void UIXCanvas::Setup()
             if (!_isRegisteredForTick)
             {
                 _isRegisteredForTick = true;
-                Scripting.Update += OnUpdate;
+
+                GetScene()->Ticking.Update.Addcript<UIXCanvas, &UIXCanvas::OnUpdate>(this);
+                //Scripting.Update += OnUpdate;
             }
             break;
         }
@@ -450,7 +453,8 @@ void UIXCanvas::EndPlay()
     if (_isRegisteredForTick)
     {
         _isRegisteredForTick = false;
-        Scripting.Update -= OnUpdate;
+        //Scripting.Update -= OnUpdate;
+        GetScene()->Ticking.Update.RemoveTick(this);
     }
 
     if (_renderer)

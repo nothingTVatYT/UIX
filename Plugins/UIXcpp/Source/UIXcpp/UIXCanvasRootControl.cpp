@@ -17,12 +17,12 @@ UIXCanvasRootControl::UIXCanvasRootControl(UIXCanvas* canvas) : UIXCanvasRootCon
 
 bool UIXCanvasRootControl::Is2D() const
 {
-    return _canvas->RenderMode == CanvasRenderMode::ScreenSpace;
+    return _canvas->GetRenderMode() == UIXCanvasRenderMode::ScreenSpace;
 }
 
 bool UIXCanvasRootControl::Is3D() const
 {
-    return _canvas->RenderMode != CanvasRenderMode::ScreenSpace;
+    return _canvas->GetRenderMode() != UIXCanvasRenderMode::ScreenSpace;
 }
 
 UIXCanvas* UIXCanvasRootControl::GetCanvas() const
@@ -144,7 +144,7 @@ Float2 UIXCanvasRootControl::PointToParent(Float2 location) const
         return location;
 
     // Transform canvas local-space point to the game root location
-    Matrix world
+    Matrix world;
     _canvas->GetWorldMatrix(world);
     Vector3 locationCanvasSpace = Vector3(location, 0.0f);
     Vector3 locationWorldSpace;
@@ -204,11 +204,11 @@ void UIXCanvasRootControl::UpdateNavigation(float deltaTime, String actionName, 
         {
             Navigate(direction);
         }
-        if (heldTime > _canvas->NavigationInputRepeatDelay)
+        if (heldTime > _canvas->GetNavigationInputRepeatDelay())
         {
             rateTime += deltaTime;
         }
-        if (rateTime > _canvas->NavigationInputRepeatRate)
+        if (rateTime > _canvas->GetNavigationInputRepeatRate())
         {
             Navigate(direction);
             rateTime = 0;
@@ -230,11 +230,11 @@ void UIXCanvasRootControl::UpdateNavigation(float deltaTime, String actionName, 
         {
             SubmitFocused();
         }
-        if (heldTime > _canvas->NavigationInputRepeatDelay)
+        if (heldTime > _canvas->GetNavigationInputRepeatDelay())
         {
             rateTime += deltaTime;
         }
-        if (rateTime > _canvas->NavigationInputRepeatRate)
+        if (rateTime > _canvas->GetNavigationInputRepeatRate())
         {
             SubmitFocused();
             rateTime = 0;
