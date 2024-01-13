@@ -17,7 +17,7 @@ public:
     /// <summary>
     /// Initializes a new instance of the <see cref="Tooltip"/> class.
     /// </summary>
-    UIXTooltip();
+    UIXTooltip(const SpawnParams &params);
 
     /// <summary>
     /// Gets the time in seconds that mouse have to be over the target to show the tooltip.

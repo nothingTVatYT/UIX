@@ -18,6 +18,9 @@ class UIXWindowRootControl;
 class UIXTooltip;
 class DragData;
 
+/// <summary>
+/// Base class for all GUI controls
+/// </summary>
 API_CLASS()
 class UIXCPP_API UIXControl : public ScriptingObject
 {

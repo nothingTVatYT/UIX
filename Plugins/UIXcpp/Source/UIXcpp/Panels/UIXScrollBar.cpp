@@ -14,9 +14,7 @@ float UIXScrollBar::DefaultMinimumOpacity = 0.75f;
 
 UIXScrollBar::UIXScrollBar(const SpawnParams &params, UIXOrientation orientation) : UIXControl(params), _orientation(orientation)
 {
-    SetAutoFocus(false);
-
-    
+    SetAutoFocus(false);   
 }
 
 void UIXScrollBar::SetThumbThickness(float value)
@@ -156,17 +154,17 @@ void UIXScrollBar::UpdateThumb()
 
     float pixelRange = trackSize - _thumbSize;
     float percentage = (_value - _minimum) / range;
-    float thumbPosition = (int)(percentage * pixelRange);
+    int thumbPosition = (int)(percentage * pixelRange);
 
     _thumbCenter = thumbPosition + _thumbSize / 2;
 
     _thumbRect = _orientation == UIXOrientation::Vertical
-        ? Rectangle((width - GetThumbThickness()) / 2, thumbPosition + 4, GetThumbThickness(), _thumbSize - 8)
-        : Rectangle(thumbPosition + 4, (height - GetThumbThickness()) / 2, _thumbSize - 8, GetThumbThickness());
+        ? Rectangle((width - GetThumbThickness()) / 2.0f, thumbPosition + 4.0f, GetThumbThickness(), _thumbSize - 8.0f)
+        : Rectangle(thumbPosition + 4.0f, (height - GetThumbThickness()) / 2.0f, _thumbSize - 8.0f, GetThumbThickness());
 
     _trackRect = _orientation == UIXOrientation::Vertical
-        ? Rectangle((width - GetTrackThickness()) / 2, 4, GetTrackThickness(), height - 8)
-        : Rectangle(4, (height - GetTrackThickness()) / 2, width - 8, GetTrackThickness());
+        ? Rectangle((width - GetTrackThickness()) / 2.0f, 4.0f, GetTrackThickness(), height - 8.0f)
+        : Rectangle(4.0f, (height - GetTrackThickness()) / 2.0f, width - 8.0f, GetTrackThickness());
 }
 
 void UIXScrollBar::EndTracking()

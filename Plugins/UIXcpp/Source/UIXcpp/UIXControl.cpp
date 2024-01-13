@@ -3,6 +3,7 @@
 #include "UIXRootControl.h"
 #include "UIXWindowRootControl.h"
 #include "UIXTooltip.h"
+#include "UIXStyle.h"
 #include "Panels/UIXPanel.h"
 #include "Engine/Render2D/Render2D.h"
 #include "Engine/Core/Log.h"
@@ -528,7 +529,7 @@ void UIXControl::DoDragDrop(const DragData &data)
 
 UIXTooltip* UIXControl::GetTooltip() const
 {
-    return _tooltip != nullptr ? _tooltip->GetStyle().GetCurrent().GetSharedTooltip() : nullptr; 
+    return _tooltip != nullptr ? _tooltip : UIXStyle::GetCurrent()->SharedTooltip;
 }
 
 UIXControl* UIXControl::LinkTooltip(String text, UIXTooltip *customTooltip)

@@ -3,7 +3,6 @@
 #include "Engine/Scripting/Script.h"
 #include "Engine/Content/AssetReference.h"
 #include "Engine/Render2D/FontAsset.h"
-#include "keep_alive.h"
 
 class Font;
 

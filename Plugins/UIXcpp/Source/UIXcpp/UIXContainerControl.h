@@ -2,15 +2,14 @@
 
 #include "UIXControl.h"
 
+/// <summary>
+/// Base class for all GUI controls that can contain child controls.
+/// </summary>
 API_CLASS() class UIXCPP_API UIXContainerControl : public UIXControl
 {
 //API_AUTO_SERIALIZATION();
 //DECLARE_SCRIPTING_TYPE(UIXContainerControl);
 
-    //// [Script]
-    //void OnEnable() override;
-    //void OnDisable() override;
-    //void OnUpdate() override;
 public:
     /// <summary>
     /// Initializes a new instance of the <see cref="UIXContainerControl"/> class.

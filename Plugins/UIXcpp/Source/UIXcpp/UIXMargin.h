@@ -5,9 +5,11 @@
 #include "Engine/Localization/CultureInfo.h"
 //#include "Engine/Localization/Localization.h"
 
-
-
-API_CLASS(NoSpawn) class UIXCPP_API UIXMargin : public ScriptingObject
+/// <summary>
+/// Describes the space around a control.
+/// </summary>
+API_CLASS(NoSpawn, Attributes="Serializable, StructLayout(LayoutKind.Sequential, Pack = 4)")
+class UIXCPP_API UIXMargin : public ScriptingObject
 {
 public:
     DECLARE_SCRIPTING_TYPE_NO_SPAWN(UIXMargin)

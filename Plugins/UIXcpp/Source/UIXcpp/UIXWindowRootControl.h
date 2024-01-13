@@ -8,7 +8,7 @@
 /// Root control implementation used by the <see cref="FlaxEngine.Window"/>.
 /// </summary>
 /// <seealso cref="FlaxEngine.GUI.RootControl" />
-API_CLASS(Attributes="HideInEditor") class UIXCPP_API UIXWindowRootControl final : public UIXRootControl
+API_CLASS(Sealed, Attributes="HideInEditor") class UIXCPP_API UIXWindowRootControl final : public UIXRootControl
 {
 public:
     /// <summary>

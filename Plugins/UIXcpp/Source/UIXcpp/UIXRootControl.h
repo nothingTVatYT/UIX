@@ -5,7 +5,10 @@
 
 class UIXCanvasContainer;
 
-API_CLASS() class UIXCPP_API UIXRootControl : public UIXContainerControl
+/// <summary>
+/// GUI root control that is represented by a window or an canvas and can contain children but has no parent at all. It's a source of the input events.
+/// </summary>
+API_CLASS(Abstract) class UIXCPP_API UIXRootControl : public UIXContainerControl
 {
 //API_AUTO_SERIALIZATION();
 //DECLARE_SCRIPTING_TYPE(UIXRootControl);

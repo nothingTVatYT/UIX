@@ -9,7 +9,7 @@ class UIXCanvasRootControl;
 /// The root container control used to sort and manage child UICanvas controls. Helps with sending input events.
 /// </summary>
 /// <seealso cref="FlaxEngine.GUI.ContainerControl" />
-API_CLASS(Attributes="HideInEditor, Sealed")
+API_CLASS(Sealed, Attributes="HideInEditor")
 class UIXCPP_API UIXCanvasContainer : public UIXContainerControl
 {
 //API_AUTO_SERIALIZATION();

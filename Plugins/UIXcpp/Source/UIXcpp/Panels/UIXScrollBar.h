@@ -243,7 +243,7 @@ protected:
     /// <summary>
     /// Gets the size of the track.
     /// </summary>
-    API_FUNCTION(abstract)
+    API_FUNCTION()
     virtual float GetTrackSize() const = 0;
 
     /// <summary>
@@ -264,15 +264,6 @@ protected:
     API_FUNCTION()
     void RemoveUpdateCallbacks(UIXRootControl *root) override;
 private:
-    /// <summary>
-    /// Gets a value indicating whether thumb is being clicked (scroll bar is in use).
-    /// </summary>
-    API_PROPERTY()
-    bool GetIsThumbClicked()
-    {
-        return _thumbClicked;
-    }
-
     void UpdateThumb();
     void EndTracking();
 
@@ -288,21 +279,21 @@ private:
 
     float _clickChange = 20;
     float _scrollChange = 50;
-    float _minimum;
-    float _maximum = 100;
-    float _startValue;
-    float _value;
-    float _targetValue;
-    const UIXOrientation _orientation;
+    float _minimum = 0.0f;
+    float _maximum = 100.0f;
+    float _startValue = 0.0f;
+    float _value = 0.0f;
+    float _targetValue = 0.0f;
+    const UIXOrientation _orientation = UIXOrientation::Horizontal;
     UIXRootControl::UpdateDelegate _update;
 
-    float _mouseOffset;
+    float _mouseOffset = 0.0f;
 
     Rectangle _thumbRect;
     Rectangle _trackRect;
-    bool _thumbClicked;
-    float _thumbCenter;
-    float _thumbSize;
+    bool _thumbClicked = false;
+    float _thumbCenter = 0.0f;
+    float _thumbSize = 0.0f;
 
     float _thumbOpacity = DefaultMinimumOpacity;
     float _scrollAnimationProgress = 0.0f;

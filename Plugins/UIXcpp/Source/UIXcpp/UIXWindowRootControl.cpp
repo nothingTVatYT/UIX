@@ -95,7 +95,13 @@ void UIXWindowRootControl::BringToFront(bool force)
 
 void UIXWindowRootControl::SetFocusedControl(UIXControl *value)
 {
-    ASSERT(_focusedControl == nullptr || _focusedControl->GetRoot() == this, "Invalid control to focus");
+    //ASSERT( _focusedControl == nullptr || _focusedControl->GetRoot() == this, "Invalid control to focus");
+    if (_focusedControl == nullptr || _focusedControl->GetRoot() == this)
+    {
+        LOG(Error, "Invalid control to focus");
+        return;
+    }
+
     Focus(value);
 }
 
