@@ -1,18 +1,15 @@
 ﻿#pragma once
 
-#include "Engine/Level/Actor.h"
-#include "Engine/Level/Actors/Camera.h"
-#include "Engine/Render2D/Render2D.h"
 #include "Engine/Graphics/PostProcessEffect.h"
-#include "Engine/Graphics/Textures/GPUTexture.h"
-#include "Engine/Graphics/RenderTask.h"
-#include "Engine/Graphics/GPUContext.h"
-#include "Engine/Graphics/RenderBuffers.h"
 #include "Engine/Core/Math/OrientedBoundingBox.h"
-#include "Engine/Scripting/Scripting.h"
-#include "Engine/Profiler/ProfilerGPU.h"
+#include "Engine/Level/Actor.h"
 
-#include "UIXCanvasRootControl.h"
+//#include "Engine/Graphics/Textures/GPUTexture.h"
+//#include "Engine/Scripting/Scripting.h"
+
+
+class UIXCanvasRootControl;
+
 
 /// <summary>
 /// The canvas rendering modes.
@@ -42,7 +39,7 @@ enum class UIXCanvasRenderMode
 };
 
 /// <summary>
-/// PostFx used to render the <see cref="UICanvas"/>. Used when render mode is <see cref="CanvasRenderMode.CameraSpace"/> or <see cref="CanvasRenderMode.WorldSpace"/>.
+/// PostFx used to render the <see cref="UICanvas"/>. Used when render mode is <see cref="UIXCanvasRenderMode::CameraSpace"/> or <see cref="UIXCanvasRenderMode::WorldSpace"/>.
 /// </summary>
 /// <seealso cref="FlaxEngine.PostProcessEffect" />
 API_CLASS(Sealed, Attributes = "HideInEditor")
@@ -50,11 +47,6 @@ class UIXCanvasRenderer : public PostProcessEffect
 {
     
 public:
-    /// <summary>
-    /// The canvas to render.
-    /// </summary>
-    API_FIELD() UIXCanvas* Canvas;
-
     /// <inheritdoc />
     UIXCanvasRenderer()
     {
@@ -62,48 +54,15 @@ public:
     }
 
     /// <inheritdoc />
-    API_FUNCTION() FORCE_INLINE bool CanRender() const override
-    {
-        // Sync with canvas options
-        Location = Canvas->GetRenderLocation();
-        Order = Canvas->GetOrder();
-
-        return PostProcessEffect::CanRender();
-    }
+    API_FUNCTION() FORCE_INLINE bool CanRender() const override;
 
     /// <inheritdoc />
-    void Render(GPUContext* context, API_PARAM(Ref) RenderContext& renderContext, GPUTexture* input, GPUTexture* output) override
-    {
-        if (!Canvas->IsVisible(renderContext.View.RenderLayersMask))
-            return;
-        auto bounds = Canvas->GetBounds();
-        bounds.Transformation.Translation -= renderContext.View.Origin;
-        if (renderContext.View.Frustum.Contains(bounds.GetBoundingBox()) == ContainmentType::Disjoint)
-            return;
+    void Render(GPUContext* context, API_PARAM(Ref) RenderContext& renderContext, GPUTexture* input, GPUTexture* output) override;
 
-        int profilerEvent = ProfilerGPU::BeginEvent(TEXT("UI Canvas"));
-
-        // Calculate rendering matrix (world*view*projection)
-        Matrix worldMatrix;
-        Canvas->GetWorldMatrix(renderContext.View.Origin, worldMatrix);
-
-        Matrix viewMatrix;
-        Matrix::Multiply(worldMatrix, renderContext.View.View, viewMatrix);
-        Matrix viewProjectionMatrix;
-        Matrix::Multiply(viewMatrix, renderContext.View.Projection, viewProjectionMatrix);
-
-        // Pick a depth buffer
-        GPUTexture* depthBuffer = Canvas->IgnoreDepth ? null : renderContext.Buffers->DepthBuffer;
-
-        // Render GUI in 3D
-        auto features = Render2D::Features;
-        if (Canvas->RenderMode == UIXCanvasRenderMode::WorldSpace || Canvas->RenderMode == UIXCanvasRenderMode::WorldSpaceFaceCamera)
-            Render2D::Features &= ~Render2D::RenderingFeatures.VertexSnapping;
-        Render2D::CallDrawing(Canvas->GUI, context, input, depthBuffer, viewProjectionMatrix);
-        Render2D::Features = features;
-
-        ProfilerGPU::EndEvent(profilerEvent);
-    }
+    /// <summary>
+    /// The canvas to render.
+    /// </summary>
+    API_FIELD() UIXCanvas* Canvas;
 };
 
 API_CLASS(Sealed, NoConstructor, Attributes = "ActorContextMenu(\"New/UI/UI Canvas\"), ActorToolbox(\"GUI\")")
@@ -143,7 +102,7 @@ public:
     TestCanvasIntersectionDelegate TestCanvasIntersection;
 
     /// <summary>
-    /// The current implementation of the <see cref="CalculateRayDelegate"/> used to calculate the mouse ray in 3D from the 2D location. Cannot be null.
+    /// The current implementation of the <see cref="CalculateRayDelegate"/> used to calculate the mouse ray in 3D from the 2D location. Cannot be nullptr.
     /// </summary>
     static CalculateRayDelegate CalculateRay;
     // TODO: Assign a default value to CalculateRay in the constructor of UIXCanvas.
@@ -167,22 +126,22 @@ public:
     /// <summary>
     /// Sets the canvas rendering mode.
     /// </summary>
-    API_PROPERTY(Attributes = "EditorOrder(10), EditorDisplay(\"Canvas\"), Tooltip(\"Canvas rendering mode.\")")
+    API_PROPERTY()
     void SetRenderMode(UIXCanvasRenderMode value);
 
     /// <summary>
-    /// Gets or sets the canvas rendering location within rendering pipeline. Used only in <see cref="CanvasRenderMode.CameraSpace"/> or <see cref="CanvasRenderMode.WorldSpace"/> or <see cref="CanvasRenderMode.WorldSpaceFaceCamera"/>.
+    /// Gets or sets the canvas rendering location within rendering pipeline. Used only in <see cref="UIXCanvasRenderMode::CameraSpace"/> or <see cref="UIXCanvasRenderMode::WorldSpace"/> or <see cref="UIXCanvasRenderMode::WorldSpaceFaceCamera"/>.
     /// </summary>
     API_PROPERTY(Attributes = "EditorOrder(13), EditorDisplay(\"Canvas\"), VisibleIf(\"Editor_Is3D\"), Tooltip(\"Canvas rendering location within the rendering pipeline. Change this if you want GUI to affect the lighting or post processing effects like bloom.\")")
-    FORCE_INLINE PostProcessEffectLocation GetRenderLocation()
+    FORCE_INLINE PostProcessEffectLocation GetRenderLocation() const
     {
         return _renderLocation;
     }
 
     /// <summary>
-    /// Gets or sets the canvas rendering location within rendering pipeline. Used only in <see cref="CanvasRenderMode.CameraSpace"/> or <see cref="CanvasRenderMode.WorldSpace"/> or <see cref="CanvasRenderMode.WorldSpaceFaceCamera"/>.
+    /// Gets or sets the canvas rendering location within rendering pipeline. Used only in <see cref="UIXCanvasRenderMode::CameraSpace"/> or <see cref="UIXCanvasRenderMode::WorldSpace"/> or <see cref="UIXCanvasRenderMode::WorldSpaceFaceCamera"/>.
     /// </summary>
-    API_PROPERTY(Attributes = "EditorOrder(13), EditorDisplay(\"Canvas\"), VisibleIf(\"Editor_Is3D\"), Tooltip(\"Canvas rendering location within the rendering pipeline. Change this if you want GUI to affect the lighting or post processing effects like bloom.\")")
+    API_PROPERTY()
     FORCE_INLINE void SetRenderLocation(PostProcessEffectLocation value)
     {
         _renderLocation = value;
@@ -200,14 +159,14 @@ public:
     /// <summary>
     /// Gets or sets the canvas rendering and input events gather order. Created GUI canvas objects are sorted before rendering (from the lowest order to the highest order). Canvas with the highest order can handle input event first.
     /// </summary>
-    API_PROPERTY(Attributes = "EditorOrder(14), EditorDisplay(\"Canvas\"), Tooltip(\"The canvas rendering and input events gather order. Created GUI canvas objects are sorted before rendering (from the lowest order to the highest order). Canvas with the highest order can handle input event first.\")")
+    API_PROPERTY()
     void SetOrder(int value);
 
     /// <summary>
     /// Gets or sets a value indicating whether canvas can receive the input events.
     /// </summary>
     API_PROPERTY(Attributes = "EditorOrder(15), EditorDisplay(\"Canvas\"), Tooltip(\"If checked, canvas can receive the input events.\")")
-    FORCE_INLINE bool GetReceivesEvents()
+    FORCE_INLINE bool GetReceivesEvents() const
     {
         return _receivesEvents;
     }
@@ -215,25 +174,25 @@ public:
     /// <summary>
     /// Gets or sets a value indicating whether canvas can receive the input events.
     /// </summary>
-    API_PROPERTY(Attributes = "EditorOrder(15), EditorDisplay(\"Canvas\"), Tooltip(\"If checked, canvas can receive the input events.\")")
+    API_PROPERTY()
     FORCE_INLINE void SetReceivesEvents(bool value)
     {
         _receivesEvents = value;
     }
 
     /// <summary>
-    /// Gets or sets the size of the canvas. Used only in <see cref="CanvasRenderMode.WorldSpace"/> or <see cref="CanvasRenderMode.WorldSpaceFaceCamera"/>.
+    /// Gets or sets the size of the canvas. Used only in <see cref="UIXCanvasRenderMode::WorldSpace"/> or <see cref="UIXCanvasRenderMode::WorldSpaceFaceCamera"/>.
     /// </summary>
     API_PROPERTY(Attributes = "EditorOrder(20), EditorDisplay(\"Canvas\"), VisibleIf(\"Editor_IsWorldSpace\"), Tooltip(\"Canvas size.\")")
-    FORCE_INLINE Float2 GetSize()
+    FORCE_INLINE Float2 GetSize() const
     {
         return _guiRoot->GetSize();
     }
 
     /// <summary>
-    /// Gets or sets the size of the canvas. Used only in <see cref="CanvasRenderMode.WorldSpace"/> or <see cref="CanvasRenderMode.WorldSpaceFaceCamera"/>.
+    /// Gets or sets the size of the canvas. Used only in <see cref="UIXCanvasRenderMode::WorldSpace"/> or <see cref="UIXCanvasRenderMode::WorldSpaceFaceCamera"/>.
     /// </summary>
-    API_PROPERTY(Attributes = "EditorOrder(20), EditorDisplay(\"Canvas\"), VisibleIf(\"Editor_IsWorldSpace\"), Tooltip(\"Canvas size.\")")
+    API_PROPERTY()
     void SetSize(Float2 value);
 
     /// <summary>
@@ -248,23 +207,23 @@ public:
     /// <summary>
     /// Gets or sets a value indicating whether ignore scene depth when rendering the GUI (scene objects won't cover the interface).
     /// </summary>
-    API_PROPERTY(Attributes = "EditorOrder(30), EditorDisplay(\"Canvas\"), VisibleIf(\"Editor_Is3D\"), Tooltip(\"If checked, scene depth will be ignored when rendering the GUI (scene objects won't cover the interface).\")")
+    API_PROPERTY()
     FORCE_INLINE void SetIgnoreDepth(bool value)
     {
         _ignoreDepth = value;
     }
 
     /// <summary>
-    /// Gets or sets the camera used to place the GUI when render mode is set to <see cref="CanvasRenderMode.CameraSpace"/> or <see cref="CanvasRenderMode.WorldSpaceFaceCamera"/>.
+    /// Gets or sets the camera used to place the GUI when render mode is set to <see cref="UIXCanvasRenderMode::CameraSpace"/> or <see cref="UIXCanvasRenderMode::WorldSpaceFaceCamera"/>.
     /// </summary>
     API_PROPERTY(Attributes = "EditorOrder(50), EditorDisplay(\"Canvas\"), VisibleIf(\"Editor_UseRenderCamera\"), Tooltip(\"Camera used to place the GUI when RenderMode is set to CameraSpace or WorldSpaceFaceCamera.\")")
-    FORCE_INLINE Camera* GetRenderCamera()
+    FORCE_INLINE Camera* GetRenderCamera() const
     {
         return _renderCamera;
     }
 
     /// <summary>
-    /// Gets or sets the camera used to place the GUI when render mode is set to <see cref="CanvasRenderMode.CameraSpace"/> or <see cref="CanvasRenderMode.WorldSpaceFaceCamera"/>.
+    /// Gets or sets the camera used to place the GUI when render mode is set to <see cref="UIXCanvasRenderMode::CameraSpace"/> or <see cref="UIXCanvasRenderMode::WorldSpaceFaceCamera"/>.
     /// </summary>
     API_PROPERTY(Attributes = "EditorOrder(50), EditorDisplay(\"Canvas\"), VisibleIf(\"Editor_UseRenderCamera\"), Tooltip(\"Camera used to place the GUI when RenderMode is set to CameraSpace or WorldSpaceFaceCamera.\")")
     FORCE_INLINE void SetRenderCamera(Camera* value)
@@ -276,7 +235,7 @@ public:
     /// Gets or sets the distance from the <see cref="RenderCamera"/> to place the plane with GUI. If the screen is resized, changes resolution, or the camera frustum changes, the Canvas will automatically change size to match as well.
     /// </summary>
     API_PROPERTY(Attributes = "EditorOrder(60), Limit(0.01f), EditorDisplay(\"Canvas\"), VisibleIf(\"Editor_IsCameraSpace\"), Tooltip(\"Distance from the RenderCamera to place the plane with GUI. If the screen is resized, changes resolution, or the camera frustum changes, the Canvas will automatically change size to match as well.\")")
-    FORCE_INLINE float GetDistance()
+    FORCE_INLINE float GetDistance() const
     {
         return _distance;
     }
@@ -284,7 +243,7 @@ public:
     /// <summary>
     /// Gets or sets the distance from the <see cref="RenderCamera"/> to place the plane with GUI. If the screen is resized, changes resolution, or the camera frustum changes, the Canvas will automatically change size to match as well.
     /// </summary>
-    API_PROPERTY(Attributes = "EditorOrder(60), Limit(0.01f), EditorDisplay(\"Canvas\"), VisibleIf(\"Editor_IsCameraSpace\"), Tooltip(\"Distance from the RenderCamera to place the plane with GUI. If the screen is resized, changes resolution, or the camera frustum changes, the Canvas will automatically change size to match as well.\")")
+    API_PROPERTY()
     FORCE_INLINE void SetDistance(float value)
     {
         _distance = value;
@@ -294,7 +253,7 @@ public:
     /// Gets the canvas GUI root control.
     /// </summary>
     API_PROPERTY()
-    FORCE_INLINE UIXCanvasRootControl* GetGUI()
+    FORCE_INLINE UIXCanvasRootControl* GetGUI() const
     {
         return _guiRoot;
     }
@@ -355,29 +314,14 @@ public:
     /// Gets the world-space oriented bounding box that contains a 3D canvas.
     /// </summary>
     API_PROPERTY()
-    OrientedBoundingBox GetBounds()
-    {
-        OrientedBoundingBox bounds = OrientedBoundingBox();
-        bounds.Extents = Float3(_guiRoot->GetSize() * 0.5f, 0.1e-7);
-
-        Matrix world;
-        GetWorldMatrix(world);
-
-        Matrix offset;
-        Matrix::Translation((float)bounds.Extents.X, (float)bounds.Extents.Y, 0, offset);
-
-        Matrix boxWorld;
-        Matrix::Multiply(offset, world, boxWorld);
-        boxWorld.Decompose(bounds.Transformation);
-        return bounds;
-    }
+    OrientedBoundingBox GetBounds() const;
 
     /// <summary>
     /// Gets the world matrix used to transform the GUI from the local space to the world space. Handles canvas rendering mode
     /// </summary>
     /// <param name="world">The world.</param>
     API_FUNCTION()
-    void GetWorldMatrix(API_PARAM(Out) Matrix& world)
+    void GetWorldMatrix(API_PARAM(Out) Matrix& world) const
     {
         GetWorldMatrix(Vector3::Zero, world);
     }
@@ -388,124 +332,13 @@ public:
     /// <param name="viewOrigin">The view origin (when using relative-to-camera rendering).</param>
     /// <param name="world">The world.</param>
     API_FUNCTION()
-    void GetWorldMatrix(Vector3 viewOrigin, API_PARAM(Out) Matrix& world)
-    {
-        auto transform = Transform();
-        Float3 translation = transform.Translation - viewOrigin;
-        // TODO: Remove inline out declarations, and replace them with locals. Uncomment the FLAX_EDITOR if case.
-//#if FLAX_EDITOR
-        // Override projection for editor preview
-        if (_editorTask)
-        {
-            if (_renderMode == UIXCanvasRenderMode::WorldSpace)
-            {
-                Matrix::Transformation(transform.Scale, transform.Orientation, translation, world);
-            }
-            else if (_renderMode == UIXCanvasRenderMode::WorldSpaceFaceCamera)
-            {
-                auto view = _editorTask.View;
-                Matrix::Translation(_guiRoot->GetWidth() * -0.5f, _guiRoot->GetHeight() * -0.5f, 0, out var m1);
-                Matrix::Scaling(transform.Scale, out var m2);
-                Matrix::Multiply(m1, m2, out var m3);
-                Quaternion::Euler(180, 180, 0, out var quat);
-                Matrix::RotationQuaternion(ref quat, m2);
-                Matrix::Multiply(m3, m2, m1);
-                m2 = Matrix::Transformation(Float3::One, Quaternion::FromDirection(-view.Direction), translation);
-                Matrix::Multiply(m1, m2, world);
-            }
-            else if (_renderMode == UIXCanvasRenderMode::CameraSpace)
-            {
-                auto view = _editorTask.View;
-                auto frustum = view.Frustum;
-                if (!frustum.IsOrthographic)
-                    _guiRoot->SetSize(Float2(frustum.GetWidthAtDepth(GetDistance()), frustum.GetHeightAtDepth(GetDistance())));
-                else
-                    _guiRoot->SetSize(_editorTask.Viewport.Size);
-                Matrix::Translation(_guiRoot->GetWidth() / -2.0f, _guiRoot->GetHeight() / -2.0f, 0, world);
-                Matrix::RotationYawPitchRoll(Math::Pi, Math::Pi, 0, out var tmp2);
-                Matrix::Multiply(world, tmp2, out var tmp1);
-                Float3 viewPos = view.Position - viewOrigin;
-                auto viewRot = view.Direction != Float3::Up ? Quaternion::LookRotation(view.Direction, Float3::Up) : Quaternion::LookRotation(view.Direction, Float3::Right);
-                auto viewUp = Float3::Up * viewRot;
-                auto viewForward = view.Direction;
-                auto pos = view.Position + view.Direction * GetDistance();
-                Matrix::Billboard(pos, viewPos, viewUp, viewForward, tmp2);
-                Matrix::Multiply(tmp1, tmp2, world);
-                return;
-            }
-            else
-            {
-                world = Matrix::Identity;
-            }
-            return;
-        }
-//#endif
-
-        // Use default camera is not specified
-        auto camera = GetRenderCamera() == nullptr ? Camera::GetMainCamera() : GetRenderCamera();
-
-        if (_renderMode == UIXCanvasRenderMode::WorldSpace || (_renderMode == UIXCanvasRenderMode::WorldSpaceFaceCamera && !camera))
-        {
-            // In 3D world
-            Matrix::Transformation(transform.Scale, transform.Orientation, translation, out world);
-        }
-        else if (_renderMode == UIXCanvasRenderMode::WorldSpaceFaceCamera)
-        {
-            // In 3D world face camera
-            Matrix::Translation(_guiRoot->GetWidth() * -0.5f, _guiRoot->GetHeight() * -0.5f, 0, out var m1);
-            Matrix::Scaling(transform.Scale, out var m2);
-            Matrix::Multiply(m1, m2, out var m3);
-            Quaternion::Euler(180, 180, 0, out var quat);
-            Matrix::RotationQuaternion(quat, out m2);
-            Matrix::Multiply(m3, m2, m1);
-            Matrix::Transformation(Vector3::One, Quaternion::FromDirection(-camera->GetDirection()), translation, m2);
-            Matrix::Multiply(m1, m2, world);
-        }
-        else if (_renderMode == UIXCanvasRenderMode::CameraSpace && camera)
-        {
-            Matrix tmp1, tmp2;
-
-            // Adjust GUI size to the viewport size at the given distance form the camera
-            auto viewport = camera->GetViewport();
-            if (camera->GetUsePerspective())
-            {
-                camera->GetMatrices(tmp1, out var tmp3, viewport);
-                Matrix::Multiply(tmp1, tmp3, tmp2);
-                auto frustum = BoundingFrustum(tmp2);
-                _guiRoot->SetSize(Float2(frustum.GetWidthAtDepth(GetDistance()), frustum.GetHeightAtDepth(GetDistance())));
-            }
-            else
-            {
-                _guiRoot->SetSize(viewport.Size * camera->GetOrthographicScale());
-            }
-
-            // Center viewport (and flip)
-            Matrix::Translation(_guiRoot->GetWidth() / -2.0f, _guiRoot->GetHeight() / -2.0f, 0, world);
-            Matrix::RotationYawPitchRoll(Math::Pi, Math::Pi, 0, tmp2);
-            Matrix::Multiply(world, tmp2, tmp1);
-
-            // In front of the camera
-            Float3 viewPos = camera->GetPosition() - viewOrigin;
-            auto viewRot = camera->GetOrientation();
-            auto viewUp = viewRot * Float3::Up;
-            auto viewForward = viewRot * Float3::Forward;
-            auto pos = viewPos + viewForward * GetDistance();
-            Matrix::Billboard(pos, viewPos, viewUp, viewForward, tmp2);
-
-            Matrix::Multiply(tmp1, tmp2, world);
-        }
-        else
-        {
-            // Direct projection
-            world = Matrix::Identity;
-        }
-    }
+    void GetWorldMatrix(Vector3 viewOrigin, API_PARAM(Out) Matrix& world) const;
     
     /// <summary>
     /// Gets a value indicating whether canvas is 2D (screen-space).
     /// </summary>
     API_PROPERTY()
-    bool GetIs2D()
+    bool GetIs2D() const
     {
         return _renderMode == UIXCanvasRenderMode::ScreenSpace;
     }
@@ -514,15 +347,92 @@ public:
     /// Gets a value indicating whether canvas is 3D (world-space or camera-space).
     /// </summary>
     API_PROPERTY()
-    bool GetIs3D()
+    bool GetIs3D() const
     {
         return _renderMode != UIXCanvasRenderMode::ScreenSpace;
     }
 
+
 private:
+    void Setup();
+    void OnUpdate();
+
+    /*internal*/ void ParentChanged();
+    /*internal*/ void Enable();
+    /*internal*/ void Disable();
+    /*internal*/ void EndPlay();
+
+    /*internal*/ bool IsVisible() const;
+
+    /*internal*/ bool IsVisible(LayersMask layersMask) const;
+
+//#if FLAX_EDITOR
+#if 0
+    private SceneRenderTask _editorTask;
+    private ContainerControl _editorRoot;
+
+    internal void EditorOverride(SceneRenderTask task, ContainerControl root)
+    {
+        if (_editorTask == task && _editorRoot == root)
+            return;
+        if (_editorTask != nullptr && _renderer != nullptr)
+            _editorTask.RemoveCustomPostFx(_renderer);
+        if (_editorRoot != nullptr && _guiRoot != nullptr)
+            _guiRoot->Parent = nullptr;
+
+        _editorTask = task;
+        _editorRoot = root;
+        Setup();
+
+        if (RenderMode == UIXCanvasRenderMode::ScreenSpace && _editorRoot != nullptr && _guiRoot != nullptr && IsActiveInHierarchy)
+        {
+            _guiRoot->Parent = _editorRoot;
+            _guiRoot->IndexInParent = 0;
+        }
+    }
+#endif
+
+
+//#if FLAX_EDITOR
+#if 0
+    API_PROPERTY()
+    bool GetEditor_IsWorldSpace()
+    {
+        return _renderMode == UIXCanvasRenderMode::WorldSpace || _renderMode == UIXCanvasRenderMode::WorldSpaceFaceCamera;
+    }
+
+    API_PROPERTY()
+    bool GetEditor_IsCameraSpace()
+    {
+        return _renderMode == UIXCanvasRenderMode::CameraSpace;
+    }
+
+    API_PROPERTY()
+    bool GetEditor_Is3D()
+    {
+        return _renderMode != UIXCanvasRenderMode::ScreenSpace;
+    }
+
+    API_PROPERTY()
+    bool GetEditor_UseRenderCamera()
+    {
+        return _renderMode == UIXCanvasRenderMode::CameraSpace || _renderMode == UIXCanvasRenderMode::WorldSpaceFaceCamera;
+    }
+
+    /*internal*/ void OnActiveInTreeChanged()
+    {
+        if (RenderMode == UIXCanvasRenderMode::ScreenSpace && _editorRoot != nullptr && _guiRoot != nullptr)
+        {
+            _guiRoot->Parent = IsActiveInHierarchy ? _editorRoot : nullptr;
+            _guiRoot->IndexInParent = 0;
+        }
+    }
+
+#endif
+
     int _order;
     UIXCanvasRenderMode _renderMode;
-    /* readonly */ UIXCanvasRootControl* _guiRoot;
+    /* readonly */ UIXCanvasRootControl* const _guiRoot;
     UIXCanvasRenderer* _renderer;
     bool _isLoading, _isRegisteredForTick;
     PostProcessEffectLocation _renderLocation = PostProcessEffectLocation::Default;
@@ -531,254 +441,10 @@ private:
     Camera* _renderCamera;
     float _distance;
 
-    
-    #if FLAX_EDITOR
-    API_PROPERTY()
-    bool GetEditor_IsWorldSpace()
-    {
-        return _renderMode == CanvasRenderMode.WorldSpace || _renderMode == CanvasRenderMode.WorldSpaceFaceCamera;
-    }
 
-    API_PROPERTY()
-    bool GetEditor_IsCameraSpace()
-    {
-        return _renderMode == CanvasRenderMode.CameraSpace;
-    }
-
-    API_PROPERTY()
-    bool GetEditor_Is3D()
-    {
-        return _renderMode != CanvasRenderMode.ScreenSpace;
-    }
-
-    API_PROPERTY()
-    bool GetEditor_UseRenderCamera()
-    {
-        return _renderMode == CanvasRenderMode.CameraSpace || _renderMode == CanvasRenderMode.WorldSpaceFaceCamera;
-    }
-    #endif
     /*
-        /// <summary>
-        /// Gets the world matrix used to transform the GUI from the local space to the world space. Handles canvas rendering mode
-        /// </summary>
-        /// <param name="world">The world.</param>
-        public void GetWorldMatrix(out Matrix world)
-        {
-            GetWorldMatrix(Vector3.Zero, out world);
-        }
 
-        /// <summary>
-        /// Gets the world matrix used to transform the GUI from the local space to the world space. Handles canvas rendering mode
-        /// </summary>
-        /// <param name="viewOrigin">The view origin (when using relative-to-camera rendering).</param>
-        /// <param name="world">The world.</param>
-        public void GetWorldMatrix(Vector3 viewOrigin, out Matrix world)
-        {
-            var transform = Transform;
-            Float3 translation = transform.Translation - viewOrigin;
-
-#if FLAX_EDITOR
-            // Override projection for editor preview
-            if (_editorTask)
-            {
-                if (_renderMode == CanvasRenderMode.WorldSpace)
-                {
-                    Matrix.Transformation(ref transform.Scale, ref transform.Orientation, ref translation, out world);
-                }
-                else if (_renderMode == CanvasRenderMode.WorldSpaceFaceCamera)
-                {
-                    var view = _editorTask.View;
-                    Matrix.Translation(_guiRoot.Width * -0.5f, _guiRoot.Height * -0.5f, 0, out var m1);
-                    Matrix.Scaling(ref transform.Scale, out var m2);
-                    Matrix.Multiply(ref m1, ref m2, out var m3);
-                    Quaternion.Euler(180, 180, 0, out var quat);
-                    Matrix.RotationQuaternion(ref quat, out m2);
-                    Matrix.Multiply(ref m3, ref m2, out m1);
-                    m2 = Matrix.Transformation(Float3.One, Quaternion.FromDirection(-view.Direction), translation);
-                    Matrix.Multiply(ref m1, ref m2, out world);
-                }
-                else if (_renderMode == CanvasRenderMode.CameraSpace)
-                {
-                    var view = _editorTask.View;
-                    var frustum = view.Frustum;
-                    if (!frustum.IsOrthographic)
-                        _guiRoot.Size = new Float2(frustum.GetWidthAtDepth(Distance), frustum.GetHeightAtDepth(Distance));
-                    else
-                        _guiRoot.Size = _editorTask.Viewport.Size;
-                    Matrix.Translation(_guiRoot.Width / -2.0f, _guiRoot.Height / -2.0f, 0, out world);
-                    Matrix.RotationYawPitchRoll(Mathf.Pi, Mathf.Pi, 0, out var tmp2);
-                    Matrix.Multiply(ref world, ref tmp2, out var tmp1);
-                    Float3 viewPos = view.Position - viewOrigin;
-                    var viewRot = view.Direction != Float3.Up ? Quaternion.LookRotation(view.Direction, Float3.Up) : Quaternion.LookRotation(view.Direction, Float3.Right);
-                    var viewUp = Float3.Up * viewRot;
-                    var viewForward = view.Direction;
-                    var pos = view.Position + view.Direction * Distance;
-                    Matrix.Billboard(ref pos, ref viewPos, ref viewUp, ref viewForward, out tmp2);
-                    Matrix.Multiply(ref tmp1, ref tmp2, out world);
-                    return;
-                }
-                else
-                {
-                    world = Matrix.Identity;
-                }
-                return;
-            }
-#endif
-
-            // Use default camera is not specified
-            var camera = RenderCamera ?? Camera.MainCamera;
-
-            if (_renderMode == CanvasRenderMode.WorldSpace || (_renderMode == CanvasRenderMode.WorldSpaceFaceCamera && !camera))
-            {
-                // In 3D world
-                Matrix.Transformation(ref transform.Scale, ref transform.Orientation, ref translation, out world);
-            }
-            else if (_renderMode == CanvasRenderMode.WorldSpaceFaceCamera)
-            {
-                // In 3D world face camera
-                Matrix.Translation(_guiRoot.Width * -0.5f, _guiRoot.Height * -0.5f, 0, out var m1);
-                Matrix.Scaling(ref transform.Scale, out var m2);
-                Matrix.Multiply(ref m1, ref m2, out var m3);
-                Quaternion.Euler(180, 180, 0, out var quat);
-                Matrix.RotationQuaternion(ref quat, out m2);
-                Matrix.Multiply(ref m3, ref m2, out m1);
-                m2 = Matrix.Transformation(Vector3.One, Quaternion.FromDirection(-camera.Direction), translation);
-                Matrix.Multiply(ref m1, ref m2, out world);
-            }
-            else if (_renderMode == CanvasRenderMode.CameraSpace && camera)
-            {
-                Matrix tmp1, tmp2;
-
-                // Adjust GUI size to the viewport size at the given distance form the camera
-                var viewport = camera.Viewport;
-                if (camera.UsePerspective)
-                {
-                    camera.GetMatrices(out tmp1, out var tmp3, ref viewport);
-                    Matrix.Multiply(ref tmp1, ref tmp3, out tmp2);
-                    var frustum = new BoundingFrustum(tmp2);
-                    _guiRoot.Size = new Float2(frustum.GetWidthAtDepth(Distance), frustum.GetHeightAtDepth(Distance));
-                }
-                else
-                {
-                    _guiRoot.Size = viewport.Size * camera.OrthographicScale;
-                }
-
-                // Center viewport (and flip)
-                Matrix.Translation(_guiRoot.Width / -2.0f, _guiRoot.Height / -2.0f, 0, out world);
-                Matrix.RotationYawPitchRoll(Mathf.Pi, Mathf.Pi, 0, out tmp2);
-                Matrix.Multiply(ref world, ref tmp2, out tmp1);
-
-                // In front of the camera
-                Float3 viewPos = camera.Position - viewOrigin;
-                var viewRot = camera.Orientation;
-                var viewUp = Float3.Up * viewRot;
-                var viewForward = Float3.Forward * viewRot;
-                var pos = viewPos + viewForward * Distance;
-                Matrix.Billboard(ref pos, ref viewPos, ref viewUp, ref viewForward, out tmp2);
-
-                Matrix.Multiply(ref tmp1, ref tmp2, out world);
-            }
-            else
-            {
-                // Direct projection
-                world = Matrix.Identity;
-            }
-        }
-
-        private void Setup()
-        {
-            if (_isLoading)
-                return;
-
-            switch (_renderMode)
-            {
-            case CanvasRenderMode.ScreenSpace:
-            {
-                // Fill the screen area
-                _guiRoot.AnchorPreset = AnchorPresets.StretchAll;
-                _guiRoot.Offsets = Margin.Zero;
-                if (_renderer)
-                {
-#if FLAX_EDITOR
-                    if (_editorTask != null)
-                        _editorTask.RemoveCustomPostFx(_renderer);
-#endif
-                    SceneRenderTask.RemoveGlobalCustomPostFx(_renderer);
-                    _renderer.Canvas = null;
-                    Destroy(_renderer);
-                    _renderer = null;
-                }
-#if FLAX_EDITOR
-                if (_editorRoot != null && IsActiveInHierarchy)
-                {
-                    _guiRoot.Parent = _editorRoot;
-                    _guiRoot.IndexInParent = 0;
-                }
-#endif
-                if (_isRegisteredForTick)
-                {
-                    _isRegisteredForTick = false;
-                    Scripting.Update -= OnUpdate;
-                }
-                break;
-            }
-            case CanvasRenderMode.CameraSpace:
-            case CanvasRenderMode.WorldSpace:
-            case CanvasRenderMode.WorldSpaceFaceCamera:
-            {
-                // Render canvas manually
-                _guiRoot.AnchorPreset = AnchorPresets.TopLeft;
-#if FLAX_EDITOR
-                if (_editorRoot != null && _guiRoot != null)
-                    _guiRoot.Parent = null;
-#endif
-                if (_renderer == null)
-                {
-                    _renderer = New<CanvasRenderer>();
-                    _renderer.Canvas = this;
-                    if (IsActiveInHierarchy && Scene)
-                    {
-#if FLAX_EDITOR
-                        if (_editorTask != null)
-                        {
-                            _editorTask.AddCustomPostFx(_renderer);
-                            break;
-                        }
-#endif
-                        SceneRenderTask.AddGlobalCustomPostFx(_renderer);
-                    }
-#if FLAX_EDITOR
-                    else if (_editorTask != null && IsActiveInHierarchy)
-                    {
-                        _editorTask.AddCustomPostFx(_renderer);
-                    }
-#endif
-                }
-                if (!_isRegisteredForTick)
-                {
-                    _isRegisteredForTick = true;
-                    Scripting.Update += OnUpdate;
-                }
-                break;
-            }
-            }
-        }
-
-        private void OnUpdate()
-        {
-            if (this && IsActiveInHierarchy && _renderMode != CanvasRenderMode.ScreenSpace)
-            {
-                try
-                {
-                    Profiler.BeginEvent(Name);
-                    _guiRoot.Update(Time.UnscaledDeltaTime);
-                }
-                finally
-                {
-                    Profiler.EndEvent();
-                }
-            }
-        }
+       
 
         internal string Serialize()
         {
@@ -813,7 +479,7 @@ private:
                 jsonWriter.WritePropertyName("Distance");
                 jsonWriter.WriteValue(Distance);
 
-                if (RenderMode == CanvasRenderMode.WorldSpace || RenderMode == CanvasRenderMode.WorldSpaceFaceCamera)
+                if (RenderMode == UIXCanvasRenderMode::WorldSpace || RenderMode == UIXCanvasRenderMode::WorldSpaceFaceCamera)
                 {
                     jsonWriter.WritePropertyName("Size");
                     jsonWriter.WriteStartObject();
@@ -919,10 +585,10 @@ private:
                     jsonWriter.WriteValue(Distance);
                 }
 
-                if ((RenderMode == CanvasRenderMode.WorldSpace ||
-                     RenderMode == CanvasRenderMode.WorldSpaceFaceCamera ||
-                     other.RenderMode == CanvasRenderMode.WorldSpace ||
-                     other.RenderMode == CanvasRenderMode.WorldSpaceFaceCamera) && Size != other.Size)
+                if ((RenderMode == UIXCanvasRenderMode::WorldSpace ||
+                     RenderMode == UIXCanvasRenderMode::WorldSpaceFaceCamera ||
+                     other.RenderMode == UIXCanvasRenderMode::WorldSpace ||
+                     other.RenderMode == UIXCanvasRenderMode::WorldSpaceFaceCamera) && Size != other.Size)
                 {
                     jsonWriter.WritePropertyName("Size");
                     jsonWriter.WriteStartObject();
@@ -1002,122 +668,11 @@ private:
             Setup();
         }
 
-        internal void ParentChanged()
-        {
-#if FLAX_EDITOR
-            if (RenderMode == CanvasRenderMode.ScreenSpace && _editorRoot != null && _guiRoot != null)
-            {
-                _guiRoot.Parent = IsActiveInHierarchy ? _editorRoot : null;
-                _guiRoot.IndexInParent = 0;
-            }
-#endif
-        }
+        
 
-        internal void Enable()
-        {
-#if FLAX_EDITOR
-            if (_editorRoot != null)
-            {
-                _guiRoot.Parent = _editorRoot;
-                _guiRoot.IndexInParent = 0;
-            }
-            else
-            {
-                _guiRoot.Parent = RootControl.CanvasRoot;
-            }
-#else
-            _guiRoot.Parent = RootControl.CanvasRoot;
-#endif
 
-            if (_renderer)
-            {
-#if FLAX_EDITOR
-                if (_editorTask != null)
-                {
-                    _editorTask.AddCustomPostFx(_renderer);
-                    return;
-                }
-#endif
-                SceneRenderTask.AddGlobalCustomPostFx(_renderer);
-            }
-        }
 
-        internal void Disable()
-        {
-            _guiRoot.Parent = null;
 
-            if (_renderer)
-            {
-                SceneRenderTask.RemoveGlobalCustomPostFx(_renderer);
-            }
-        }
-
-#if FLAX_EDITOR
-        internal void OnActiveInTreeChanged()
-        {
-            if (RenderMode == CanvasRenderMode.ScreenSpace && _editorRoot != null && _guiRoot != null)
-            {
-                _guiRoot.Parent = IsActiveInHierarchy ? _editorRoot : null;
-                _guiRoot.IndexInParent = 0;
-            }
-        }
-#endif
-
-        internal void EndPlay()
-        {
-            if (_isRegisteredForTick)
-            {
-                _isRegisteredForTick = false;
-                Scripting.Update -= OnUpdate;
-            }
-
-            if (_renderer)
-            {
-                SceneRenderTask.RemoveGlobalCustomPostFx(_renderer);
-                _renderer.Canvas = null;
-                Destroy(_renderer);
-                _renderer = null;
-            }
-        }
-
-        internal bool IsVisible()
-        {
-            return IsVisible(MainRenderTask.Instance?.ViewLayersMask ?? LayersMask.Default);
-        }
-
-        internal bool IsVisible(LayersMask layersMask)
-        {
-#if FLAX_EDITOR
-            if (_editorTask != null || _editorRoot != null)
-                return true;
-#endif
-            return layersMask.HasLayer(Layer);
-        }
-
-#if FLAX_EDITOR
-        private SceneRenderTask _editorTask;
-        private ContainerControl _editorRoot;
-
-        internal void EditorOverride(SceneRenderTask task, ContainerControl root)
-        {
-            if (_editorTask == task && _editorRoot == root)
-                return;
-            if (_editorTask != null && _renderer != null)
-                _editorTask.RemoveCustomPostFx(_renderer);
-            if (_editorRoot != null && _guiRoot != null)
-                _guiRoot.Parent = null;
-
-            _editorTask = task;
-            _editorRoot = root;
-            Setup();
-
-            if (RenderMode == CanvasRenderMode.ScreenSpace && _editorRoot != null && _guiRoot != null && IsActiveInHierarchy)
-            {
-                _guiRoot.Parent = _editorRoot;
-                _guiRoot.IndexInParent = 0;
-            }
-        }
-#endif
     }
 }
 
