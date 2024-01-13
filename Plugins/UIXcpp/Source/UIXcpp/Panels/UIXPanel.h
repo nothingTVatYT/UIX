@@ -5,7 +5,7 @@
 #include "../UIXEnums.h"
 #include "UIXVScrollBar.h"
 #include "UIXHScrollBar.h"
-#include "Engine/Scripting/ManagedCLR/MUtils.h"
+#include "Engine/Scripting/ScriptingObjectReference.h"
 
 /// <summary>
 /// Panel UI control.
@@ -34,13 +34,13 @@ public:
     /// The vertical scroll bar.
     /// </summary>
     API_FIELD(Attributes="HideInEditor, NoSerialize")
-    ScriptingObjectReference<VScrollBar> VScrollBar;
+    ScriptingObjectReference<UIXVScrollBar> VScrollBar;
 
     /// <summary>
     /// The horizontal scroll bar.
     /// </summary>
     API_FIELD(Attributes = "HideInEditor, NoSerialize")
-    ScriptingObjectReference<HScrollBar> HScrollBar;
+    ScriptingObjectReference<UIXHScrollBar> HScrollBar;
 
     /// <summary>
     /// Gets the view bottom.
@@ -185,6 +185,12 @@ private:
 
     /// <inheritdoc />
     /*internal*/ void AddChildInternal(UIXControl *child) override;
+
+    // For binding to VScrollBar->ValueChanged
+    void VScrollBarSetViewOffset();
+    // For binding to HScrollBar->ValueChanged
+    void HScrollBarSetViewOffset();
+
 
     bool _layoutChanged;
     bool _alwaysShowScrollbars;

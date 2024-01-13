@@ -1,4 +1,6 @@
 #include "UIXPanel.h"
+#include "../UIXEnums.h"
+
 #include "Engine/Core/Log.h"
 #include "Engine/Core/Math/Matrix3x3.h"
 #include "Engine/Render2D/Render2D.h"
@@ -20,6 +22,16 @@ UIXPanel::UIXPanel(const SpawnParams &params, UIXScrollBars scrollBars, bool aut
     SetScrollBars(scrollBars);
 }
 
+
+void UIXPanel::VScrollBarSetViewOffset()
+{
+    SetViewOffset(UIXOrientation::Vertical, VScrollBar->GetValue());
+}
+void UIXPanel::HScrollBarSetViewOffset()
+{
+    SetViewOffset(UIXOrientation::Horizontal, HScrollBar->GetValue());
+}
+
 void UIXPanel::SetScrollBars(UIXScrollBars value)
 {
     if (_scrollBars == value)
@@ -30,43 +42,41 @@ void UIXPanel::SetScrollBars(UIXScrollBars value)
     if (((int)value & (int)UIXScrollBars::Vertical) == (int)UIXScrollBars::Vertical)
     {
         if (VScrollBar == nullptr)
-            VScrollBar = GetChild<VScrollBar>();
+            VScrollBar = GetChild<UIXVScrollBar>();
         if (VScrollBar == nullptr)
         {
-            VScrollBar = New<VScrollBar>(this, GetWidth() - _scrollBarsSize, GetHeight());
+            VScrollBar = New<UIXVScrollBar>(this, GetWidth() - _scrollBarsSize, GetHeight());
             VScrollBar->SetAnchorPreset(UIXAnchorPresets::TopLeft);
 
-            // Was already commented out: //VScrollBar.X += VScrollBar.Width;
+            // Was already commented out: //VScrollBar->X += VScrollBar->Width;
 
-            // TODO: Change to bind when class is converted.
-            VScrollBar.ValueChanged += () = > SetViewOffset(Orientation.Vertical, VScrollBar.Value);
+            VScrollBar->ValueChanged.Bind<UIXPanel, &UIXPanel::VScrollBarSetViewOffset>(this); // += () = > SetViewOffset(Orientation.Vertical, VScrollBar->Value);
         }
     }
     else if (VScrollBar != nullptr)
     {
-        VScrollBar.Dispose();
+        VScrollBar->Dispose();
         VScrollBar = nullptr;
     }
 
     if (((int)value & (int)UIXScrollBars::Horizontal) == (int)UIXScrollBars::Horizontal)
     {
         if (HScrollBar == nullptr)
-            HScrollBar = GetChild<HScrollBar>();
+            HScrollBar = GetChild<UIXHScrollBar>();
         if (HScrollBar == nullptr)
         {
-            HScrollBar = New<HScrollBar>(this, GetHeight() - _scrollBarsSize, GetWidth());
+            HScrollBar = New<UIXHScrollBar>(this, GetHeight() - _scrollBarsSize, GetWidth());
             HScrollBar->SetAnchorPreset(UIXAnchorPresets::TopLeft);
 
-            // Was already commented out: //HScrollBar.Y += HScrollBar.Height;
-            // Was already commented out: //HScrollBar.Offsets += new Margin(0, 0, HScrollBar.Height * 0.5f, 0);
+            // Was already commented out: //HScrollBar->Y += HScrollBar->Height;
+            // Was already commented out: //HScrollBar->Offsets += new Margin(0, 0, HScrollBar->Height * 0.5f, 0);
 
-            // TODO: Change to bind when class is converted.
-            HScrollBar.ValueChanged += () = > SetViewOffset(Orientation.Horizontal, HScrollBar.Value);
+            HScrollBar->ValueChanged.Bind<UIXPanel, &UIXPanel::HScrollBarSetViewOffset>(this); // += () = > SetViewOffset(Orientation.Horizontal, HScrollBar->Value);
         }
     }
     else if (HScrollBar != nullptr)
     {
-        HScrollBar.Dispose();
+        HScrollBar->Dispose();
         HScrollBar = nullptr;
     }
 
@@ -107,9 +117,9 @@ void UIXPanel::SetViewOffset(Float2 value)
     _isLayoutLocked = true;
 
     if (HScrollBar != nullptr)
-        HScrollBar.Value = -value.X;
+        HScrollBar->SetValue(-value.X);
     if (VScrollBar != nullptr)
-        VScrollBar.Value = -value.Y;
+        VScrollBar->SetValue(-value.Y);
 
     _isLayoutLocked = wasLocked;
     UIXScrollableControl::SetViewOffset(value);
@@ -155,10 +165,10 @@ void UIXPanel::ScrollViewTo(Rectangle bounds, bool fastScroll = false)
     bool wasLocked = _isLayoutLocked;
     _isLayoutLocked = true;
 
-    if (HScrollBar != nullptr && HScrollBar.Enabled)
-        HScrollBar.ScrollViewTo(bounds.GetLeft(), bounds.GetRight(), fastScroll);
-    if (VScrollBar != nullptr && VScrollBar.Enabled)
-        VScrollBar.ScrollViewTo(bounds.GetTop(), bounds.GetBottom(), fastScroll);
+    if (HScrollBar != nullptr && HScrollBar->GetEnabled())
+        HScrollBar->ScrollViewTo(bounds.GetLeft(), bounds.GetRight(), fastScroll);
+    if (VScrollBar != nullptr && VScrollBar->GetEnabled())
+        VScrollBar->ScrollViewTo(bounds.GetTop(), bounds.GetBottom(), fastScroll);
 
     _isLayoutLocked = wasLocked;
     PerformLayout();
@@ -198,9 +208,9 @@ bool UIXPanel::OnMouseWheel(Float2 location, float delta)
         return true;
 
     // Roll back to scroll bars
-    if (VScrollBar != nullptr && VScrollBar.Enabled && VScrollBar.OnMouseWheel(VScrollBar.PointFromParent(location), delta))
+    if (VScrollBar != nullptr && VScrollBar->GetEnabled() && VScrollBar->OnMouseWheel(VScrollBar->PointFromParent(location), delta))
         return true;
-    if (HScrollBar != nullptr && HScrollBar.Enabled && HScrollBar.OnMouseWheel(HScrollBar.PointFromParent(location), delta))
+    if (HScrollBar != nullptr && HScrollBar->GetEnabled() && HScrollBar->OnMouseWheel(HScrollBar->PointFromParent(location), delta))
         return true;
 
     // No event handled
@@ -262,17 +272,17 @@ void UIXPanel::Draw()
     UIXScrollableControl::Draw();
 
     // Draw scrollbars manually (they are outside the clipping bounds)
-    if (VScrollBar != nullptr && VScrollBar->Visible)
+    if (VScrollBar != nullptr && VScrollBar->GetVisible())
     {
         Render2D::PushTransform(VScrollBar->_cachedTransform);
-        VScrollBar.Draw();
+        VScrollBar->Draw();
         Render2D::PopTransform();
     }
 
-    if (HScrollBar != nullptr && HScrollBar.Visible)
+    if (HScrollBar != nullptr && HScrollBar->GetVisible())
     {
         Render2D::PushTransform(HScrollBar->_cachedTransform);
-        HScrollBar.Draw();
+        HScrollBar->Draw();
         Render2D::PopTransform();
     }
 }
@@ -284,10 +294,10 @@ bool UIXPanel::IntersectsChildContent(UIXControl *child, Float2 location, API_PA
     if (child != VScrollBar && child != HScrollBar)
     {
         // Check if has v scroll bar to reject points on it
-        if (VScrollBar != nullptr && VScrollBar.Enabled)
+        if (VScrollBar != nullptr && VScrollBar->GetEnabled())
         {
             Float2 pos = VScrollBar->PointFromParent(location);
-            if (VScrollBar.ContainsPoint(pos))
+            if (VScrollBar->ContainsPoint(pos))
             {
                 childSpaceLocation = Float2::Zero;
                 return false;
@@ -295,10 +305,10 @@ bool UIXPanel::IntersectsChildContent(UIXControl *child, Float2 location, API_PA
         }
 
         // Check if has h scroll bar to reject points on it
-        if (HScrollBar != nullptr && HScrollBar.Enabled)
+        if (HScrollBar != nullptr && HScrollBar->GetEnabled())
         {
             Float2 pos = HScrollBar->PointFromParent(location);
-            if (HScrollBar.ContainsPoint(pos))
+            if (HScrollBar->ContainsPoint(pos))
             {
                 childSpaceLocation = Float2::Zero;
                 return false;
@@ -343,17 +353,17 @@ void UIXPanel::PerformLayoutBeforeChildren()
     if (VScrollBar != nullptr)
     {
         float height = GetHeight();
-        bool vScrollEnabled = (controlsBounds.GetBottom() > height + 0.01f || controlsBounds.Y < 0.0f) && height > _scrollBarsSize;
+        bool vScrollEnabled = (controlsBounds.GetBottom() > height + 0.01f || controlsBounds.GetY() < 0.0f) && height > _scrollBarsSize;
 
-        if (VScrollBar.Enabled != vScrollEnabled)
+        if (VScrollBar->GetEnabled() != vScrollEnabled)
         {
             // Set scroll bar visibility
-            VScrollBar.Enabled = vScrollEnabled;
-            VScrollBar.Visible = vScrollEnabled || _alwaysShowScrollbars;
+            VScrollBar->SetEnabled(vScrollEnabled);
+            VScrollBar->SetVisible(vScrollEnabled || _alwaysShowScrollbars);
             _layoutChanged = true;
 
             // Clear scroll state
-            VScrollBar.Reset();
+            VScrollBar->Reset();
             _viewOffset.Y = 0;
             OnViewOffsetChanged();
 
@@ -363,24 +373,24 @@ void UIXPanel::PerformLayoutBeforeChildren()
 
         if (vScrollEnabled)
         {
-            VScrollBar.SetScrollRange(scrollBounds.GetTop(), Math::Max(Math::Max(0.f, scrollBounds.GetTop()), scrollBounds.GetHeight() - height));
+            VScrollBar->SetScrollRange(scrollBounds.GetTop(), Math::Max(Math::Max(0.f, scrollBounds.GetTop()), scrollBounds.GetHeight() - height));
         }
-        VScrollBar.Bounds = new Rectangle(GetWidth() - _scrollBarsSize, 0, _scrollBarsSize, GetHeight());
+        VScrollBar->SetBounds(Rectangle(GetWidth() - _scrollBarsSize, 0, _scrollBarsSize, GetHeight()));
     }
     if (HScrollBar != nullptr)
     {
         float width = GetWidth();
         bool hScrollEnabled = (controlsBounds.GetRight() > width + 0.01f || controlsBounds.GetX() < 0.0f) && width > _scrollBarsSize;
 
-        if (HScrollBar.Enabled != hScrollEnabled)
+        if (HScrollBar->GetEnabled() != hScrollEnabled)
         {
             // Set scroll bar visibility
-            HScrollBar.Enabled = hScrollEnabled;
-            HScrollBar.Visible = hScrollEnabled || _alwaysShowScrollbars;
+            HScrollBar->SetEnabled(hScrollEnabled);
+            HScrollBar->SetVisible(hScrollEnabled || _alwaysShowScrollbars);
             _layoutChanged = true;
 
             // Clear scroll state
-            HScrollBar.Reset();
+            HScrollBar->Reset();
             _viewOffset.X = 0;
             OnViewOffsetChanged();
 
@@ -390,9 +400,9 @@ void UIXPanel::PerformLayoutBeforeChildren()
 
         if (hScrollEnabled)
         {
-            HScrollBar.SetScrollRange(scrollBounds.GetLeft(), Math::Max(Math::Max(0.f, scrollBounds.GetLeft()), scrollBounds.GetWidth() - width));
+            HScrollBar->SetScrollRange(scrollBounds.GetLeft(), Math::Max(Math::Max(0.f, scrollBounds.GetLeft()), scrollBounds.GetWidth() - width));
         }
-        HScrollBar.Bounds = new Rectangle(0, GetHeight() - _scrollBarsSize, GetWidth() - (VScrollBar != nullptr && VScrollBar.Visible ? VScrollBar.GetWidth() : 0), _scrollBarsSize);
+        HScrollBar->SetBounds(Rectangle(0, GetHeight() - _scrollBarsSize, GetWidth() - (VScrollBar != nullptr && VScrollBar->GetVisible() ? VScrollBar->GetWidth() : 0), _scrollBarsSize));
     }
 }
 
@@ -430,16 +440,16 @@ void UIXPanel::GetDesireClientArea(API_PARAM(Out) Rectangle &rect) const
 {
     rect = Rectangle(Float2::Zero, GetSize());
 
-    if (VScrollBar != nullptr && VScrollBar.Visible)
+    if (VScrollBar != nullptr && VScrollBar->GetVisible())
     {
-        //TODO: check if there's a better way to do this: rect.Width -= VScrollBar.Width;
-        rect = Rectangle(0, 0, GetSize().X - VScrollBar.Width, GetSize().Y);
+        //TODO: check if there's a better way to do this: rect.Width -= VScrollBar->Width;
+        rect = Rectangle(0, 0, GetSize().X - VScrollBar->GetWidth(), GetSize().Y);
     }
 
-    if (HScrollBar != nullptr && HScrollBar.Visible)
+    if (HScrollBar != nullptr && HScrollBar->GetVisible())
     {
-        //TODO: check if there's a better way to do this: rect.Height -= HScrollBar.Height;
-        rect = Rectangle(0, 0, GetSize().X, GetSize().Y - VScrollBar.Height);
+        //TODO: check if there's a better way to do this: rect.Height -= HScrollBar->Height;
+        rect = Rectangle(0, 0, GetSize().X, GetSize().Y - VScrollBar->GetHeight());
     }
 }
 
@@ -454,7 +464,7 @@ DragDropEffect UIXPanel::OnDragMove(Float2 location, const DragData &data)
     float MoveScale = 4.0f;
     Float2 viewOffset = -_viewOffset;
 
-    if (VScrollBar != nullptr && VScrollBar.Enabled && height > MinSize)
+    if (VScrollBar != nullptr && VScrollBar->GetEnabled()&& height > MinSize)
     {
         if (Rectangle(0, 0, width, AreaSize).Contains(location))
         {
@@ -465,11 +475,11 @@ DragDropEffect UIXPanel::OnDragMove(Float2 location, const DragData &data)
             viewOffset.Y += MoveScale;
         }
 
-        viewOffset.Y = Math::Clamp(viewOffset.Y, VScrollBar.Minimum, VScrollBar.Maximum);
-        VScrollBar.Value = viewOffset.Y;
+        viewOffset.Y = Math::Clamp(viewOffset.Y, VScrollBar->GetMinimum(), VScrollBar->GetMaximum());
+        VScrollBar->SetValue(viewOffset.Y);
     }
 
-    if (HScrollBar != nullptr && HScrollBar.Enabled && width > MinSize)
+    if (HScrollBar != nullptr && HScrollBar->GetEnabled()&& width > MinSize)
     {
         if (Rectangle(0, 0, AreaSize, height).Contains(location))
         {
@@ -480,8 +490,8 @@ DragDropEffect UIXPanel::OnDragMove(Float2 location, const DragData &data)
             viewOffset.X += MoveScale;
         }
 
-        viewOffset.X = Math::Clamp(viewOffset.X, HScrollBar.Minimum, HScrollBar.Maximum);
-        HScrollBar.Value = viewOffset.X;
+        viewOffset.X = Math::Clamp(viewOffset.X, HScrollBar->GetMinimum(), HScrollBar->GetMaximum());
+        HScrollBar->SetValue(viewOffset.X);
     }
 
     viewOffset *= -1;
