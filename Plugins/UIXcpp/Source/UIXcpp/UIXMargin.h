@@ -14,7 +14,7 @@
 //API_CLASS(NoSpawn, Attributes="Serializable") 
 //class UIXCPP_API UIXMargin : public ScriptingObject
 
-API_STRUCT() struct UIXMargin
+API_STRUCT() struct UIXCPP_API UIXMargin
 {
     //DECLARE_SCRIPTING_TYPE_NO_SPAWN(UIXMargin)
     DECLARE_SCRIPTING_TYPE_MINIMAL(UIXMargin)

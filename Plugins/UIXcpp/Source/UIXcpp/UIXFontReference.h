@@ -6,7 +6,7 @@
 
 class Font;
 
-API_STRUCT() struct UIXFontReference
+API_STRUCT() struct UIXCPP_API UIXFontReference
 {
     DECLARE_SCRIPTING_TYPE_MINIMAL(UIXFontReference)
 

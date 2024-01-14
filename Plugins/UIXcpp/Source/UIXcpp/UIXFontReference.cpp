@@ -60,7 +60,7 @@ Font* UIXFontReference::GetFont() const
 {
     if (_cachedFont != nullptr)
         return _cachedFont;
-    if (_font)
+    if (_font != nullptr)
         _cachedFont = _font->CreateFont(_size);
     return _cachedFont;
 }

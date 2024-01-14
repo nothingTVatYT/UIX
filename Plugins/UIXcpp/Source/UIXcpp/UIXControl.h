@@ -1357,7 +1357,7 @@ private:
 
     // TODO: convert to flags
 
-    bool _isMouseOver;//, _isDragOver;
+    bool _isMouseOver = false;//, _isDragOver;
     bool _isVisible = true;
     bool _isEnabled = true;
     bool _autoFocus = true;
@@ -1376,7 +1376,7 @@ private:
     Float2 _scale = Float2(1.0f);
     Float2 _pivot = Float2(0.5f);
     Float2 _shear;
-    float _rotation;
+    float _rotation = 0.0f;
     /*internal*/ Matrix3x3 _cachedTransform;
     /*internal*/ Matrix3x3 _cachedTransformInv;
 

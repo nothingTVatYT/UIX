@@ -14,8 +14,6 @@
 #include "Engine/Engine/Time.h"
 
 
-
-
 //UIXCanvasRenderer::UIXCanvasRenderer(const SpawnParams &params) : PostProcessEffect(params)
 //{
 //}
@@ -557,3 +555,5 @@ void UIXCanvas::OnActiveInTreeChanged()
     }
 }
 #endif
+
+

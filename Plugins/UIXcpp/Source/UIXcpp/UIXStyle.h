@@ -43,7 +43,7 @@ public:
     /// Global GUI style used by all the controls.
     /// </summary>
     API_PROPERTY()
-    static const UIXStyle* GetCurrent() { return _current;  }
+    static const UIXStyle* GetCurrent();
 
     /// <summary>
     /// Global GUI style used by all the controls.

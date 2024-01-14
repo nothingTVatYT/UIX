@@ -121,8 +121,8 @@ public:
     FORCE_INLINE T* AddChild()
     {
         //TODO: what is an Activator?
-        T* child = (T*)Activator::CreateInstance(typeof(T));
-        child->Parent = this;
+        T* child = New<T>(); //(T*)Activator::CreateInstance(typeof(T));
+        child->SetParent(this);
         return child;
     }
 
