@@ -86,24 +86,19 @@ public:
     void OnMouseLeaveControl(UIXControl *target);
 
     /// <inheritdoc />
-    API_FUNCTION()
     void Update(float deltaTime) override;
 
     /// <inheritdoc />
-    API_FUNCTION()
     void Draw() override;
 
 
     /// <inheritdoc />
-    API_FUNCTION()
     bool OnShowTooltip(API_PARAM(Out) String &text, API_PARAM(Out) Float2 &location, API_PARAM(Out) Rectangle &area) override;
 
     /// <inheritdoc />
-    API_FUNCTION()
     void OnDestroy() override;
 protected:
     /// <inheritdoc />
-    API_FUNCTION()
     void PerformLayoutBeforeChildren() override;
 
 private:

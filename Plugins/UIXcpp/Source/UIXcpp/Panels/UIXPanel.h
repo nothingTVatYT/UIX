@@ -131,35 +131,34 @@ public:
     API_FUNCTION() void ScrollViewTo(Rectangle bounds, bool fastScroll = false);
 
     /// <inheritdoc />
-    API_FUNCTION() bool OnMouseDown(Float2 location, MouseButton button) override;
+    bool OnMouseDown(Float2 location, MouseButton button) override;
 
     /// <inheritdoc />
-    API_FUNCTION() bool OnMouseWheel(Float2 location, float delta) override;
+    bool OnMouseWheel(Float2 location, float delta) override;
 
     /// <inheritdoc />
-    API_FUNCTION() void RemoveChildren() override;
+    void RemoveChildren() override;
 
     /// <inheritdoc />
-    API_FUNCTION() void DisposeChildren() override;
+    void DisposeChildren() override;
 
     /// <inheritdoc />
-    API_FUNCTION() void OnChildResized(UIXControl *control) override;
+    void OnChildResized(UIXControl *control) override;
 
     /// <inheritdoc />
-    API_FUNCTION() void Draw() override;
+    void Draw() override;
 
     /// <inheritdoc />
-    API_FUNCTION() bool IntersectsChildContent(UIXControl *child, Float2 location, API_PARAM(Out) Float2 &childSpaceLocation) const override;
+    bool IntersectsChildContent(UIXControl *child, Float2 location, API_PARAM(Out) Float2 &childSpaceLocation) const override;
 
     /// <inheritdoc />
-    API_FUNCTION() void PerformLayout(bool force = false) override;
+    void PerformLayout(bool force = false) override;
 protected:
     /// <inheritdoc />
-    API_FUNCTION()
     void SetViewOffset(Float2 value) override;
 
     /// <inheritdoc />
-    API_FUNCTION() void PerformLayoutBeforeChildren() override;
+    void PerformLayoutBeforeChildren() override;
 
     /// <summary>
     /// Arranges the child controls and gets their bounds.
@@ -178,7 +177,7 @@ protected:
     Rectangle _controlsBounds;
 
     /// <inheritdoc />
-    API_FUNCTION() void GetDesireClientArea(API_PARAM(Out) Rectangle &rect) const override;
+    void GetDesireClientArea(API_PARAM(Out) Rectangle &rect) const override;
 
     /// <inheritdoc />
     // API_FUNCTION() DragDropEffect OnDragMove(Float2 location, const DragData &data) override;

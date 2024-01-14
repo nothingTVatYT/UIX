@@ -1,6 +1,8 @@
 #include "UIXStyle.h"
 #include "Engine/Render2D/Font.h"
 
+// TODO: this might need to be created if we keep this as a class and not a struct.
+UIXStyle* UIXStyle::_current = nullptr;
 
 void UIXStyle::SetCurrent(const UIXStyle *value)
 {

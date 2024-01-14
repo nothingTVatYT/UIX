@@ -149,7 +149,7 @@ public:
     /// Returns a <see cref="System.String" /> that represents this instance.
     /// </summary>
     /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-    API_FUNCTION() String ToString() const
+    String ToString() const
     {
         return String::Format(TEXT("Left:{0} Right:{1} Top:{2} Bottom:{3}"), Left, Right, Top, Bottom);
     }
@@ -171,7 +171,7 @@ public:
     /// Returns a hash code for this instance.
     /// </summary>
     /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-    API_FUNCTION() int GetHashCode() const
+    int GetHashCode() const
     {
         int hashCode = GetHash(Left);
         hashCode = (hashCode * 397) ^ GetHash(Right);

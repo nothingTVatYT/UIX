@@ -47,19 +47,19 @@ enum class UIXCanvasRenderMode
 /// PostFx used to render the <see cref="UICanvas"/>. Used when render mode is <see cref="UIXCanvasRenderMode::CameraSpace"/> or <see cref="UIXCanvasRenderMode::WorldSpace"/>.
 /// </summary>
 /// <seealso cref="FlaxEngine.PostProcessEffect" />
-API_CLASS(Sealed, Attributes = "HideInEditor")
+API_CLASS(Sealed, NoSpawn, Attributes = "HideInEditor")
 class UIXCanvasRenderer : public PostProcessEffect
 {
-    
+    DECLARE_SCENE_OBJECT_NO_SPAWN(UIXCanvasRenderer);
+
 public:
     /// <inheritdoc />
-    UIXCanvasRenderer() : Canvas(nullptr)
+    UIXCanvasRenderer() : PostProcessEffect(SpawnParams(Guid::New(), TypeInitializer)), Canvas(nullptr)
     {
         UseSingleTarget = true;
     }
 
     /// <inheritdoc />
-    API_FUNCTION()
     FORCE_INLINE bool CanRender() const override;
 
     /// <inheritdoc />

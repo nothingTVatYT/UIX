@@ -17,6 +17,10 @@
 
 
 
+//UIXCanvasRenderer::UIXCanvasRenderer(const SpawnParams &params) : PostProcessEffect(params)
+//{
+//}
+
 bool UIXCanvasRenderer::CanRender() const
 {
     // This is a const in the base class, but C# files can somehow declare it non-const.
@@ -92,11 +96,11 @@ void UIXCanvasRenderer::Render(GPUContext* context, API_PARAM(Ref) RenderContext
 UIXCanvas::UIXCanvas(const SpawnParams& params) : Actor(params), _guiRoot(New<UIXCanvasRootControl>(this))
 {
     _guiRoot->SetIsLayoutLocked(false);
-    NavigateUp = New<UIXInputEvent>("NavigateUp");
-    NavigateDown = New<UIXInputEvent>("NavigateDown");
-    NavigateLeft = New<UIXInputEvent>("NavigateLeft");
-    NavigateRight = New<UIXInputEvent>("NavigateRight");
-    NavigateSubmit = New<UIXInputEvent>("NavigateSubmit");
+    NavigateUp = New<UIXInputEvent>(TEXT("NavigateUp"));
+    NavigateDown = New<UIXInputEvent>(TEXT("NavigateDown"));
+    NavigateLeft = New<UIXInputEvent>(TEXT("NavigateLeft"));
+    NavigateRight = New<UIXInputEvent>(TEXT("NavigateRight"));
+    NavigateSubmit = New<UIXInputEvent>(TEXT("NavigateSubmit"));
 }
 
 UIXCanvas::~UIXCanvas()
@@ -297,6 +301,7 @@ void UIXCanvas::GetWorldMatrix(Vector3 viewOrigin, API_PARAM(Out) Matrix& world)
     }
 }
 
+Delegate<Float2&, Ray&> UIXCanvas::CalculateRay;
 
 void UIXCanvas::DefaultCalculateRay(Float2 location, API_PARAM(Out) Ray& ray)
 {
@@ -322,7 +327,7 @@ void UIXCanvas::Setup()
         {
             // Fill the screen area
             _guiRoot->SetAnchorPreset(UIXAnchorPresets::StretchAll);
-            _guiRoot->SetOffsets(New<UIXMargin>(0));
+            _guiRoot->SetOffsets(New<UIXMargin>(0.0f));
             if (_renderer)
             {
                 //#if FLAX_EDITOR
@@ -334,7 +339,7 @@ void UIXCanvas::Setup()
                 _renderer->Canvas = nullptr;
 
                 // TODO: make sure this doesn't crash. Replacement for: Destroy(_renderer);
-                _renderer->DeleteObjectNow();
+                Delete(_renderer);
 
                 _renderer = nullptr;
             }
@@ -492,8 +497,7 @@ void UIXCanvas::EndPlay()
         _renderer->Canvas = nullptr;
 
         // TODO: wait for the crash.
-        _renderer->DeleteObject();
-        //Destroy(_renderer);
+        Delete(_renderer);
 
         _renderer = nullptr;
     }

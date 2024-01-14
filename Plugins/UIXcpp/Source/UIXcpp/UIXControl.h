@@ -500,7 +500,7 @@ public:
     /// </summary>
     /// <param name="pointerId">The touch pointer identifier. Stable for the whole touch gesture/interaction.</param>
     /// <returns>True if given touch pointer is over the control, otherwise false.</returns>
-    API_PROPERTY()
+    API_FUNCTION()
     virtual bool IsTouchPointerOver(int pointerId)
     {
         return _touchOvers.Contains(pointerId);

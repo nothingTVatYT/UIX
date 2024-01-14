@@ -26,16 +26,16 @@ public:
     virtual void SetViewOffset(Float2 value);
 
     /// <inheritdoc />
-    API_FUNCTION() bool IntersectsChildContent(UIXControl *child, Float2 location, API_PARAM(Out) Float2 &childSpaceLocation) const override;
+    bool IntersectsChildContent(UIXControl *child, Float2 location, API_PARAM(Out) Float2 &childSpaceLocation) const override;
 
     /// <inheritdoc />
-    API_FUNCTION() bool IntersectsContent(Float2 locationParent, API_PARAM(Out) Float2 &location) const override;
+    bool IntersectsContent(Float2 locationParent, API_PARAM(Out) Float2 &location) const override;
 
     /// <inheritdoc />
-    API_FUNCTION() Float2 PointToParent(Float2 location) const override;
+    Float2 PointToParent(Float2 location) const override;
 
     /// <inheritdoc />
-    API_FUNCTION() Float2 PointFromParent(Float2 location) const override;
+    Float2 PointFromParent(Float2 location) const override;
 protected:
     /// <summary>
     /// Called when view offset gets changed.

@@ -86,7 +86,6 @@ public:
     void SubmitFocused();
 
     /// <inheritdoc />
-    API_FUNCTION()
     void Update(float deltaTime) override;
 
     /// <summary>
@@ -152,7 +151,6 @@ public:
     virtual bool GetMouseButtonUp(MouseButton button) = 0;
 
     /// <inheritdoc />
-    API_PROPERTY()
     virtual UIXRootControl* GetRoot() const override { return const_cast<UIXRootControl*>(this); }
 
 protected:

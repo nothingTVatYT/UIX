@@ -51,8 +51,7 @@ public:
     /// <summary>
     /// Gets a value indicating whether the control, or one of its child controls, currently has the input focus.
     /// </summary>
-    API_PROPERTY()
-    FORCE_INLINE virtual bool GetContainsFocus() const { return _containsFocus; }
+    FORCE_INLINE bool GetContainsFocus() const override { return _containsFocus; }
 
     /// <summary>
     /// True if automatic updates for control layout are locked (useful when creating a lot of GUI control to prevent lags).
@@ -275,29 +274,23 @@ public:
     virtual bool IntersectsChildContent(UIXControl *child, Float2 location, API_PARAM(Out) Float2 &childSpaceLocation) const;
 
     /// <inheritdoc />
-    API_FUNCTION()
     UIXControl* OnNavigate(UIXNavDirection direction, Float2 location, UIXControl* caller, API_PARAM(Ref) Array<UIXControl*> &visited) override;
 
     /// <inheritdoc />
-    API_FUNCTION()
     void OnDestroy() override;
 
     /// <inheritdoc />
-    API_PROPERTY()
     bool GetIsTouchOver() const override;
 
     /// <inheritdoc />
-    API_FUNCTION()
     void Update(float deltaTime) override;
 
     /// <inheritdoc />
-    API_FUNCTION()
     void ClearState() override;
 
     /// <summary>
     /// Draw the control and the children.
     /// </summary>
-    API_FUNCTION()
     void Draw() override;
 
     /// <summary>
@@ -307,75 +300,58 @@ public:
     virtual void DrawSelf();
 
     /// <inheritdoc />
-    API_FUNCTION()
     void PerformLayout(bool force = false) override;
 
     /// <inheritdoc />
-    API_FUNCTION()
     void OnMouseEnter(Float2 location) override;
 
 
     /// <inheritdoc />
-    API_FUNCTION()
     void OnMouseMove(Float2 location) override;
 
     /// <inheritdoc />
-    API_FUNCTION()
     void OnMouseLeave() override;
 
     /// <inheritdoc />
-    API_FUNCTION()
     bool OnMouseWheel(Float2 location, float delta) override;
 
     /// <inheritdoc />
-    API_FUNCTION()
     bool OnMouseDown(Float2 location, MouseButton button) override;
 
     /// <inheritdoc />
-    API_FUNCTION()
     bool OnMouseUp(Float2 location, MouseButton button) override;
 
     /// <inheritdoc />
-    API_FUNCTION()
     bool OnMouseDoubleClick(Float2 location, MouseButton button) override;
 
     /// <inheritdoc />
-    API_FUNCTION()
     bool IsTouchPointerOver(int pointerId) override;
 
     /// <inheritdoc />
-    API_FUNCTION()
     void OnTouchEnter(Float2 location, int pointerId) override;
 
     /// <inheritdoc />
-    API_FUNCTION()
     bool OnTouchDown(Float2 location, int pointerId) override;
 
     /// <inheritdoc />
-    API_FUNCTION()
     void OnTouchMove(Float2 location, int pointerId) override;
 
     /// <inheritdoc />
-    API_FUNCTION()
     bool OnTouchUp(Float2 location, int pointerId) override;
 
     /// <inheritdoc />
-    API_FUNCTION()
     void OnTouchLeave(int pointerId) override;
 
     /// <inheritdoc />
-    API_FUNCTION()
     bool OnCharInput(char c) override;
 
     /// <inheritdoc />
-    API_FUNCTION()
     bool OnKeyDown(KeyboardKeys key) override;
 
     /// <inheritdoc />
-    API_FUNCTION()
     void OnKeyUp(KeyboardKeys key) override;
 
-    /*/// <inheritdoc />
+    /* /// <inheritdoc />
     API_FUNCTION()
     DragDropEffect OnDragEnter(Float2 location, const DragData &data) override;*/
 
@@ -459,7 +435,6 @@ protected:
     virtual void DrawChildren();
 
     /// <inheritdoc />
-    API_FUNCTION()
     void OnSizeChanged() override;
 
     /// <summary>

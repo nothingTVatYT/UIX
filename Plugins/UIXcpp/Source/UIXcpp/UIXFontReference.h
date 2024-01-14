@@ -115,11 +115,9 @@ public:
     //}
 
     /// <inheritdoc />
-    API_FUNCTION()
     int GetHashCode();
 
     /// <inheritdoc />
-    API_FUNCTION()
     String ToString();
 
 private:

@@ -1,4 +1,5 @@
 ﻿using FlaxEngine.GUI;
+using System;
 
 namespace UIXCpp
 {
@@ -10,21 +11,35 @@ namespace UIXCpp
         /// <returns>The added control.</returns>
         public T AddChild<T>() where T : UIXControl
         {
-            return (T)Internal_AddChild(typeof(T), this);
+
+            UIXControl child = Activator.CreateInstance<T>();
+            AddChildInternal(child);
+            return (T)child;
         }
 
         /// <summary>
         /// Adds the control to the container.
         /// </summary>
         /// <param name="child">The control to add.</param>
-        public T AddChild<T>(T child) where T : Control
+        public T AddChild<T>(T child) where T : UIXControl
         {
-            return (T)Internal_AddChild(child, typeof(T), this);
+            AddChildInternal((UIXControl)child);
+            return child;
         }
 
-        public T GetChild<T>() where T : Control
+        /// <summary>
+        /// Find the first child with a given type.
+        /// </summary>
+        /// <returns>The control matching the type.</returns>
+        public T GetChild<T>() where T : UIXControl
         {
-            return (T)Internal_GetChild(typeof(T), this);
+            for (int ix = 0, siz = ChildrenCount; ix < siz; ++ix)
+            {
+                var child = GetChild(ix);
+                if (child is T)
+                    return (T)child;
+            }
+            return null;
         }
     }
 }

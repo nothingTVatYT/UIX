@@ -107,92 +107,88 @@ public:
     /// <summary>
     /// Gets or sets the current focused control
     /// </summary>
-    API_PROPERTY()
     FORCE_INLINE UIXControl* GetFocusedControl() const override { return _focusedControl; }
-    API_PROPERTY()
+
+    /// <summary>
+    /// Gets or sets the current focused control
+    /// </summary>
     void SetFocusedControl(UIXControl *value) override;
    
 
     /// <inheritdoc />
-    API_PROPERTY()
     CursorType GetCursor() const override;
 
     /// <inheritdoc />
-    API_PROPERTY()
     void SetCursor(CursorType value) override;
 
     /// <inheritdoc />
-    API_PROPERTY()
     Float2 GetTrackingMouseOffset() const override;
 
     /// <inheritdoc />
-    API_PROPERTY()
     UIXWindowRootControl* GetRootWindow() const override { return const_cast<UIXWindowRootControl*>(this); }
 
     /// <inheritdoc />
-    API_PROPERTY()
     Float2 GetMousePosition() const override;
    
     /// <inheritdoc />
-    API_PROPERTY()
     void SetMousePosition(Float2 value) override;
 
 
     /// <inheritdoc />
-    API_FUNCTION() void StartTrackingMouse(UIXControl *control, bool useMouseScreenOffset) override;
+    void StartTrackingMouse(UIXControl *control, bool useMouseScreenOffset) override;
 
     /// <inheritdoc />
-    API_FUNCTION() void EndTrackingMouse() override;
+    void EndTrackingMouse() override;
 
     /// <inheritdoc />
-    API_FUNCTION() bool GetKey(KeyboardKeys key) override;
+    bool GetKey(KeyboardKeys key) override;
 
     /// <inheritdoc />
-    API_FUNCTION() bool GetKeyDown(KeyboardKeys key) override;
+    bool GetKeyDown(KeyboardKeys key) override;
 
     /// <inheritdoc />
-    API_FUNCTION() bool GetKeyUp(KeyboardKeys key) override;
+    bool GetKeyUp(KeyboardKeys key) override;
 
     /// <inheritdoc />
-    API_FUNCTION() bool GetMouseButton(MouseButton button) override;
+    bool GetMouseButton(MouseButton button) override;
 
     /// <inheritdoc />
-    API_FUNCTION() bool GetMouseButtonDown(MouseButton button) override;
+    bool GetMouseButtonDown(MouseButton button) override;
 
     /// <inheritdoc />
-    API_FUNCTION() bool GetMouseButtonUp(MouseButton button) override;
+    bool GetMouseButtonUp(MouseButton button) override;
 
     /// <inheritdoc />
-    API_FUNCTION() Float2 PointFromScreen(Float2 location) const override;
+    Float2 PointFromScreen(Float2 location) const override;
 
     /// <inheritdoc />
-    API_FUNCTION() Float2 PointToScreen(Float2 location) const override;
+    Float2 PointToScreen(Float2 location) const override;
 
     /// <inheritdoc />
-    API_FUNCTION() void Focus() override;
+    void Focus() override;
 
     /*/// <inheritdoc />
-    API_FUNCTION() void DoDragDrop(const DragData &data) override;*/
+    void DoDragDrop(const DragData &data) override;*/
 
     /// <inheritdoc />
-    API_FUNCTION() bool OnMouseDown(Float2 location, MouseButton button) override;
+    bool OnMouseDown(Float2 location, MouseButton button) override;
 
     /// <inheritdoc />
-    API_FUNCTION() bool OnMouseUp(Float2 location, MouseButton button) override;
+    bool OnMouseUp(Float2 location, MouseButton button) override;
 
     /// <inheritdoc />
-    API_FUNCTION() bool OnMouseDoubleClick(Float2 location, MouseButton button) override;
+    bool OnMouseDoubleClick(Float2 location, MouseButton button) override;
 
     /// <inheritdoc />
-    API_FUNCTION() bool OnMouseWheel(Float2 location, float delta) override;
+    bool OnMouseWheel(Float2 location, float delta) override;
 
     /// <inheritdoc />
-    API_FUNCTION() void OnMouseMove(Float2 location) override;
+    void OnMouseMove(Float2 location) override;
 
 protected:
 
     /// <inheritdoc />
-    API_FUNCTION() bool Focus(UIXControl *c) override;
+    bool Focus(UIXControl *c) override;
 
 private:
 

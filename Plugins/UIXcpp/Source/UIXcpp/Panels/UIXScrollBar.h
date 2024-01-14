@@ -180,10 +180,10 @@ public:
     API_FUNCTION() void SetScrollRange(float minimum, float maximum);
 
     /// <inheritdoc />
-    API_FUNCTION() void Draw() override;
+    void Draw() override;
 
     /// <inheritdoc />
-    API_FUNCTION() void OnLostFocus() override
+    void OnLostFocus() override
     {
         EndTracking();
 
@@ -191,26 +191,26 @@ public:
     }
 
     /// <inheritdoc />
-    API_FUNCTION() void OnMouseMove(Float2 location) override;
+    void OnMouseMove(Float2 location) override;
 
     /// <inheritdoc />
-    API_FUNCTION() bool OnMouseWheel(Float2 location, float delta) override;
+    bool OnMouseWheel(Float2 location, float delta) override;
 
     /// <inheritdoc />
-    API_FUNCTION() bool OnMouseDown(Float2 location, MouseButton button) override;
+    bool OnMouseDown(Float2 location, MouseButton button) override;
 
     /// <inheritdoc />
-    API_FUNCTION() bool OnMouseUp(Float2 location, MouseButton button) override;
+    bool OnMouseUp(Float2 location, MouseButton button) override;
 
     /// <inheritdoc />
-    API_FUNCTION() void OnEndMouseCapture() override;
+    void OnEndMouseCapture() override;
 
 
     /// <inheritdoc />
-    API_FUNCTION() void OnMouseEnter(Float2 location) override;
+    void OnMouseEnter(Float2 location) override;
 
     /// <inheritdoc />
-    API_FUNCTION() void OnMouseLeave() override;
+    void OnMouseLeave() override;
 
 
     /// <summary>
@@ -254,15 +254,12 @@ protected:
     virtual void OnValueChanged();
 
     /// <inheritdoc />
-    API_FUNCTION()
     void OnSizeChanged() override;
 
     /// <inheritdoc />
-    API_FUNCTION()
     void AddUpdateCallbacks(UIXRootControl *root) override;
 
     /// <inheritdoc />
-    API_FUNCTION()
     void RemoveUpdateCallbacks(UIXRootControl *root) override;
 private:
     void UpdateThumb();
