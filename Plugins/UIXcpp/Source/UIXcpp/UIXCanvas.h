@@ -7,6 +7,7 @@
 #include "Engine/Core/Types/BaseTypes.h"
 #include "Engine/Core/Math/Vector2.h"
 #include "Engine/Core/Delegate.h"
+#include "Engine/Scripting/ScriptingObjectReference.h"
 #include "UIXInputEvent.h"
 
 //#include "Engine/Graphics/Textures/GPUTexture.h"
@@ -224,7 +225,7 @@ public:
     /// Gets or sets the camera used to place the GUI when render mode is set to <see cref="UIXCanvasRenderMode::CameraSpace"/> or <see cref="UIXCanvasRenderMode::WorldSpaceFaceCamera"/>.
     /// </summary>
     API_PROPERTY(Attributes = "EditorOrder(50), EditorDisplay(\"Canvas\"), VisibleIf(\"Editor_UseRenderCamera\"), Tooltip(\"Camera used to place the GUI when RenderMode is set to CameraSpace or WorldSpaceFaceCamera.\")")
-    FORCE_INLINE Camera* GetRenderCamera() const
+    FORCE_INLINE ScriptingObjectReference<Camera> GetRenderCamera() const
     {
         return _renderCamera;
     }
@@ -233,7 +234,7 @@ public:
     /// Gets or sets the camera used to place the GUI when render mode is set to <see cref="UIXCanvasRenderMode::CameraSpace"/> or <see cref="UIXCanvasRenderMode::WorldSpaceFaceCamera"/>.
     /// </summary>
     API_PROPERTY(Attributes = "EditorOrder(50), EditorDisplay(\"Canvas\"), VisibleIf(\"Editor_UseRenderCamera\"), Tooltip(\"Camera used to place the GUI when RenderMode is set to CameraSpace or WorldSpaceFaceCamera.\")")
-    FORCE_INLINE void SetRenderCamera(Camera* value)
+    FORCE_INLINE void SetRenderCamera(ScriptingObjectReference<Camera> value)
     {
         _renderCamera = value;
     }
@@ -467,7 +468,7 @@ private:
     PostProcessEffectLocation _renderLocation = PostProcessEffectLocation::Default;
     bool _receivesEvents;
     bool _ignoreDepth;
-    Camera* _renderCamera = nullptr;
+    ScriptingObjectReference<Camera> _renderCamera = nullptr;
     float _distance;
 
     float _navigationInputRepeatDelay = 0.5f;
