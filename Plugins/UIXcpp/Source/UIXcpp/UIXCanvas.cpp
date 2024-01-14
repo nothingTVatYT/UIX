@@ -92,11 +92,11 @@ void UIXCanvasRenderer::Render(GPUContext* context, API_PARAM(Ref) RenderContext
 UIXCanvas::UIXCanvas(const SpawnParams& params) : Actor(params), _guiRoot(New<UIXCanvasRootControl>(this))
 {
     _guiRoot->SetIsLayoutLocked(false);
-    NavigateUp = New<UIXInputEvent>("NavigateUp");
-    NavigateDown = New<UIXInputEvent>("NavigateDown");
-    NavigateLeft = New<UIXInputEvent>("NavigateLeft");
-    NavigateRight = New<UIXInputEvent>("NavigateRight");
-    NavigateSubmit = New<UIXInputEvent>("NavigateSubmit");
+    NavigateUp = New<UIXInputEvent>(TEXT("NavigateUp"));
+    NavigateDown = New<UIXInputEvent>(TEXT("NavigateDown"));
+    NavigateLeft = New<UIXInputEvent>(TEXT("NavigateLeft"));
+    NavigateRight = New<UIXInputEvent>(TEXT("NavigateRight"));
+    NavigateSubmit = New<UIXInputEvent>(TEXT("NavigateSubmit"));
 }
 
 UIXCanvas::~UIXCanvas()
