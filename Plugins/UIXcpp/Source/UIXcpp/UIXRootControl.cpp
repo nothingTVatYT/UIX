@@ -4,7 +4,7 @@
 UIXContainerControl *UIXRootControl::_gameRoot = nullptr;
 UIXCanvasContainer *UIXRootControl::_canvasContainer = New<UIXCanvasContainer>();
 
-UIXRootControl::UIXRootControl() : UIXContainerControl(0, 0, 100, 60), UpdateCallbacks(1024)
+UIXRootControl::UIXRootControl() : UIXContainerControl(0, 0, 100, 60)//, UpdateCallbacks(1024)
 {
     SetAutoFocus(false);
 }
@@ -60,26 +60,38 @@ void UIXRootControl::Update(float deltaTime)
 
     // Flush requests
     //ProfilerCPU::BeginEvent("RootControl.SyncCallbacks");
-    for (int i = 0; i < UpdateCallbacksToAdd.Count(); i++)
+
+    Array<Function<void(float)>> rdelegates;
+    rdelegates.Resize(UpdateCallbacksToRemove.Count());
+    UpdateCallbacksToRemove.GetBindings(rdelegates.Get(), rdelegates.Count());
+
+
+    Array<Function<void(float)>> adelegates;
+    adelegates.Resize(UpdateCallbacksToAdd.Count());
+    UpdateCallbacksToAdd.GetBindings(adelegates.Get(), adelegates.Count());
+
+    for (int i = 0; i < adelegates.Count(); i++)
     {
-        UpdateCallbacks.Add(UpdateCallbacksToAdd[i]);
+        UpdateCallbacks.Bind(adelegates[i]);
     }
-    UpdateCallbacksToAdd.Clear();
-    for (int i = 0; i < UpdateCallbacksToRemove.Count(); i++)
+    UpdateCallbacksToAdd.UnbindAll();
+    for (int i = 0; i < rdelegates.Count(); i++)
     {
-        UpdateCallbacks.Remove(UpdateCallbacksToRemove[i]);
+        UpdateCallbacks.Unbind(rdelegates[i]);
     }
-    UpdateCallbacksToRemove.Clear();
+    UpdateCallbacksToRemove.UnbindAll();
+
     //ProfilerCPU.EndEvent();
 
     // Perform the UI update
     try
     {
-        //ProfilerCPU.BeginEvent("RootControl.Update");
-        for (int i = 0; i < UpdateCallbacks.Count(); i++)
-        {
-            UpdateCallbacks[i](deltaTime);
-        }
+        ////ProfilerCPU.BeginEvent("RootControl.Update");
+        //for (int i = 0; i < UpdateCallbacks.Count(); i++)
+        //{
+        //    UpdateCallbacks[i](deltaTime);
+        //}
+        UpdateCallbacks(deltaTime);
     }
     catch (...)
     {

@@ -377,7 +377,7 @@ void UIXScrollBar::AddUpdateCallbacks(UIXRootControl *root)
     UIXControl::AddUpdateCallbacks(root);
 
     if (_update.IsBinded())
-        GetRoot()->UpdateCallbacksToAdd.Add(_update);
+        GetRoot()->UpdateCallbacksToAdd.Bind(_update);
 }
 
 
@@ -386,5 +386,5 @@ void UIXScrollBar::RemoveUpdateCallbacks(UIXRootControl *root)
     UIXControl::RemoveUpdateCallbacks(root);
 
     if (_update.IsBinded())
-        GetRoot()->UpdateCallbacksToRemove.Add(_update);
+        GetRoot()->UpdateCallbacksToRemove.Bind(_update);
 }

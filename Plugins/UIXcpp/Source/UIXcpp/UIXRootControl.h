@@ -55,20 +55,17 @@ public:
     /// <summary>
     /// The update callbacks collection. Controls can register for this to get the update event for logic handling.
     /// </summary>
-    API_FIELD(ReadOnly)
-    Array<UpdateDelegate> UpdateCallbacks;
+    API_EVENT() Delegate<float> UpdateCallbacks;
 
     /// <summary>
     /// The update callbacks to add before invoking the update.
     /// </summary>
-    API_FIELD()
-    Array<UpdateDelegate> UpdateCallbacksToAdd;
+    API_EVENT() Delegate<float> UpdateCallbacksToAdd;
 
     /// <summary>
     /// The update callbacks to remove before invoking the update.
     /// </summary>
-    API_FIELD()
-    Array<UpdateDelegate> UpdateCallbacksToRemove;
+    API_EVENT() Delegate<float> UpdateCallbacksToRemove;
 
     /// <summary>
     /// The custom callback function for UI navigation. Can be used to override the default behaviour.

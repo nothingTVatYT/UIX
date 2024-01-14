@@ -771,13 +771,13 @@ void UIXControl::CacheRootHandle()
 void UIXControl::AddUpdateCallbacks(UIXRootControl *root)
 {
     if (_tooltipUpdate.IsBinded())
-        root->UpdateCallbacksToAdd.Add(_tooltipUpdate);
+        root->UpdateCallbacksToAdd.Bind(_tooltipUpdate);
 }
 
 void UIXControl::RemoveUpdateCallbacks(UIXRootControl *root)
 {
     if (_tooltipUpdate.IsBinded())
-        root->UpdateCallbacksToRemove.Add(_tooltipUpdate);
+        root->UpdateCallbacksToRemove.Bind(_tooltipUpdate);
 }
 
 void UIXControl::SetUpdate(API_PARAM(ref) UpdateDelegate &onUpdate, const UpdateDelegate &value)
@@ -786,10 +786,10 @@ void UIXControl::SetUpdate(API_PARAM(ref) UpdateDelegate &onUpdate, const Update
     if (onUpdate == value)
         return;
     if (_root != nullptr && onUpdate.IsBinded())
-        _root->UpdateCallbacksToRemove.Add(onUpdate);
+        _root->UpdateCallbacksToRemove.Bind(onUpdate);
     onUpdate = value;
     if (_root != nullptr && onUpdate.IsBinded())
-        _root->UpdateCallbacksToAdd.Add(onUpdate);
+        _root->UpdateCallbacksToAdd.Bind(onUpdate);
 }
 
 void UIXControl::OnParentResized()
@@ -1245,7 +1245,7 @@ void UIXControl::SetAnchorPreset(const UIXAnchorPresets &anchorPreset, bool pres
                             bounds.Size = parentBounds.Size;
                             break;
                         default:
-                            LOG(Error, "ArguementOutOfRangeException: anchorPreset has incorrect value {0}!", anchorPreset);
+                            LOG(Error, "ArguementOutOfRangeException: anchorPreset has incorrect value {0}!", (int)anchorPreset);
                             return;
                     }
                     bounds.Location += parentBounds.Location;
