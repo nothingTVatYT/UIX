@@ -8,7 +8,6 @@
 #include "Engine/Graphics/GPUContext.h"
 #include "Engine/Graphics/RenderTask.h"
 #include "Engine/Graphics/RenderBuffers.h"
-#include "Engine/Level/Actors/Camera.h"
 #include "Engine/Core/Log.h"
 #include "Engine/Profiler/ProfilerGPU.h"
 #include "Engine/Profiler/ProfilerCPU.h"
@@ -121,6 +120,7 @@ UIXCanvas::~UIXCanvas()
         // C# and C++ ticking at different places. This should work (until proven wrong)
         GetScene()->Ticking.Update.RemoveTick(this);
     }
+    Delete(_guiRoot);
 }
 
 void UIXCanvas::SetRenderMode(UIXCanvasRenderMode value)
@@ -182,9 +182,9 @@ void UIXCanvas::GetWorldMatrix(Vector3 viewOrigin, API_PARAM(Out) Matrix& world)
 {
     auto transform = Transform();
     Float3 translation = transform.Translation - viewOrigin;
-    // TODO: Remove inline out declarations, and replace them with locals. Uncomment the FLAX_EDITOR if case.
-//#if FLAX_EDITOR
-#if 0
+    // TODO: Remove inline out declarations, and replace them with locals. Uncomment the USE_EDITOR if case.
+
+#if USE_EDITOR
         // Override projection for editor preview
     if (_editorTask)
     {
@@ -194,7 +194,7 @@ void UIXCanvas::GetWorldMatrix(Vector3 viewOrigin, API_PARAM(Out) Matrix& world)
         }
         else if (_renderMode == UIXCanvasRenderMode::WorldSpaceFaceCamera)
         {
-            auto view = _editorTask.View;
+            auto view = _editorTask->View;
             Matrix m1;
             Matrix::Translation(_guiRoot->GetWidth() * -0.5f, _guiRoot->GetHeight() * -0.5f, 0, m1);
             Matrix m2;
@@ -209,12 +209,12 @@ void UIXCanvas::GetWorldMatrix(Vector3 viewOrigin, API_PARAM(Out) Matrix& world)
         }
         else if (_renderMode == UIXCanvasRenderMode::CameraSpace)
         {
-            auto view = _editorTask.View;
+            auto view = _editorTask->View;
             auto frustum = view.Frustum;
-            if (!frustum.IsOrthographic)
+            if (!frustum.IsOrthographic())
                 _guiRoot->SetSize(Float2(frustum.GetWidthAtDepth(GetDistance()), frustum.GetHeightAtDepth(GetDistance())));
             else
-                _guiRoot->SetSize(_editorTask.Viewport.Size);
+                _guiRoot->SetSize(_editorTask->GetViewport().Size);
             Matrix::Translation(_guiRoot->GetWidth() / -2.0f, _guiRoot->GetHeight() / -2.0f, 0, world);
             Matrix tmp1;
             Matrix tmp2;
@@ -222,7 +222,8 @@ void UIXCanvas::GetWorldMatrix(Vector3 viewOrigin, API_PARAM(Out) Matrix& world)
             Matrix::Multiply(world, tmp2, tmp1);
             Float3 viewPos = view.Position - viewOrigin;
             auto viewRot = view.Direction != Float3::Up ? Quaternion::LookRotation(view.Direction, Float3::Up) : Quaternion::LookRotation(view.Direction, Float3::Right);
-            auto viewUp = Float3::Up * viewRot;
+            // TODO: check if this is valid. Original auto viewUp = Float3::Up * viewRot.
+            auto viewUp = viewRot * Float3::Up;
             auto viewForward = view.Direction;
             auto pos = view.Position + view.Direction * GetDistance();
             Matrix::Billboard(pos, viewPos, viewUp, viewForward, tmp2);
@@ -330,10 +331,10 @@ void UIXCanvas::Setup()
             _guiRoot->SetOffsets(UIXMargin(0.0f));
             if (_renderer)
             {
-                //#if FLAX_EDITOR
-#if 0
+#if USE_EDITOR
+//#if 0
                 if (_editorTask != nullptr)
-                    _editorTask.RemoveCustomPostFx(_renderer);
+                    _editorTask->RemoveCustomPostFx(_renderer);
 #endif
                 SceneRenderTask::RemoveGlobalCustomPostFx(_renderer);
                 _renderer->Canvas = nullptr;
@@ -343,12 +344,12 @@ void UIXCanvas::Setup()
 
                 _renderer = nullptr;
             }
-            //#if FLAX_EDITOR
-#if 0
-            if (_editorRoot != nullptr && IsActiveInHierarchy)
+#if USE_EDITOR
+//#if 0
+            if (_editorRoot != nullptr && IsActiveInHierarchy())
             {
-                _guiRoot->Parent = _editorRoot;
-                _guiRoot->IndexInParent = 0;
+                _guiRoot->SetParent(_editorRoot);
+                _guiRoot->SetIndexInParent(0);
             }
 #endif
             if (_isRegisteredForTick)
@@ -366,10 +367,10 @@ void UIXCanvas::Setup()
         {
             // Render canvas manually
             _guiRoot->SetAnchorPreset(UIXAnchorPresets::TopLeft);
-            //#if FLAX_EDITOR
-#if 0
+#if USE_EDITOR
+//#if 0
             if (_editorRoot != nullptr && _guiRoot != nullptr)
-                _guiRoot->Parent = nullptr;
+                _guiRoot->SetParent(nullptr);
 #endif
             if (_renderer == nullptr)
             {
@@ -377,22 +378,22 @@ void UIXCanvas::Setup()
                 _renderer->Canvas = this;
                 if (IsActiveInHierarchy() && GetScene() != nullptr)
                 {
-                    //#if FLAX_EDITOR
-#if 0
+#if USE_EDITOR
+//#if 0
 
                     if (_editorTask != nullptr)
                     {
-                        _editorTask.AddCustomPostFx(_renderer);
+                        _editorTask->AddCustomPostFx(_renderer);
                         break;
                     }
 #endif
                     SceneRenderTask::AddGlobalCustomPostFx(_renderer);
                 }
-                //#if FLAX_EDITOR
-#if 0
-                else if (_editorTask != nullptr && IsActiveInHierarchy)
+#if USE_EDITOR
+//#if 0
+                else if (_editorTask != nullptr && IsActiveInHierarchy())
                 {
-                    _editorTask.AddCustomPostFx(_renderer);
+                    _editorTask->AddCustomPostFx(_renderer);
                 }
 #endif
             }
@@ -431,28 +432,28 @@ void UIXCanvas::OnUpdate()
 
 void UIXCanvas::ParentChanged()
 {
-//#if FLAX_EDITOR
-#if 0
-    if (RenderMode == UIXCanvasRenderMode::ScreenSpace && _editorRoot != nullptr && _guiRoot != nullptr)
+#if USE_EDITOR
+//#if 0
+    if (_renderMode == UIXCanvasRenderMode::ScreenSpace && _editorRoot != nullptr && _guiRoot != nullptr)
     {
-        _guiRoot->Parent = IsActiveInHierarchy ? _editorRoot : nullptr;
-        _guiRoot->IndexInParent = 0;
+        _guiRoot->SetParent(IsActiveInHierarchy() ? _editorRoot : nullptr);
+        _guiRoot->SetIndexInParent(0);
     }
 #endif
 }
 
 void UIXCanvas::Enable()
 {
-//#if FLAX_EDITOR
-#if 0
+#if USE_EDITOR
+//#if 0
     if (_editorRoot != nullptr)
     {
-        _guiRoot->Parent = _editorRoot;
-        _guiRoot->IndexInParent = 0;
+        _guiRoot->SetParent(_editorRoot);
+        _guiRoot->SetIndexInParent(0);
     }
     else
     {
-        _guiRoot->Parent = RootControl.CanvasRoot;
+        _guiRoot->SetParent(UIXRootControl::GetCanvasRoot());
     }
 #else
     _guiRoot->SetParent(UIXRootControl::GetCanvasRoot());
@@ -460,11 +461,11 @@ void UIXCanvas::Enable()
 
     if (_renderer)
     {
-//#if FLAX_EDITOR
-#if 0
+#if USE_EDITOR
+//#if 0
         if (_editorTask != nullptr)
         {
-            _editorTask.AddCustomPostFx(_renderer);
+            _editorTask->AddCustomPostFx(_renderer);
             return;
         }
 #endif
@@ -501,7 +502,13 @@ void UIXCanvas::EndPlay()
 
         _renderer = nullptr;
     }
+
     Actor::EndPlay();
+}
+
+void UIXCanvas::OnDeleteObject()
+{
+    Actor::OnDeleteObject();
 }
 
 bool UIXCanvas::IsVisible() const
@@ -512,11 +519,41 @@ bool UIXCanvas::IsVisible() const
 
 bool UIXCanvas::IsVisible(LayersMask layersMask) const
 {
-//#if FLAX_EDITOR
-#if 0
+#if USE_EDITOR
+//#if 0
     if (_editorTask != nullptr || _editorRoot != nullptr)
         return true;
 #endif
     return layersMask.HasLayer(GetLayer());
 }
 
+#if USE_EDITOR
+void UIXCanvas::EditorOverride(SceneRenderTask *task, UIXContainerControl *root)
+{
+    if (_editorTask == task && _editorRoot == root)
+        return;
+    if (_editorTask != nullptr && _renderer != nullptr)
+        _editorTask->RemoveCustomPostFx(_renderer);
+    if (_editorRoot != nullptr && _guiRoot != nullptr)
+        _guiRoot->SetParent(nullptr);
+
+    _editorTask = task;
+    _editorRoot = root;
+    Setup();
+
+    if (_renderMode == UIXCanvasRenderMode::ScreenSpace && _editorRoot != nullptr && _guiRoot != nullptr && IsActiveInHierarchy())
+    {
+        _guiRoot->SetParent(_editorRoot);
+        _guiRoot->SetIndexInParent(0);
+    }
+}
+
+void UIXCanvas::OnActiveInTreeChanged()
+{
+    if (_renderMode == UIXCanvasRenderMode::ScreenSpace && _editorRoot != nullptr && _guiRoot != nullptr)
+    {
+        _guiRoot->SetParent(IsActiveInHierarchy() ? _editorRoot : nullptr);
+        _guiRoot->SetIndexInParent(0);
+    }
+}
+#endif

@@ -954,7 +954,7 @@ public:
     API_PROPERTY()
     void SetProxy_Offset_Left(float value)
     {
-        SetOffsets(Margin(value, _offsets.Right, _offsets.Top, _offsets.Bottom));
+        SetOffsets(UIXMargin(value, _offsets.Right, _offsets.Top, _offsets.Bottom));
     }
 
     /// <summary>
@@ -969,7 +969,7 @@ public:
     API_PROPERTY()
     void SetProxy_Offset_Right(float value)
     {
-        SetOffsets(Margin(_offsets.Left, value, _offsets.Top, _offsets.Bottom));
+        SetOffsets(UIXMargin(_offsets.Left, value, _offsets.Top, _offsets.Bottom));
     }
 
     /// <summary>
@@ -984,7 +984,7 @@ public:
     API_PROPERTY()
     float SetProxy_Offset_Top(float value)
     {
-        SetOffsets(Margin(_offsets.Left, _offsets.Right, value, _offsets.Bottom));
+        SetOffsets(UIXMargin(_offsets.Left, _offsets.Right, value, _offsets.Bottom));
     }
 
     /// <summary>
@@ -999,7 +999,7 @@ public:
     API_PROPERTY()
     float SetProxy_Offset_Bottom(float value)
     {
-        SetOffsets(Margin(_offsets.Left, _offsets.Right, _offsets.Top, value));
+        SetOffsets(UIXMargin(_offsets.Left, _offsets.Right, _offsets.Top, value));
     }
 #endif
 

@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "UIXInputEvent.h"
 #include "Engine/Graphics/PostProcessEffect.h"
 #include "Engine/Core/Math/OrientedBoundingBox.h"
 #include "Engine/Level/Actor.h"
@@ -8,7 +9,7 @@
 #include "Engine/Core/Math/Vector2.h"
 #include "Engine/Core/Delegate.h"
 #include "Engine/Scripting/ScriptingObjectReference.h"
-#include "UIXInputEvent.h"
+#include "Engine/Level/Actors/Camera.h"
 
 //#include "Engine/Graphics/Textures/GPUTexture.h"
 //#include "Engine/Scripting/Scripting.h"
@@ -16,6 +17,8 @@
 
 class UIXCanvasRootControl;
 class UIXCanvas;
+class UIXContainerControl;
+
 
 /// <summary>
 /// The canvas rendering modes.
@@ -69,7 +72,7 @@ public:
     /// <summary>
     /// The canvas to render.
     /// </summary>
-    API_FIELD() UIXCanvas *Canvas;
+    API_FIELD() UIXCanvas *Canvas = nullptr;
 };
 
 API_CLASS(Sealed, NoConstructor, Attributes = "ActorContextMenu(\"New/UI/UIX Canvas\"), ActorToolbox(\"UIX\")")
@@ -225,7 +228,7 @@ public:
     /// Gets or sets the camera used to place the GUI when render mode is set to <see cref="UIXCanvasRenderMode::CameraSpace"/> or <see cref="UIXCanvasRenderMode::WorldSpaceFaceCamera"/>.
     /// </summary>
     API_PROPERTY(Attributes = "EditorOrder(50), EditorDisplay(\"Canvas\"), VisibleIf(\"Editor_UseRenderCamera\"), Tooltip(\"Camera used to place the GUI when RenderMode is set to CameraSpace or WorldSpaceFaceCamera.\")")
-    FORCE_INLINE ScriptingObjectReference<Camera> GetRenderCamera() const
+    FORCE_INLINE ScriptingObjectReference<Camera> GetRenderCamera() const 
     {
         return _renderCamera;
     }
@@ -290,55 +293,31 @@ public:
 
 
 
-    API_FIELD(Attributes = "EditorOrder(510), EditorDisplay(\"Navigation\", \"Navigate Up\"), Tooltip(\"The input action for performing UI navigation Up (from Input Settings).\")")
-    UIXInputEvent *NavigateUp;
-    API_FIELD(Attributes = "EditorOrder(520), EditorDisplay(\"Navigation\", \"Navigate Down\"), Tooltip(\"The input action for performing UI navigation Down (from Input Settings).\")")
-    UIXInputEvent *NavigateDown;
-    API_FIELD(Attributes = "EditorOrder(530), EditorDisplay(\"Navigation\", \"Navigate Left\"), Tooltip(\"The input action for performing UI navigation Left (from Input Settings).\")")
-    UIXInputEvent *NavigateLeft;
-    API_FIELD(Attributes = "EditorOrder(540), EditorDisplay(\"Navigation\", \"Navigate Right\"), Tooltip(\"The input action for performing UI navigation Right (from Input Settings).\")")
-    UIXInputEvent *NavigateRight;
-    API_FIELD(Attributes = "EditorOrder(550), EditorDisplay(\"Navigation\", \"Navigate Submit\"), Tooltip(\"The input action for performing UI navigation Submit (from Input Settings).\")")
-    UIXInputEvent *NavigateSubmit;
-
-    // TODO: Navigation.
-    /*
-
     /// <summary>
     /// The input action for performing UI navigation Up (from Input Settings).
     /// </summary>
-    []
-    []
-    public InputEvent NavigateUp { get; set; } = new InputEvent("NavigateUp");
-
+    API_FIELD(Attributes = "EditorOrder(510), EditorDisplay(\"Navigation\", \"Navigate Up\"), Tooltip(\"The input action for performing UI navigation Up (from Input Settings).\")")
+    UIXInputEvent *NavigateUp;
     /// <summary>
     /// The input action for performing UI navigation Down (from Input Settings).
     /// </summary>
-    [EditorOrder(520), EditorDisplay("Navigation", "Navigate Down")]
-    [Tooltip("The input action for performing UI navigation Down (from Input Settings).")]
-    public InputEvent NavigateDown { get; set; } = new InputEvent("NavigateDown");
-
+    API_FIELD(Attributes = "EditorOrder(520), EditorDisplay(\"Navigation\", \"Navigate Down\"), Tooltip(\"The input action for performing UI navigation Down (from Input Settings).\")")
+    UIXInputEvent *NavigateDown;
     /// <summary>
     /// The input action for performing UI navigation Left (from Input Settings).
     /// </summary>
-    [EditorOrder(530), EditorDisplay("Navigation", "Navigate Left")]
-    [Tooltip("The input action for performing UI navigation Left (from Input Settings).")]
-    public InputEvent NavigateLeft { get; set; } = new InputEvent("NavigateLeft");
-
+    API_FIELD(Attributes = "EditorOrder(530), EditorDisplay(\"Navigation\", \"Navigate Left\"), Tooltip(\"The input action for performing UI navigation Left (from Input Settings).\")")
+    UIXInputEvent *NavigateLeft;
     /// <summary>
     /// The input action for performing UI navigation Right (from Input Settings).
     /// </summary>
-    [EditorOrder(540), EditorDisplay("Navigation", "Navigate Right")]
-    [Tooltip("The input action for performing UI navigation Right (from Input Settings).")]
-    public InputEvent NavigateRight { get; set; } = new InputEvent("NavigateRight");
-
+    API_FIELD(Attributes = "EditorOrder(540), EditorDisplay(\"Navigation\", \"Navigate Right\"), Tooltip(\"The input action for performing UI navigation Right (from Input Settings).\")")
+    UIXInputEvent *NavigateRight;
     /// <summary>
     /// The input action for performing UI navigation Submit (from Input Settings).
     /// </summary>
-    [EditorOrder(550), EditorDisplay("Navigation", "Navigate Submit")]
-    [Tooltip("The input action for performing UI navigation Submit (from Input Settings).")]
-    public InputEvent NavigateSubmit { get; set; } = new InputEvent("NavigateSubmit");
-    */
+    API_FIELD(Attributes = "EditorOrder(550), EditorDisplay(\"Navigation\", \"Navigate Submit\"), Tooltip(\"The input action for performing UI navigation Submit (from Input Settings).\")")
+    UIXInputEvent *NavigateSubmit;
 
     /// <summary>
     /// Gets the world-space oriented bounding box that contains a 3D canvas.
@@ -390,86 +369,56 @@ private:
     /*internal*/ void ParentChanged();
     /*internal*/ void Enable();
     /*internal*/ void Disable();
-    /*internal*/ void EndPlay();
-
     /*internal*/ bool IsVisible() const;
-
     /*internal*/ bool IsVisible(LayersMask layersMask) const;
 
-//#if FLAX_EDITOR
-#if 0
-    private SceneRenderTask _editorTask;
-    private ContainerControl _editorRoot;
+    /*internal*/ void EndPlay() override;
+    void OnDeleteObject() override;
 
-    internal void EditorOverride(SceneRenderTask task, ContainerControl root)
-    {
-        if (_editorTask == task && _editorRoot == root)
-            return;
-        if (_editorTask != nullptr && _renderer != nullptr)
-            _editorTask.RemoveCustomPostFx(_renderer);
-        if (_editorRoot != nullptr && _guiRoot != nullptr)
-            _guiRoot->Parent = nullptr;
+#if USE_EDITOR
+    SceneRenderTask *_editorTask = nullptr;
+    UIXContainerControl *_editorRoot = nullptr;
 
-        _editorTask = task;
-        _editorRoot = root;
-        Setup();
+    /*internal*/ void EditorOverride(SceneRenderTask *task, UIXContainerControl *root);
 
-        if (RenderMode == UIXCanvasRenderMode::ScreenSpace && _editorRoot != nullptr && _guiRoot != nullptr && IsActiveInHierarchy)
-        {
-            _guiRoot->Parent = _editorRoot;
-            _guiRoot->IndexInParent = 0;
-        }
-    }
-#endif
-
-
-//#if FLAX_EDITOR
-#if 0
     API_PROPERTY()
-    bool GetEditor_IsWorldSpace()
+    bool Editor_IsWorldSpace()
     {
         return _renderMode == UIXCanvasRenderMode::WorldSpace || _renderMode == UIXCanvasRenderMode::WorldSpaceFaceCamera;
     }
 
     API_PROPERTY()
-    bool GetEditor_IsCameraSpace()
+    bool Editor_IsCameraSpace()
     {
         return _renderMode == UIXCanvasRenderMode::CameraSpace;
     }
 
     API_PROPERTY()
-    bool GetEditor_Is3D()
+    bool Editor_Is3D()
     {
         return _renderMode != UIXCanvasRenderMode::ScreenSpace;
     }
-
     API_PROPERTY()
-    bool GetEditor_UseRenderCamera()
+    bool Editor_UseRenderCamera()
     {
         return _renderMode == UIXCanvasRenderMode::CameraSpace || _renderMode == UIXCanvasRenderMode::WorldSpaceFaceCamera;
     }
 
-    /*internal*/ void OnActiveInTreeChanged()
-    {
-        if (RenderMode == UIXCanvasRenderMode::ScreenSpace && _editorRoot != nullptr && _guiRoot != nullptr)
-        {
-            _guiRoot->Parent = IsActiveInHierarchy ? _editorRoot : nullptr;
-            _guiRoot->IndexInParent = 0;
-        }
-    }
-
+    /*internal*/ void OnActiveInTreeChanged();
 #endif
 
-    int _order;
-    UIXCanvasRenderMode _renderMode;
+
+    int _order = 0;
+    UIXCanvasRenderMode _renderMode = UIXCanvasRenderMode::ScreenSpace;
     /* readonly */ UIXCanvasRootControl* _guiRoot = nullptr;
     UIXCanvasRenderer* _renderer = nullptr;
-    bool _isLoading, _isRegisteredForTick;
+    bool _isLoading = false;
+    bool _isRegisteredForTick = false;
     PostProcessEffectLocation _renderLocation = PostProcessEffectLocation::Default;
-    bool _receivesEvents;
-    bool _ignoreDepth;
-    ScriptingObjectReference<Camera> _renderCamera = nullptr;
-    float _distance;
+    bool _receivesEvents = false;
+    bool _ignoreDepth = false;
+    ScriptingObjectReference<Camera> _renderCamera;
+    float _distance = 0.0;
 
     float _navigationInputRepeatDelay = 0.5f;
     float _NavigationInputRepeatRate = 0.5f;

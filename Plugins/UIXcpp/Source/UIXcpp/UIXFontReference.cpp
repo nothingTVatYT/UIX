@@ -2,26 +2,28 @@
 #include "Engine/Render2D/Font.h"
 #include "Engine/Core/Types/Variant.h"
 
-UIXFontReference::UIXFontReference() : ScriptingObject(SpawnParams(Guid::New(), TypeInitializer))
+UIXFontReference::UIXFontReference()
 {
     _font = nullptr;
     _size = 30;
+    _cachedFont = nullptr;
 }
 
-UIXFontReference::UIXFontReference(AssetReference<FontAsset> font, float size) : ScriptingObject(SpawnParams(Guid::New(), TypeInitializer))
+UIXFontReference::UIXFontReference(AssetReference<FontAsset> font, float size)
 {
     _font = font;
     _size = size;
+    _cachedFont = nullptr;
 }
 
-UIXFontReference::UIXFontReference(const UIXFontReference &other) : ScriptingObject(SpawnParams(Guid::New(), TypeInitializer))
+UIXFontReference::UIXFontReference(const UIXFontReference &other)
 {
     _font = other._font;
     _size = other._size;
     _cachedFont = other._cachedFont;
 }
 
-UIXFontReference::UIXFontReference(Font *font) : ScriptingObject(SpawnParams(Guid::New(), TypeInitializer))
+UIXFontReference::UIXFontReference(Font *font)
 {
     if (font != nullptr)
     {
@@ -64,14 +66,14 @@ Font* UIXFontReference::GetFont() const
 }
 
 
-UIXFontReference* UIXFontReference::GetBold() const
+UIXFontReference UIXFontReference::GetBold() const
 {
-    return New<UIXFontReference>( _font != nullptr ? _font->GetBold() : nullptr, _size);
+    return UIXFontReference( _font != nullptr ? _font->GetBold() : nullptr, _size);
 }
 
-UIXFontReference* UIXFontReference::GetItalic() const
+UIXFontReference UIXFontReference::GetItalic() const
 {
-    return New<UIXFontReference>(_font != nullptr ? _font->GetItalic() : nullptr, _size);
+    return UIXFontReference(_font != nullptr ? _font->GetItalic() : nullptr, _size);
 }
 
 bool UIXFontReference::Equals(const UIXFontReference &other) const

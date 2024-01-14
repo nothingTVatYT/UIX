@@ -6,10 +6,9 @@
 
 class Font;
 
-API_CLASS(NoSpawn) class UIXCPP_API UIXFontReference : public ScriptingObject
+API_STRUCT() struct UIXFontReference
 {
-public:
-    DECLARE_SCRIPTING_TYPE_NO_SPAWN(UIXFontReference)
+    DECLARE_SCRIPTING_TYPE_MINIMAL(UIXFontReference)
 
     /// <summary>
     /// Initializes a new instance of the <see cref="FontReference"/> struct.
@@ -38,54 +37,46 @@ public:
     /// <summary>
     /// The font asset.
     /// </summary>
-    API_PROPERTY(Attributes="EditorOrder(0), Tooltip(\"The font asset to use as characters source.\")")
-    FORCE_INLINE AssetReference<FontAsset> GetFontAsset() const { return _font; }
+    AssetReference<FontAsset> GetFontAsset() const { return _font; }
 
     /// <summary>
     /// The font asset.
     /// </summary>
-    API_PROPERTY()
     void SetFontAsset(AssetReference<FontAsset> value);
         
     /// <summary>
     /// The size of the font characters.
     /// </summary>
-    API_PROPERTY(Attributes="EditorOrder(10), Limit(1, 500, 0.1f), Tooltip(\"The size of the font characters.\")")
-    FORCE_INLINE float GetSize() const { return _size; }
+    float GetSize() const { return _size; }
 
     /// <summary>
     /// The size of the font characters.
     /// </summary>
-    API_PROPERTY()
     void SetSize(float value);
 
     /// <summary>
     /// Gets the font object described by the structure.
     /// </summary>
     /// <returns>The font or nullptr if descriptor is invalid.</returns>
-    API_FUNCTION()
     Font* GetFont() const;
 
     /// <summary>
     /// Gets the bold font object described by the structure.
     /// </summary>
     /// <returns>The bold font asset.</returns>
-    API_FUNCTION()
-    UIXFontReference* GetBold() const;
+    UIXFontReference GetBold() const;
 
     /// <summary>
     /// Gets the italic font object described by the structure.
     /// </summary>
     /// <returns>The bold font asset.</returns>
-    API_FUNCTION()
-    UIXFontReference* GetItalic() const;
+    UIXFontReference GetItalic() const;
 
     /// <summary>
     /// Determines whether the specified <see cref="FontReference" /> is equal to this instance.
     /// </summary>
     /// <param name="other">The <see cref="FontReference" /> to compare with this instance.</param>
     /// <returns><c>true</c> if the specified <see cref="FontReference" /> is equal to this instance; otherwise, <c>false</c>.</returns>
-    API_FUNCTION(Attributes="MethodImpl(MethodImplOptions.AggressiveInlining)")
     bool Equals(const UIXFontReference &other) const;
 
     /// <summary>
@@ -120,19 +111,14 @@ public:
     /// <inheritdoc />
     String ToString();
 
-private:
+//private:
 
-    API_FIELD(Attributes="NoSerialize")
+    API_FIELD(Internal, Attributes="NoSerialize")
     AssetReference<FontAsset> _font;
+    API_FIELD(Internal, Attributes = "NoSerialize")
+    float _size = 0.0f;
+    API_FIELD(Internal, Attributes = "NoSerialize")
+    mutable Font *_cachedFont = nullptr;
 
-    API_FIELD(Attributes="NoSerialize")
-    float _size;
-
-    API_FIELD(Attributes = "NoSerialize")
-        mutable Font *_cachedFont;
-
-    // TODO: check if it is GCed. We can't access the asset, unless we change the engine, so
-    // if this doesn't work, we will need to make a C# side object which keeps the font alive.
-    //mutable ShareAlive<Font> _cachedFont;
 };
 
