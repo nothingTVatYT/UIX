@@ -9,7 +9,7 @@
 /// Scroll Bars base class - allows to scroll contents of the GUI panel.
 /// </summary>
 /// <seealso cref="FlaxEngine.GUI.Control" />
-API_CLASS(abstract, Attributes="HideInEditor")
+API_CLASS(Abstract, Attributes="HideInEditor")
 class UIXCPP_API UIXScrollBar : public UIXControl
 {
 public:
