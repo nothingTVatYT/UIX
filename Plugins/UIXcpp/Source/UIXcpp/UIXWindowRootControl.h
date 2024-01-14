@@ -8,8 +8,9 @@
 /// Root control implementation used by the <see cref="FlaxEngine.Window"/>.
 /// </summary>
 /// <seealso cref="FlaxEngine.GUI.RootControl" />
-API_CLASS(Sealed, Attributes="HideInEditor") class UIXCPP_API UIXWindowRootControl final : public UIXRootControl
+API_CLASS(NoSpawn, Sealed, Attributes="HideInEditor") class UIXCPP_API UIXWindowRootControl final : public UIXRootControl
 {
+    DECLARE_SCRIPTING_TYPE_NO_SPAWN(UIXWindowRootControl);
 public:
     /// <summary>
     /// Gets the native window object.

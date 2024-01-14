@@ -10,10 +10,10 @@ class UIXContainerControl;
 /// Vertical scroll bar control.
 /// </summary>
 /// <seealso cref="FlaxEngine.GUI.ScrollBar" />
-API_CLASS(Attributes = "HideInEditor")
+API_CLASS(NoSpawn, Attributes = "HideInEditor")
 class UIXCPP_API UIXVScrollBar : public UIXScrollBar
 {
-
+    DECLARE_SCRIPTING_TYPE_NO_SPAWN(UIXVScrollBar)
 public:
     /// <summary>
     /// Initializes a new instance of the <see cref="VScrollBar"/> class.

@@ -22,9 +22,10 @@ class UIXTooltip;
 /// <summary>
 /// Base class for all GUI controls
 /// </summary>
-API_CLASS()
+API_CLASS(NoSpawn)
 class UIXCPP_API UIXControl : public ScriptingObject
 {
+    DECLARE_SCRIPTING_TYPE_NO_SPAWN(UIXControl)
 //API_AUTO_SERIALIZATION();
 //DECLARE_SCENE_OBJECT(UIXControl);
 

@@ -8,8 +8,9 @@
 /// The tooltip popup.
 /// </summary>
 /// <seealso cref="FlaxEngine.GUI.ContainerControl" />
-API_CLASS(Attributes="HideInEditor") class UIXCPP_API UIXTooltip : public UIXContainerControl
+API_CLASS(NoSpawn, Attributes="HideInEditor") class UIXCPP_API UIXTooltip : public UIXContainerControl
 {
+    DECLARE_SCRIPTING_TYPE_NO_SPAWN(UIXTooltip);
 //API_AUTO_SERIALIZATION();
 //DECLARE_SCRIPTING_TYPE(UIXTooltip);
 

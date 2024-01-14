@@ -12,9 +12,10 @@
 /// Panel UI control.
 /// </summary>
 /// <seealso cref="FlaxEngine.GUI.ScrollableControl" />
-API_CLASS()
+API_CLASS(NoSpawn)
 class UIXCPP_API UIXPanel : public UIXScrollableControl
 {
+    DECLARE_SCRIPTING_TYPE_NO_SPAWN(UIXPanel)
 public:
     /// <summary>
     /// Initializes a new instance of the <see cref="Panel"/> class.

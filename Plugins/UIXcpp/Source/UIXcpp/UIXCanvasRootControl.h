@@ -9,11 +9,13 @@ class UIXCanvas;
 /// Root control implementation used by the <see cref="UIXCanvas"/> actor.
 /// </summary>
 /// <seealso cref="FlaxEngine.GUI.RootControl" />
-API_CLASS(Sealed, Attributes="HideInEditor") class UIXCPP_API UIXCanvasRootControl : public UIXRootControl
+API_CLASS(NoSpawn, Sealed, Attributes="HideInEditor") class UIXCPP_API UIXCanvasRootControl : public UIXRootControl
 {
-    friend UIXCanvas;
+    DECLARE_SCRIPTING_TYPE_NO_SPAWN(UIXCanvasRootControl)
+    
 //API_AUTO_SERIALIZATION();
 //DECLARE_SCRIPTING_TYPE(UIXCanvasRootControl);
+friend UIXCanvas;
 public:
     /// <summary>
     /// Gets the owning canvas.

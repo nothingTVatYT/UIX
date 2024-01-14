@@ -6,8 +6,9 @@
 /// Base class for container controls that can offset controls in a view (eg. scroll panels).
 /// </summary>
 /// <seealso cref="FlaxEngine.GUI.ContainerControl" />
-API_CLASS(Attributes="HideInEditor") class UIXScrollableControl : public UIXContainerControl
+API_CLASS(NoSpawn, Attributes="HideInEditor") class UIXScrollableControl : public UIXContainerControl
 {
+    DECLARE_SCRIPTING_TYPE_NO_SPAWN(UIXScrollableControl)
 public:
     UIXScrollableControl();
 

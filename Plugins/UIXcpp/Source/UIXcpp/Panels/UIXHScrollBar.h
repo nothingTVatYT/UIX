@@ -10,10 +10,10 @@ class UIXContainerControl;
 /// Horizontal scroll bar control.
 /// </summary>
 /// <seealso cref="FlaxEngine.GUI.ScrollBar" />
-API_CLASS(Attributes = "HideInEditor")
+API_CLASS(NoSpawn, Attributes = "HideInEditor")
 class UIXCPP_API UIXHScrollBar : public UIXScrollBar
 {
-
+    DECLARE_SCRIPTING_TYPE_NO_SPAWN(UIXHScrollBar)
 public:
     /// <summary>
     /// Initializes a new instance of the <see cref="HScrollBar"/> class.

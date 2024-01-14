@@ -4,18 +4,22 @@
 #include "UIXFontReference.h"
 #include "Engine/Core/Math/Color.h"
 #include "Engine/Render2D/SpriteAtlas.h"
+#include "Engine/Core/Config.h"
 
 class Font;
 class UIXTooltip;
 
-API_CLASS() class UIXCPP_API UIXStyle
+API_CLASS(NoSpawn) class UIXCPP_API UIXStyle
 {
+    DECLARE_SCRIPTING_TYPE_NO_SPAWN(UIXStyle);
 public:
     /// <summary>
     /// Style for the Statusbar
     /// </summary>
     API_STRUCT(Attributes = "System.Serializable, ShowInEditor") struct StatusbarStyle
     {
+        DECLARE_SCRIPTING_TYPE_MINIMAL(StatusbarStyle)
+
         /// <summary>
         /// Color of the Statusbar when in Play Mode
         /// </summary>

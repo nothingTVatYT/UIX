@@ -10,8 +10,8 @@
 API_CLASS(NoSpawn)
 class UIXCPP_API UIXInputEvent : public ScriptingObject
 {
+    DECLARE_SCRIPTING_TYPE_NO_SPAWN(UIXInputEvent);
 public:
-
     /// <summary>
     /// Initializes a new instance of the <see cref="InputEvent"/> class.
     /// </summary>

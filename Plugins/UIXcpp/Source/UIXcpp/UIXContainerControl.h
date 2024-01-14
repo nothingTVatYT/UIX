@@ -5,8 +5,9 @@
 /// <summary>
 /// Base class for all GUI controls that can contain child controls.
 /// </summary>
-API_CLASS() class UIXCPP_API UIXContainerControl : public UIXControl
+API_CLASS(NoSpawn) class UIXCPP_API UIXContainerControl : public UIXControl
 {
+    DECLARE_SCRIPTING_TYPE_NO_SPAWN(UIXContainerControl)
 //API_AUTO_SERIALIZATION();
 //DECLARE_SCRIPTING_TYPE(UIXContainerControl);
 
