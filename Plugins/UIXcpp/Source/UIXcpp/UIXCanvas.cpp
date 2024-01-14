@@ -501,6 +501,7 @@ void UIXCanvas::EndPlay()
 
         _renderer = nullptr;
     }
+    Actor::EndPlay();
 }
 
 bool UIXCanvas::IsVisible() const
