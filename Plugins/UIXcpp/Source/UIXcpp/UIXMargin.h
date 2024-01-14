@@ -6,16 +6,20 @@
 #include "Engine/Core/Math/Vector2.h"
 //#include "Engine/Localization/Localization.h"
 
-/// <summary>
-/// Describes the space around a control.
-/// </summary>
-API_CLASS(NoSpawn, Attributes="Serializable, StructLayout(LayoutKind.Sequential, Pack = 4)")
-class UIXCPP_API UIXMargin : public ScriptingObject
-{
-public:
-    DECLARE_SCRIPTING_TYPE_NO_SPAWN(UIXMargin)
+//TODO: check if attribute is valid: StructLayout(LayoutKind.Sequential, Pack = 4)
 
-    static const int SizeInBytes;
+///// <summary>
+///// Describes the space around a control.
+///// </summary>
+//API_CLASS(NoSpawn, Attributes="Serializable") 
+//class UIXCPP_API UIXMargin : public ScriptingObject
+
+API_STRUCT() struct UIXMargin
+{
+    //DECLARE_SCRIPTING_TYPE_NO_SPAWN(UIXMargin)
+    DECLARE_SCRIPTING_TYPE_MINIMAL(UIXMargin)
+
+    //static const int SizeInBytes;
     static const UIXMargin Zero;
     
     /// <summary>
@@ -41,22 +45,22 @@ public:
     /// <summary>
     /// Gets the margin's location (Left, Top).
     /// </summary>
-    API_PROPERTY() Float2 GetLocation() const { return { Left, Top }; }
+    Float2 GetLocation() const { return { Left, Top }; }
 
     /// <summary>
     /// Gets the margin's total size. Cumulative margin size (Left + Right, Top + Bottom).
     /// </summary>
-    API_PROPERTY() Float2 GetSize() const { return { Left + Right, Top + Bottom }; }
+    Float2 GetSize() const { return { Left + Right, Top + Bottom }; }
 
     /// <summary>
     /// Gets the width (left + right).
     /// </summary>
-    API_PROPERTY() float GetWidth() const { return Left + Right; }
+    float GetWidth() const { return Left + Right; }
 
     /// <summary>
     /// Gets the height (top + bottom).
     /// </summary>
-    API_PROPERTY() float GetHeight() const { return Top + Bottom; }
+    float GetHeight() const { return Top + Bottom; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="UIXMargin"/> struct.
@@ -87,19 +91,19 @@ public:
     /// <summary>
     /// Gets a value indicting whether this margin is zero.
     /// </summary>
-    API_FUNCTION() bool IsZero() const;
+    bool IsZero() const;
 
     /// <summary>
     /// Shrinks the rectangle by this margin.
     /// </summary>
     /// <param name="rect">The rectangle.</param>
-    API_FUNCTION() void ShrinkRectangle(API_PARAM(Ref) Rectangle &rect) const;
+    void ShrinkRectangle(API_PARAM(Ref) Rectangle &rect) const;
 
     /// <summary>
     /// Expands the rectangle by this margin.
     /// </summary>
     /// <param name="rect">The rectangle.</param>
-    API_FUNCTION() void ExpandRectangle(API_PARAM(Ref) Rectangle &rect) const;
+    void ExpandRectangle(API_PARAM(Ref) Rectangle &rect) const;
 
     /// <summary>
     /// Adds two margins.
@@ -185,7 +189,7 @@ public:
     /// </summary>
     /// <param name="other">The <see cref="UIXMargin" /> to compare with this instance.</param>
     /// <returns><c>true</c> if the specified <see cref="UIXMargin" /> is equal to this instance; otherwise, <c>false</c>.</returns>
-    API_FUNCTION() bool Equals(const UIXMargin &other) const
+    bool Equals(const UIXMargin &other) const
     {
         return Math::NearEqual(other.Left, Left) &&
             Math::NearEqual(other.Right, Right) &&
@@ -196,7 +200,7 @@ public:
     /// <summary>
     /// Determines whether the specified <see cref="UIXMargin"/> are equal.
     /// </summary>
-    API_FUNCTION() static bool Equals(const UIXMargin &a, const UIXMargin &b)
+    static bool Equals(const UIXMargin &a, const UIXMargin &b)
     {
         return a.Equals(b);
     }

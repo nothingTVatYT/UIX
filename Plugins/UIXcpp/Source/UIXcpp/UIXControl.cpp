@@ -874,11 +874,11 @@ void UIXControl::SetAnchorMax(const Float2 &value)
     }
 }
 
-void UIXControl::SetOffsets(const UIXMargin* value)
+void UIXControl::SetOffsets(const UIXMargin &value)
 {
-    if (!_offsets.Equals(*value))
+    if (!_offsets.Equals(value))
     {
-        _offsets = *value;
+        _offsets = value;
         UpdateBounds();
     }
 }

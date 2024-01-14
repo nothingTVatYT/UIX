@@ -6,7 +6,7 @@ const String UIXMargin::_formatString = TEXT("Left:{0:F2} Right:{1:F2} Top:{2:F2
 const UIXMargin UIXMargin::Zero = UIXMargin();
 
 
-UIXMargin::UIXMargin() : ScriptingObject(SpawnParams(Guid::New(), TypeInitializer))
+UIXMargin::UIXMargin()// : ScriptingObject(SpawnParams(Guid::New(), TypeInitializer))
 {
     Left = 0;
     Right = 0;
@@ -14,7 +14,7 @@ UIXMargin::UIXMargin() : ScriptingObject(SpawnParams(Guid::New(), TypeInitialize
     Bottom = 0;
 }
 
-UIXMargin::UIXMargin(float value) : ScriptingObject(SpawnParams(Guid::New(), TypeInitializer))
+UIXMargin::UIXMargin(float value) //: ScriptingObject(SpawnParams(Guid::New(), TypeInitializer))
 {
     Left = value;
     Right = value;
@@ -22,7 +22,7 @@ UIXMargin::UIXMargin(float value) : ScriptingObject(SpawnParams(Guid::New(), Typ
     Bottom = value;
 }
 
-UIXMargin::UIXMargin(float left, float right, float top, float bottom) : ScriptingObject(SpawnParams(Guid::New(), TypeInitializer))
+UIXMargin::UIXMargin(float left, float right, float top, float bottom) //: ScriptingObject(SpawnParams(Guid::New(), TypeInitializer))
 {
     Left = left;
     Right = right;
@@ -30,7 +30,7 @@ UIXMargin::UIXMargin(float left, float right, float top, float bottom) : Scripti
     Bottom = bottom;
 }
 
-UIXMargin::UIXMargin(const UIXMargin &other) : ScriptingObject(SpawnParams(Guid::New(), TypeInitializer))
+UIXMargin::UIXMargin(const UIXMargin &other) //: ScriptingObject(SpawnParams(Guid::New(), TypeInitializer))
 {
     Left = other.Left;
     Right = other.Right;

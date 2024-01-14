@@ -96,13 +96,13 @@ public:
     /// Gets or sets the scroll margin applies to the child controls area. Can be used to expand the scroll area bounds by adding a margin.
     /// </summary>
     API_PROPERTY(Attributes="EditorOrder(20), Tooltip(\"Scroll margin applies to the child controls area. Can be used to expand the scroll area bounds by adding a margin.\")")
-    UIXMargin* GetScrollMargin() { return &_scrollMargin; }
+    UIXMargin GetScrollMargin() { return _scrollMargin; }
 
     /// <summary>
     /// Sets the scroll margin applies to the child controls area. Can be used to expand the scroll area bounds by adding a margin.
     /// </summary>
     API_PROPERTY()
-    void SetScrollMargin(UIXMargin* value);
+    void SetScrollMargin(const UIXMargin &value);
 
     /// <summary>
     /// Cuts the scroll bars value smoothing and imminently goes to the target scroll value.

@@ -933,13 +933,13 @@ public:
     /// Gets the offsets of the corners of the control relative to its anchors.
     /// </summary>
     API_PROPERTY(Attributes="Serialize, HideInEditor")
-    UIXMargin* GetOffsets() { return &_offsets; }
+    UIXMargin GetOffsets() { return _offsets; }
 
     /// <summary>
     /// Sets the offsets of the corners of the control relative to its anchors.
     /// </summary>
     API_PROPERTY()
-    void SetOffsets(const UIXMargin* value);
+    void SetOffsets(const UIXMargin &value);
 
 #if FLAX_EDITOR
     /// <summary>
