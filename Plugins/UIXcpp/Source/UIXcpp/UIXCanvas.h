@@ -71,7 +71,7 @@ public:
     API_FIELD() UIXCanvas *Canvas;
 };
 
-API_CLASS(Sealed, NoConstructor, Attributes = "ActorContextMenu(\"New/UI/UI Canvas\"), ActorToolbox(\"GUI\")")
+API_CLASS(Sealed, NoConstructor, Attributes = "ActorContextMenu(\"New/UI/UIX Canvas\"), ActorToolbox(\"UIX\")")
 class UIXCPP_API UIXCanvas : public Actor
 {
     DECLARE_SCENE_OBJECT(UIXCanvas);
@@ -461,13 +461,13 @@ private:
 
     int _order;
     UIXCanvasRenderMode _renderMode;
-    /* readonly */ UIXCanvasRootControl* const _guiRoot;
-    UIXCanvasRenderer* _renderer;
+    /* readonly */ UIXCanvasRootControl* _guiRoot = nullptr;
+    UIXCanvasRenderer* _renderer = nullptr;
     bool _isLoading, _isRegisteredForTick;
     PostProcessEffectLocation _renderLocation = PostProcessEffectLocation::Default;
     bool _receivesEvents;
     bool _ignoreDepth;
-    Camera* _renderCamera;
+    Camera* _renderCamera = nullptr;
     float _distance;
 
     float _navigationInputRepeatDelay = 0.5f;
