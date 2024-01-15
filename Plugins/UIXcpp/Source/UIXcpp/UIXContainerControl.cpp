@@ -7,21 +7,20 @@
 
 UIXContainerControl::UIXContainerControl() : UIXControl()
 {
-    _isLayoutLocked = true;
 }
 
 UIXContainerControl::UIXContainerControl(float x, float y, float width, float height)
-    : UIXControl( x, y, width, height), _isLayoutLocked(true)
+    : UIXControl( x, y, width, height)
 {
 }
 
 UIXContainerControl::UIXContainerControl(const Float2 &location, const Float2 &size)
-    : UIXControl(location, size), _isLayoutLocked(true)
+    : UIXControl(location, size)
 {
 }
 
 UIXContainerControl::UIXContainerControl(const Rectangle &bounds)
-    : UIXControl(bounds), _isLayoutLocked(true)
+    : UIXControl(bounds)
 {
 }
 

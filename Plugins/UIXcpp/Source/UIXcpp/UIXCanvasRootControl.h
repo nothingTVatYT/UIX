@@ -185,17 +185,17 @@ private:
 
     UIXCanvas* _canvas;
     Float2 _mousePosition;
-    float _navigationHeldTimeUp;
-    float _navigationHeldTimeDown;
-    float _navigationHeldTimeLeft;
-    float _navigationHeldTimeRight;
-    float _navigationHeldTimeSubmit;
+    float _navigationHeldTimeUp = 0.0f;
+    float _navigationHeldTimeDown = 0.0f;
+    float _navigationHeldTimeLeft = 0.0f;
+    float _navigationHeldTimeRight = 0.0f;
+    float _navigationHeldTimeSubmit = 0.0f;
 
-    float _navigationRateTimeUp;
-    float _navigationRateTimeDown;
-    float _navigationRateTimeLeft;
-    float _navigationRateTimeRight;
-    float _navigationRateTimeSubmit;
+    float _navigationRateTimeUp = 0.0f;
+    float _navigationRateTimeDown = 0.0f;
+    float _navigationRateTimeLeft = 0.0f;
+    float _navigationRateTimeRight = 0.0f;
+    float _navigationRateTimeSubmit = 0.0f;
 
     friend class UIXCanvas;
 };

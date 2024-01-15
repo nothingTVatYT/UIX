@@ -445,12 +445,12 @@ protected:
     /// <summary>
     /// The contains focus cached flag.
     /// </summary>
-    bool _containsFocus; // API_FIELD(Attributes="NoSerialize")
+    bool _containsFocus = false; // API_FIELD(Attributes="NoSerialize")
 
     /// <summary>
     /// The layout locking flag.
     /// </summary>
-    bool _isLayoutLocked; //API_FIELD(Attributes="NoSerialize")
+    bool _isLayoutLocked = true; //API_FIELD(Attributes="NoSerialize")
 
 private:
 

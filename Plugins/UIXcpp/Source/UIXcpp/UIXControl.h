@@ -1388,7 +1388,7 @@ private:
     // Tooltip
 
     String _tooltipText;
-    UIXTooltip *_tooltip;
+    UIXTooltip *_tooltip = nullptr;
 
 
     // To access internal functions

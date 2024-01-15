@@ -361,6 +361,15 @@ public:
         return _renderMode != UIXCanvasRenderMode::ScreenSpace;
     }
 
+    void OnEnable() override;
+    void OnDisable() override;
+    void OnBeginPlay() override;
+    void OnEndPlay() override;
+    void OnParentChanged() override;
+    void OnTransformChanged() override;
+
+    /*internal*/ void EndPlay() override;
+    void OnDeleteObject() override;
 
 private:
     void Setup();
@@ -372,8 +381,8 @@ private:
     /*internal*/ bool IsVisible() const;
     /*internal*/ bool IsVisible(LayersMask layersMask) const;
 
-    /*internal*/ void EndPlay() override;
-    void OnDeleteObject() override;
+    /*internal*/ void PostDeserialize();
+
 
 #if USE_EDITOR
     SceneRenderTask *_editorTask = nullptr;
@@ -415,10 +424,10 @@ private:
     bool _isLoading = false;
     bool _isRegisteredForTick = false;
     PostProcessEffectLocation _renderLocation = PostProcessEffectLocation::Default;
-    bool _receivesEvents = false;
+    bool _receivesEvents = true;
     bool _ignoreDepth = false;
     ScriptingObjectReference<Camera> _renderCamera;
-    float _distance = 0.0;
+    float _distance = 500.0f;
 
     float _navigationInputRepeatDelay = 0.5f;
     float _NavigationInputRepeatRate = 0.5f;
@@ -648,14 +657,6 @@ private:
             Json.JsonSerializer.Deserialize(this, json);
             _isLoading = false;
         }
-
-        internal void PostDeserialize()
-        {
-            Setup();
-        }
-
-        
-
 
 
 

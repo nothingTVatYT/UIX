@@ -102,11 +102,11 @@ UIXCanvas::UIXCanvas(const SpawnParams& params) : Actor(params), _guiRoot(New<UI
 
 UIXCanvas::~UIXCanvas()
 {
-    NavigateUp->DeleteObjectNow();
-    NavigateDown->DeleteObjectNow();
-    NavigateLeft->DeleteObjectNow();
-    NavigateRight->DeleteObjectNow();
-    NavigateSubmit->DeleteObjectNow();
+    Delete(NavigateUp);
+    Delete(NavigateDown);
+    Delete(NavigateLeft);
+    Delete(NavigateRight);
+    Delete(NavigateSubmit);
 
     if (_isRegisteredForTick)
     {
@@ -116,8 +116,11 @@ UIXCanvas::~UIXCanvas()
         //Scripting::Update -= OnUpdate;
 
         // C# and C++ ticking at different places. This should work (until proven wrong)
-        GetScene()->Ticking.Update.RemoveTick(this);
+        auto scene = GetScene();
+        if (scene != nullptr)
+            scene->Ticking.Update.RemoveTick(this);
     }
+
     Delete(_guiRoot);
 }
 
@@ -300,6 +303,46 @@ void UIXCanvas::GetWorldMatrix(Vector3 viewOrigin, API_PARAM(Out) Matrix& world)
     }
 }
 
+void UIXCanvas::OnEnable()
+{
+    Enable();
+    Actor::OnEnable();
+}
+
+void UIXCanvas::OnDisable()
+{
+    Actor::OnDisable();
+    Disable();
+}
+
+void UIXCanvas::OnBeginPlay()
+{
+    PostDeserialize();
+
+    Actor::OnBeginPlay();
+}
+
+void UIXCanvas::OnEndPlay()
+{
+    Actor::OnEndPlay();
+}
+
+void UIXCanvas::OnParentChanged()
+{
+    Actor::OnParentChanged();
+
+    ParentChanged();
+}
+
+void UIXCanvas::OnTransformChanged()
+{
+    Actor::OnTransformChanged();
+
+    _box = BoundingBox(_transform.Translation);
+    _sphere = BoundingSphere(_transform.Translation, 0.0f);
+}
+
+
 Delegate<Float2&, Ray&> UIXCanvas::CalculateRay;
 
 void UIXCanvas::DefaultCalculateRay(Float2 location, API_PARAM(Out) Ray& ray)
@@ -325,8 +368,11 @@ void UIXCanvas::Setup()
         case UIXCanvasRenderMode::ScreenSpace:
         {
             // Fill the screen area
-            _guiRoot->SetAnchorPreset(UIXAnchorPresets::StretchAll);
-            _guiRoot->SetOffsets(UIXMargin(0.0f));
+            if (_guiRoot != nullptr)
+            {
+                _guiRoot->SetAnchorPreset(UIXAnchorPresets::StretchAll);
+                _guiRoot->SetOffsets(UIXMargin(0.0f));
+            }
             if (_renderer)
             {
 #if USE_EDITOR
@@ -344,7 +390,7 @@ void UIXCanvas::Setup()
             }
 #if USE_EDITOR
 //#if 0
-            if (_editorRoot != nullptr && IsActiveInHierarchy())
+            if (_guiRoot != nullptr && _editorRoot != nullptr && IsActiveInHierarchy())
             {
                 _guiRoot->SetParent(_editorRoot);
                 _guiRoot->SetIndexInParent(0);
@@ -442,20 +488,23 @@ void UIXCanvas::ParentChanged()
 
 void UIXCanvas::Enable()
 {
+    if (_guiRoot != nullptr)
+    {
 #if USE_EDITOR
-//#if 0
-    if (_editorRoot != nullptr)
-    {
-        _guiRoot->SetParent(_editorRoot);
-        _guiRoot->SetIndexInParent(0);
-    }
-    else
-    {
-        _guiRoot->SetParent(UIXRootControl::GetCanvasRoot());
-    }
+        //#if 0
+        if (_editorRoot != nullptr)
+        {
+            _guiRoot->SetParent(_editorRoot);
+            _guiRoot->SetIndexInParent(0);
+        }
+        else
+        {
+            _guiRoot->SetParent(UIXRootControl::GetCanvasRoot());
+        }
 #else
-    _guiRoot->SetParent(UIXRootControl::GetCanvasRoot());
+        _guiRoot->SetParent(UIXRootControl::GetCanvasRoot());
 #endif
+    }
 
     if (_renderer)
     {
@@ -473,7 +522,8 @@ void UIXCanvas::Enable()
 
 void UIXCanvas::Disable()
 {
-    _guiRoot->SetParent(nullptr);
+    if (_guiRoot != nullptr)
+        _guiRoot->SetParent(nullptr);
 
     if (_renderer)
     {
@@ -507,6 +557,11 @@ void UIXCanvas::EndPlay()
 void UIXCanvas::OnDeleteObject()
 {
     Actor::OnDeleteObject();
+}
+
+void UIXCanvas::PostDeserialize()
+{
+    Setup();
 }
 
 bool UIXCanvas::IsVisible() const
