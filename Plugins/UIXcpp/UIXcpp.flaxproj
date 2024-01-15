@@ -1,10 +1,10 @@
 ﻿{
-	"Name": "UIXcpp",
+	"Name": "UIXCpp",
 	"Version": "0.0.1",
 	"Company": "",
 	"Copyright": "",
-	"GameTarget": "UIXcppTarget",
-	"EditorTarget": "UIXcppEditorTarget",
+	"GameTarget": "UIXCppTarget",
+	"EditorTarget": "UIXCppEditorTarget",
 	"References": [
 		{
 			"Name": "$(EnginePath)/Flax.flaxproj"

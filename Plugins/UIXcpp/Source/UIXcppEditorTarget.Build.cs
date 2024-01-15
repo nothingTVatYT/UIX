@@ -1,6 +1,6 @@
 ﻿using Flax.Build;
 
-public class UIXcppEditorTarget : GameProjectEditorTarget
+public class UIXCppEditorTarget : GameProjectEditorTarget
 {
     /// <inheritdoc />
     public override void Init()
@@ -8,7 +8,7 @@ public class UIXcppEditorTarget : GameProjectEditorTarget
         base.Init();
 
         // Reference the modules for editor
-        Modules.Add("UIXcpp");
-        Modules.Add("UIXcppEditor");
+        Modules.Add("UIXCpp");
+        Modules.Add("UIXCppEditor");
     }
 }

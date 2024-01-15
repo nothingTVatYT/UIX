@@ -1,25 +1,25 @@
 using System;
 using FlaxEngine;
 
-namespace UIXcpp
+namespace UIXCpp
 {
     /// <summary>
     /// The sample game plugin.
     /// </summary>
     /// <seealso cref="FlaxEngine.GamePlugin" />
-    public class UIXcpp : GamePlugin
+    public class UIXCpp : GamePlugin
     {
         /// <inheritdoc />
-        public UIXcpp()
+        public UIXCpp()
         {
             _description = new PluginDescription
             {
-                Name = "UIXcpp",
+                Name = "UIXCpp",
                 Category = "UI",
                 Author = "",
                 AuthorUrl = null,
                 HomepageUrl = null,
-                RepositoryUrl = "https://github.com/FlaxEngine/UIXcpp",
+                RepositoryUrl = "https://github.com/FlaxEngine/UIXCpp",
                 Description = "C++ conversion of the Flax UI",
                 Version = new Version(0, 0, 1),
                 IsAlpha = true,

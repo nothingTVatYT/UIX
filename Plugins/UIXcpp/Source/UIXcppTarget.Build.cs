@@ -1,6 +1,6 @@
 ﻿using Flax.Build;
 
-public class UIXcppTarget : GameProjectTarget
+public class UIXCppTarget : GameProjectTarget
 {
     /// <inheritdoc />
     public override void Init()
@@ -8,6 +8,6 @@ public class UIXcppTarget : GameProjectTarget
         base.Init();
 
         // Reference the modules for game
-        Modules.Add("UIXcpp");
+        Modules.Add("UIXCpp");
     }
 }

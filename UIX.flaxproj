@@ -10,7 +10,7 @@
 			"Name": "$(EnginePath)/Flax.flaxproj"
 		},
 		{
-			"Name": "$(ProjectPath)/Plugins/UIXcpp/UIXcpp.flaxproj"
+			"Name": "$(ProjectPath)/Plugins/UIXCpp/UIXCpp.flaxproj"
 		}
 	],
 	"DefaultScene": null,

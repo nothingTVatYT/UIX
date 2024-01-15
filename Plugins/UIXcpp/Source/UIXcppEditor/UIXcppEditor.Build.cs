@@ -1,7 +1,7 @@
 using Flax.Build;
 using Flax.Build.NativeCpp;
 
-public class UIXcppEditor : GameEditorModule
+public class UIXCppEditor : GameEditorModule
 {
     /// <inheritdoc />
     public override void Setup(BuildOptions options)
@@ -9,7 +9,7 @@ public class UIXcppEditor : GameEditorModule
         base.Setup(options);
 
         // Reference game source module to access game code types
-        options.PublicDependencies.Add("UIXcpp");
+        options.PublicDependencies.Add("UIXCpp");
 
         // Here you can modify the build options for your game editor module
         // To reference another module use: options.PublicDependencies.Add("Audio");
