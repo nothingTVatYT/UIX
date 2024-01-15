@@ -86,7 +86,94 @@ void UIXCanvasRenderer::Render(GPUContext* context, API_PARAM(Ref) RenderContext
     ProfilerGPU::EndEvent(profilerEvent);
 }
 
+bool UIXRenderer2D::CanRender() const
+{
+    // This is a const in the base class, but C# files can somehow declare it non-const.
+    // We can cheat with const_cast<> which will either blow up or it will just not work.
 
+    //// Sync with canvas options
+    //Location = Canvas->GetRenderLocation();
+    //Order = Canvas->GetOrder();
+
+    UIXRenderer2D *obj = const_cast<UIXRenderer2D*>(this);
+    obj->Location = Canvas->GetRenderLocation();
+    obj->Order = Canvas->GetOrder();
+
+    return PostProcessEffect::CanRender();
+}
+
+void UIXRenderer2D::Render(GPUContext* context, API_PARAM(Ref) RenderContext& renderContext, GPUTexture* input, GPUTexture* output)
+{
+    if (!Canvas->IsVisible(renderContext.View.RenderLayersMask))
+        return;
+    auto bounds = Canvas->GetBounds();
+    bounds.Transformation.Translation -= renderContext.View.Origin;
+    if (renderContext.View.Frustum.Contains(bounds.GetBoundingBox()) == ContainmentType::Disjoint)
+        return;
+
+    int profilerEvent = ProfilerGPU::BeginEvent(TEXT("UI Canvas 2D"));
+
+    if (context != nullptr && input != nullptr && Canvas->GetGUI() != nullptr)
+    {
+        Render2D::Begin(context, input);
+        try
+        {
+            if (!size_set)
+            {
+                size_set = true;
+                const Viewport &v = Render2D::GetViewport();
+                Canvas->_guiRoot->SetSize(v.Size);
+            }
+
+            Canvas->GetGUI()->Draw();
+        }
+        catch (...)
+        {
+            LOG(Error, "Drawing of the 2D UI failed with an exception.");
+        }
+        Render2D::End();
+    }
+
+    //// Calculate rendering matrix (world*view*projection)
+    //Matrix worldMatrix;
+    //Canvas->GetWorldMatrix(renderContext.View.Origin, worldMatrix);
+
+    //Matrix viewMatrix;
+    //Matrix::Multiply(worldMatrix, renderContext.View.View, viewMatrix);
+    //Matrix viewProjectionMatrix;
+    //Matrix::Multiply(viewMatrix, renderContext.View.Projection, viewProjectionMatrix);
+
+    //// Pick a depth buffer
+    //GPUTexture* depthBuffer = Canvas->GetIgnoreDepth() ? nullptr : renderContext.Buffers->DepthBuffer;
+
+    //// Render GUI in 3D
+    //auto features = Render2D::Features;
+
+    //if (Canvas->GetRenderMode() == UIXCanvasRenderMode::WorldSpace || Canvas->GetRenderMode() == UIXCanvasRenderMode::WorldSpaceFaceCamera)
+    //    Render2D::Features = (Render2D::RenderingFeatures)((int)Render2D::Features & ~(int)Render2D::RenderingFeatures::VertexSnapping);
+
+    ////Render2D::CallDrawing(Canvas->GUI, context, input, depthBuffer, viewProjectionMatrix);
+    //// Replacement of the CallDrawing call which is missing from C++, but only takes up a few lines:
+
+    //if (context != nullptr && input != nullptr && Canvas->GetGUI() != nullptr)
+    //{
+    //    Render2D::Begin(context, input);
+    //    // TODO: check if we can get around the try/catch, since it's bad for peformance.
+    //    try
+    //    {
+    //        Canvas->GetGUI()->Draw();
+    //    }
+    //    catch (...)
+    //    {
+    //        LOG(Error, "Drawing of the UI failed with an exception.");
+    //    }
+    //    Render2D::End();
+    //}
+
+    //Render2D::Features = features;
+
+    ProfilerGPU::EndEvent(profilerEvent);
+}
 
 
 
@@ -122,6 +209,8 @@ UIXCanvas::~UIXCanvas()
     }
 
     Delete(_guiRoot);
+    // Set to null or 2d ui drawing blows up.
+    _guiRoot = nullptr;
 }
 
 void UIXCanvas::SetRenderMode(UIXCanvasRenderMode value)
@@ -300,6 +389,9 @@ void UIXCanvas::GetWorldMatrix(Vector3 viewOrigin, API_PARAM(Out) Matrix& world)
     {
         // Direct projection
         world = Matrix::Identity;
+        
+        //auto viewport = camera->GetViewport();
+        //_guiRoot->SetSize(Float2(500.0, 500.0));
     }
 }
 
@@ -376,20 +468,40 @@ void UIXCanvas::Setup()
             if (_renderer)
             {
 #if USE_EDITOR
-//#if 0
                 if (_editorTask != nullptr)
                     _editorTask->RemoveCustomPostFx(_renderer);
 #endif
                 SceneRenderTask::RemoveGlobalCustomPostFx(_renderer);
                 _renderer->Canvas = nullptr;
 
-                // TODO: make sure this doesn't crash. Replacement for: Destroy(_renderer);
                 Delete(_renderer);
 
                 _renderer = nullptr;
             }
+            if (_renderer2d == nullptr)
+            {
+                _renderer2d = New<UIXRenderer2D>();
+                _renderer2d->Canvas = this;
+                if (IsActiveInHierarchy() && GetScene() != nullptr)
+                {
 #if USE_EDITOR
-//#if 0
+                    if (_editorTask != nullptr)
+                    {
+                        _editorTask->AddCustomPostFx(_renderer2d);
+                        break;
+                    }
+#endif
+                    SceneRenderTask::AddGlobalCustomPostFx(_renderer2d);
+                }
+#if USE_EDITOR
+                else if (_editorTask != nullptr && IsActiveInHierarchy())
+                {
+                    _editorTask->AddCustomPostFx(_renderer2d);
+                }
+#endif
+            }
+
+#if USE_EDITOR
             if (_guiRoot != nullptr && _editorRoot != nullptr && IsActiveInHierarchy())
             {
                 _guiRoot->SetParent(_editorRoot);
@@ -412,10 +524,23 @@ void UIXCanvas::Setup()
             // Render canvas manually
             _guiRoot->SetAnchorPreset(UIXAnchorPresets::TopLeft);
 #if USE_EDITOR
-//#if 0
             if (_editorRoot != nullptr && _guiRoot != nullptr)
                 _guiRoot->SetParent(nullptr);
 #endif
+
+            if (_renderer2d)
+            {
+#if USE_EDITOR
+                if (_editorTask != nullptr)
+                    _editorTask->RemoveCustomPostFx(_renderer2d);
+#endif
+                SceneRenderTask::RemoveGlobalCustomPostFx(_renderer2d);
+                _renderer->Canvas = nullptr;
+
+                Delete(_renderer2d);
+
+                _renderer2d = nullptr;
+            }
             if (_renderer == nullptr)
             {
                 _renderer = New<UIXCanvasRenderer>();
@@ -423,7 +548,6 @@ void UIXCanvas::Setup()
                 if (IsActiveInHierarchy() && GetScene() != nullptr)
                 {
 #if USE_EDITOR
-//#if 0
 
                     if (_editorTask != nullptr)
                     {
@@ -434,13 +558,13 @@ void UIXCanvas::Setup()
                     SceneRenderTask::AddGlobalCustomPostFx(_renderer);
                 }
 #if USE_EDITOR
-//#if 0
                 else if (_editorTask != nullptr && IsActiveInHierarchy())
                 {
                     _editorTask->AddCustomPostFx(_renderer);
                 }
 #endif
             }
+
             if (!_isRegisteredForTick)
             {
                 _isRegisteredForTick = true;
@@ -509,7 +633,6 @@ void UIXCanvas::Enable()
     if (_renderer)
     {
 #if USE_EDITOR
-//#if 0
         if (_editorTask != nullptr)
         {
             _editorTask->AddCustomPostFx(_renderer);
@@ -517,6 +640,18 @@ void UIXCanvas::Enable()
         }
 #endif
         SceneRenderTask::AddGlobalCustomPostFx(_renderer);
+    }
+
+    if (_renderer2d)
+    {
+#if USE_EDITOR
+        if (_editorTask != nullptr)
+        {
+            _editorTask->AddCustomPostFx(_renderer2d);
+            return;
+        }
+#endif
+        SceneRenderTask::AddGlobalCustomPostFx(_renderer2d);
     }
 }
 
@@ -528,6 +663,10 @@ void UIXCanvas::Disable()
     if (_renderer)
     {
         SceneRenderTask::RemoveGlobalCustomPostFx(_renderer);
+    }
+    if (_renderer2d)
+    {
+        SceneRenderTask::RemoveGlobalCustomPostFx(_renderer2d);
     }
 }
 
@@ -545,10 +684,17 @@ void UIXCanvas::EndPlay()
         SceneRenderTask::RemoveGlobalCustomPostFx(_renderer);
         _renderer->Canvas = nullptr;
 
-        // TODO: wait for the crash.
         Delete(_renderer);
-
         _renderer = nullptr;
+    }
+
+    if (_renderer2d)
+    {
+        SceneRenderTask::RemoveGlobalCustomPostFx(_renderer2d);
+        _renderer2d->Canvas = nullptr;
+
+        Delete(_renderer2d);
+        _renderer2d = nullptr;
     }
 
     Actor::EndPlay();

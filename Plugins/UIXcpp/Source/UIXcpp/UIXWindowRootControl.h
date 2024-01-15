@@ -194,7 +194,7 @@ private:
 
     /*internal*/ UIXWindowRootControl(Window *window);
 
-    Window *_window;
+    Window *_window = nullptr;
     UIXControl *_focusedControl;
     UIXControl *_trackingControl;
 };

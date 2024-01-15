@@ -48,10 +48,10 @@ enum class UIXCanvasRenderMode
 };
 
 /// <summary>
-/// PostFx used to render the <see cref="UICanvas"/>. Used when render mode is <see cref="UIXCanvasRenderMode::CameraSpace"/> or <see cref="UIXCanvasRenderMode::WorldSpace"/>.
+/// PostFx used to render the <see cref="UIXCanvas"/>. Used when render mode is <see cref="UIXCanvasRenderMode::CameraSpace"/> or <see cref="UIXCanvasRenderMode::WorldSpace"/>.
 /// </summary>
 /// <seealso cref="FlaxEngine.PostProcessEffect" />
-API_CLASS(Sealed, NoSpawn, Attributes = "HideInEditor")
+API_CLASS(Sealed, NoSpawn, Attributes="HideInEditor")
 class UIXCanvasRenderer : public PostProcessEffect
 {
     DECLARE_SCENE_OBJECT_NO_SPAWN(UIXCanvasRenderer);
@@ -73,6 +73,36 @@ public:
     /// The canvas to render.
     /// </summary>
     API_FIELD() UIXCanvas *Canvas = nullptr;
+};
+
+/// <summary>
+/// PostFx used to render the <see cref="UIXCanvas"/>. Used when render mode is <see cref="UIXCanvasRenderMode::ScreenSpace"/>.
+/// </summary>
+/// <seealso cref="FlaxEngine.PostProcessEffect" />
+API_CLASS(Sealed, NoSpawn, Attributes = "HideInEditor")
+class UIXRenderer2D : public PostProcessEffect
+{
+    DECLARE_SCENE_OBJECT_NO_SPAWN(UIXRenderer2D);
+
+public:
+    /// <inheritdoc />
+    UIXRenderer2D() : PostProcessEffect(SpawnParams(Guid::New(), TypeInitializer)), Canvas(nullptr)
+    {
+        UseSingleTarget = true;
+    }
+
+    /// <inheritdoc />
+    FORCE_INLINE bool CanRender() const override;
+
+    /// <inheritdoc />
+    void Render(GPUContext* context, API_PARAM(Ref) RenderContext& renderContext, GPUTexture* input, GPUTexture* output) override;
+
+    /// <summary>
+    /// The canvas to render.
+    /// </summary>
+    API_FIELD() UIXCanvas *Canvas = nullptr;
+
+    bool size_set = false;
 };
 
 API_CLASS(Sealed, NoConstructor, Attributes = "ActorContextMenu(\"New/UI/UIX Canvas\"), ActorToolbox(\"UIX\")")
@@ -370,7 +400,6 @@ public:
 
     /*internal*/ void EndPlay() override;
     void OnDeleteObject() override;
-
 private:
     void Setup();
     void OnUpdate();
@@ -421,6 +450,7 @@ private:
     UIXCanvasRenderMode _renderMode = UIXCanvasRenderMode::ScreenSpace;
     /* readonly */ UIXCanvasRootControl* _guiRoot = nullptr;
     UIXCanvasRenderer* _renderer = nullptr;
+    UIXRenderer2D* _renderer2d = nullptr;
     bool _isLoading = false;
     bool _isRegisteredForTick = false;
     PostProcessEffectLocation _renderLocation = PostProcessEffectLocation::Default;
@@ -436,6 +466,7 @@ private:
 
     friend class UIXCanvasRootControl;
     friend class UIXCanvasRenderer;
+    friend class UIXRenderer2D;
 
     /*
 

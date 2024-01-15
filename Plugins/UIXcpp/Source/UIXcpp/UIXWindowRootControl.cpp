@@ -3,7 +3,7 @@
 #include "Engine/Core/Log.h"
 
 
-UIXWindowRootControl::UIXWindowRootControl(Window *window) : UIXRootControl()
+UIXWindowRootControl::UIXWindowRootControl(Window *window) : UIXRootControl(), _focusedControl(nullptr), _trackingControl(nullptr)
 {
     _window = window;
     SetClipChildren(false);

@@ -230,9 +230,9 @@ private:
 
     Color _textColor;
     Color _textColorHighlighted;
-    TextAlignment _horizontalAlignment;
-    TextAlignment _verticalAlignment;
-    TextWrapping _wrapping;
+    TextAlignment _horizontalAlignment = TextAlignment::Near;
+    TextAlignment _verticalAlignment = TextAlignment::Near;
+    TextWrapping _wrapping = TextWrapping::NoWrap;
     float _baseLinesGapScale = 0.0f;
     AssetReference<MaterialBase> _material;
     UIXMargin _margin;
