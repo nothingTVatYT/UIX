@@ -15,7 +15,7 @@ UIXPanel::UIXPanel() : UIXPanel(UIXScrollBars::None)
 /// </summary>
 /// <param name="scrollBars">The scroll bars.</param>
 /// <param name="autoFocus">True if control can accept user focus</param>
-UIXPanel::UIXPanel(UIXScrollBars scrollBars, bool autoFocus) : UIXScrollableControl(),
+UIXPanel::UIXPanel(UIXScrollBars scrollBars, bool autoFocus) : UIXScrollableControl(), _controlsBounds(Float2::Zero, Float2::Zero),
         _layoutChanged(false), _alwaysShowScrollbars(false), _layoutUpdateLock(false), _scrollBarsSize(UIXScrollBar::DefaultSize)
 {
     SetAutoFocus(autoFocus);

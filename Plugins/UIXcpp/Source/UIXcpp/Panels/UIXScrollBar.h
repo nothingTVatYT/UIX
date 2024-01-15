@@ -287,8 +287,8 @@ private:
 
     float _mouseOffset = 0.0f;
 
-    Rectangle _thumbRect;
-    Rectangle _trackRect;
+    Rectangle _thumbRect = Rectangle(Float2::Zero, Float2::Zero);
+    Rectangle _trackRect = Rectangle(Float2::Zero, Float2::Zero);
     bool _thumbClicked = false;
     float _thumbCenter = 0.0f;
     float _thumbSize = 0.0f;

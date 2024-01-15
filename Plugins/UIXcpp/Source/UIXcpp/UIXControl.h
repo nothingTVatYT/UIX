@@ -1369,13 +1369,13 @@ private:
 
     // Transform
 
-    Rectangle _bounds;
+    Rectangle _bounds = Rectangle(Float2::Zero, Float2::Zero);
     UIXMargin _offsets { 0.0f, 100.0f, 0.0f, 30.0f };
-    Float2 _anchorMin;
-    Float2 _anchorMax;
+    Float2 _anchorMin = Float2::Zero;
+    Float2 _anchorMax = Float2::Zero;
     Float2 _scale = Float2(1.0f);
     Float2 _pivot = Float2(0.5f);
-    Float2 _shear;
+    Float2 _shear = Float2::Zero;
     float _rotation = 0.0f;
     /*internal*/ Matrix3x3 _cachedTransform;
     /*internal*/ Matrix3x3 _cachedTransformInv;

@@ -102,7 +102,7 @@ public:
     /// </summary>
     API_FIELD() UIXCanvas *Canvas = nullptr;
 
-    bool size_set = false;
+    //bool size_set = false;
 };
 
 API_CLASS(Sealed, NoConstructor, Attributes = "ActorContextMenu(\"New/UI/UIX Canvas\"), ActorToolbox(\"UIX\")")

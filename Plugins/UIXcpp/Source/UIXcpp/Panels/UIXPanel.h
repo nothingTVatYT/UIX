@@ -193,10 +193,10 @@ private:
     void HScrollBarSetViewOffset();
 
 
-    bool _layoutChanged;
-    bool _alwaysShowScrollbars;
-    int _layoutUpdateLock;
-    UIXScrollBars _scrollBars;
-    float _scrollBarsSize;
-    UIXMargin _scrollMargin;
+    bool _layoutChanged = false;
+    bool _alwaysShowScrollbars = false;
+    int _layoutUpdateLock = 0;
+    UIXScrollBars _scrollBars = UIXScrollBars::Both;
+    float _scrollBarsSize = 0.0f;
+    UIXMargin _scrollMargin = UIXMargin();
 };

@@ -118,12 +118,12 @@ void UIXRenderer2D::Render(GPUContext* context, API_PARAM(Ref) RenderContext& re
         Render2D::Begin(context, input);
         try
         {
-            if (!size_set)
-            {
-                size_set = true;
+            //if (!size_set)
+            //{
+                //size_set = true;
                 const Viewport &v = Render2D::GetViewport();
                 Canvas->_guiRoot->SetSize(v.Size);
-            }
+            //}
 
             Canvas->GetGUI()->Draw();
         }
