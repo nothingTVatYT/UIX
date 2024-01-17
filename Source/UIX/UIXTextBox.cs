@@ -8,7 +8,6 @@ namespace UIX;
 public class UIXTextBox : Control
 {
     private BaseTextBoxModel _model;
-    private string _text;
 
     public string Text
     {
@@ -28,18 +27,17 @@ public class UIXTextBox : Control
         set {
             _model = value;
             _model.TextChanged += OnTextChanged;
-            _text = _model.Text;
         }
     }
 
     protected virtual void OnTextChanged()
     {
-        _text = _model.Text;
+        // you could flash it or do whatever with this information
     }
 
     public override void Draw()
     {
         //base.Draw();
-        // draw the text cached in _text
+        // draw the text from _model.Text
     }
 }
