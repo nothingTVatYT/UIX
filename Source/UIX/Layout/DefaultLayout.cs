@@ -10,7 +10,9 @@ namespace UIX.Layout;
 public class DefaultLayout : BaseLayout
 {
     [Tooltip("Set to true to stretch child width to fill all the space.")]
-    public bool FillX;
+    public bool FillX = true;
+    [Tooltip("Set to true to stretch child height to fill all the space.")]
+    public bool FillY = true;
 
     /// <inheritdoc />
     public DefaultLayout(ContainerControl container) : base(container)
@@ -19,7 +21,7 @@ public class DefaultLayout : BaseLayout
 
     private float PerformLayoutChildren(bool layoutChildren, out float maxWidth)
     {
-        var clientArea = Container.GetClientArea();
+        var clientArea = LayoutTools.GetClientArea(Container);
         var pos = clientArea.UpperLeft;
         var requestedHeight = 0f;
         maxWidth = 0;
@@ -48,11 +50,10 @@ public class DefaultLayout : BaseLayout
     {
         if (container.IsLayoutLocked)
         {
-            IsLayoutDone = true;
             return;
         }
         Container = container;
-        var clientArea = container.GetClientArea();
+        var clientArea = LayoutTools.GetClientArea(container);
         var requestedHeight = PerformLayoutChildren(true, out var maxWidth);
 
         if (requestedHeight > MaximumSize.Y)
@@ -87,6 +88,11 @@ public class DefaultLayout : BaseLayout
             {
                 child.Width = clientArea.Width;
             }
+        }
+
+        if (FillY && Controls.Count == 1)
+        {
+            Controls[0].Height = clientArea.Height;
         }
 
         IsLayoutDone = true;

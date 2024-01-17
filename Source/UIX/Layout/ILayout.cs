@@ -28,20 +28,17 @@ public interface ILayout
     /// </summary>
     public int NumberChildren { get; }
 
-    // (this could probably go into a base class instead of this interface)
-    /// <summary>
-    /// Range of children that should be handled in the layout
-    /// </summary>
-    /// <param name="beginIndex"></param>
-    /// <param name="endIndex"></param>
-    public void LayoutChildren(int beginIndex, int endIndex);
-
     /// <summary>
     /// Adds a child to the layout and also to the container
     /// </summary>
     /// <param name="child"></param>
     public void AddChild(Control child);
 
+    /// <summary>
+    /// Remove the child at index from this layout as well as from the container
+    /// </summary>
+    /// <param name="index"></param>
+    public void RemoveChild(int index);
     /// <summary>
     /// Get the child at that index
     /// </summary>

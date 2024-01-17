@@ -126,6 +126,7 @@
 	"_layout": {
 		"$type": "UIX.Layout.DefaultLayout, UIX.CSharp",
 		"FillX": false,
+		"FillY": false,
 		"MinimumSize": {
 			"X": 60.0,
 			"Y": 60.0
@@ -228,9 +229,9 @@
 	},
 	"Offsets": {
 		"Left": 396.0,
-		"Right": 192.0,
+		"Right": 200.0,
 		"Top": 29.0,
-		"Bottom": 122.0
+		"Bottom": 138.0
 	},
 	"Scale": {
 		"X": 1.0,
@@ -413,6 +414,77 @@
 	"Visible": true,
 	"AutoFocus": true
 }
+		},
+		{
+			"ID": "08dc17136bc86b1daaf70476172e16a5",
+			"TypeName": "FlaxEngine.UIControl",
+			"ParentID": "08dc119b49045b9d49740adaf68d56a3",
+			"Name": "UIXTitledPanel",
+			"Transform": {
+				"Translation": {
+					"X": 451.0,
+					"Y": 415.0,
+					"Z": 0.0
+				}
+			},
+			"Control": "UIX.UIXTitledPanel",
+			"Data": {
+	"Title": "Interesting text",
+	"Resizable": true,
+	"Closeable": true,
+	"Movable": true,
+	"Background": null,
+	"Insets": {
+		"Left": 10.0,
+		"Right": 10.0,
+		"Top": 10.0,
+		"Bottom": 10.0
+	},
+	"ClipChildren": false,
+	"CullChildren": false,
+	"AnchorMin": {
+		"X": 0.0,
+		"Y": 0.0
+	},
+	"AnchorMax": {
+		"X": 0.0,
+		"Y": 0.0
+	},
+	"Offsets": {
+		"Left": 451.0,
+		"Right": 227.0,
+		"Top": 415.0,
+		"Bottom": 113.0
+	},
+	"Scale": {
+		"X": 1.0,
+		"Y": 1.0
+	},
+	"Pivot": {
+		"X": 0.0,
+		"Y": 0.0
+	},
+	"Shear": {
+		"X": 0.0,
+		"Y": 0.0
+	},
+	"Rotation": 0.0,
+	"BackgroundColor": {
+		"R": 0.0,
+		"G": 0.0,
+		"B": 0.0,
+		"A": 0.0
+	},
+	"Enabled": true,
+	"Visible": true,
+	"AutoFocus": true
+}
+		},
+		{
+			"ID": "a3823402484f4de33448ac93a658ba86",
+			"TypeName": "UIX.InterestingText",
+			"ParentID": "08dc17136bc86b1daaf70476172e16a5",
+			"V": {}
 		}
 	]
 }

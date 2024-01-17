@@ -19,8 +19,6 @@ public abstract class BaseLayout : ILayout
     protected ContainerControl Container;
     protected List<Control> Controls;
     protected Dictionary<Control, ControlDetails> ControlDetails;
-    protected int BeginIndex = 0;
-    protected int EndIndex = int.MaxValue;
 
     /// <summary>
     /// Create a new layout for the container
@@ -31,12 +29,6 @@ public abstract class BaseLayout : ILayout
         Container = container;
         Controls = new List<Control>();
         ControlDetails = new Dictionary<Control, ControlDetails>();
-    }
-
-    public void LayoutChildren(int beginIndex, int endIndex)
-    {
-        BeginIndex = beginIndex;
-        EndIndex = endIndex;
     }
 
     /// <inheritdoc />
@@ -50,6 +42,15 @@ public abstract class BaseLayout : ILayout
             MinimumSize = LayoutTools.GetMinimumSize(child)
         };
         Container.AddChild(child);
+    }
+
+    public void RemoveChild(int index)
+    {
+        var control = GetChild(index);
+        if (control == null) return;
+        Container.RemoveChild(control);
+        Controls.Remove(control);
+        control.Dispose();
     }
 
     /// <inheritdoc />

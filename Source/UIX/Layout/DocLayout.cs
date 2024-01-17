@@ -67,7 +67,7 @@ public class DocLayout : BaseLayout
             line.MinimumSize.Y = Mathf.Max(line.MinimumSize.Y, detail.MinimumSize.Y);
             line.RequestedSize.X += child.Width;
             line.RequestedSize.Y = Mathf.Max(line.RequestedSize.Y, child.Height);
-            Debug.Log($"layout options for {child}: {options}");
+            //Debug.Log($"layout options for {child}: {options}");
             if (options.Wrap)
             {
                 lineIndex++;
