@@ -28,32 +28,14 @@ public class InterestingText : Script
         _titledPanel = Actor.As<UIControl>().Control as UIXTitledPanel;
         _model = new InterestingTextTableModel
         {
-            Size = 10
+            Size = 1000000
         };
         _table = new UIXTable
         {
-            Model = _model,
-            
+            Model = _model
         };
         _titledPanel?.Layout.AddChild(_table);
-    }
-    
-    /// <inheritdoc/>
-    public override void OnEnable()
-    {
-        // Here you can add code that needs to be called when script is enabled (eg. register for events)
-    }
-
-    /// <inheritdoc/>
-    public override void OnDisable()
-    {
-        // Here you can add code that needs to be called when script is disabled (eg. unregister from events)
-    }
-
-    /// <inheritdoc/>
-    public override void OnUpdate()
-    {
-        // Here you can add code that needs to be called every frame
+        _table.PerformLayout(true);
     }
 }
 
